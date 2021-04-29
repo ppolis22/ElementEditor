@@ -12,7 +12,7 @@ ElementEditor::~ElementEditor() {}
 
 void ElementEditor::run(Window& window) {
 	while (window.isOpen()) {
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		window.swapBuffers();

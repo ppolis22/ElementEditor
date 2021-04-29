@@ -7,7 +7,7 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	xPosition(xPos),
 	yPosition(yPos),
 	zPosition(zPos),
-	meshVertexArrayId(0) {
+	mesh({0, 0, 0}) {
 	data = new BlockType** [CHUNK_SIZE];
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		data[i] = new BlockType* [CHUNK_SIZE];
@@ -27,13 +27,17 @@ Chunk::~Chunk() {
 	delete[] data;
 }
 
+void Chunk::setBlock(BlockType type, int x, int y, int z) {
+	data[x][y][z] = type;
+}
+
 void Chunk::render(Renderer& renderer) {
 	// need to pass along the x, y, and zPosition to create model transformation matrix
 }
 
-void Chunk::buildMesh(MeshBuilder& meshBuilder) {	// TODO optimize!!!
-	meshBuilder.deleteMesh(meshVertexArrayId);
-	meshVertexArrayId = meshBuilder.createNewMesh();
+void Chunk::rebuildMesh(MeshBuilder& meshBuilder) {		// TODO optimize!!!
+	meshBuilder.deleteMesh(mesh);
+	meshBuilder.createNewMesh();
 
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -44,6 +48,8 @@ void Chunk::buildMesh(MeshBuilder& meshBuilder) {	// TODO optimize!!!
 			}
 		}
 	}
+
+	mesh = meshBuilder.commitMesh();
 }
 
 void Chunk::buildBlockMesh(int x, int y, int z, MeshBuilder& meshBuilder) {
@@ -85,11 +91,4 @@ void Chunk::buildBlockMesh(int x, int y, int z, MeshBuilder& meshBuilder) {
 
 	Point3df bottomNormal{ 0.0f, -1.0f, 0.0f };
 	meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, type);
-}
-
-void Chunk::setBlock(BlockType type, int x, int y, int z) {
-	if (x >= CHUNK_SIZE || y >= CHUNK_SIZE || z >= CHUNK_SIZE) {
-		throw "Attempt to set invalid block location.";
-	}
-	data[x][y][z] = type;
 }

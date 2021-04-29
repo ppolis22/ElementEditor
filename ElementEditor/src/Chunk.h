@@ -4,6 +4,7 @@
 #include "engine/Point3d.h"
 #include "engine/Renderer.h"
 #include "engine/MeshBuilder.h"
+#include "engine/Mesh.h"
 
 class Chunk {
 public:
@@ -17,11 +18,12 @@ public:
 
 	void render(Renderer& renderer);
 	void setBlock(BlockType type, int x, int y, int z);
+
 private:
 	BlockType*** data;
-	unsigned int meshVertexArrayId;
+	Mesh mesh;
 	int xPosition, yPosition, zPosition;
 
-	void buildMesh(MeshBuilder& meshBuilder);
+	void rebuildMesh(MeshBuilder& meshBuilder);
 	void buildBlockMesh(int x, int y, int z, MeshBuilder& meshBuilder);
 };
