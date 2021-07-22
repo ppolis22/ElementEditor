@@ -13,6 +13,9 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 		data[i] = new BlockType* [CHUNK_SIZE];
 		for (int j = 0; j < CHUNK_SIZE; j++) {
 			data[i][j] = new BlockType[CHUNK_SIZE];
+			for (int k = 0; k < CHUNK_SIZE; k++) {
+				data[i][j][k] = Empty;
+			}
 		}
 	}
 }
@@ -25,17 +28,19 @@ Chunk::~Chunk() {
 		delete[] data[i];
 	}
 	delete[] data;
+
+	meshBuilder.deleteMesh(mesh);
 }
 
 void Chunk::setBlock(BlockType type, int x, int y, int z) {
-	data[x][y][z] = type;
+	data[x][y][z] = type;		// should we check if indices are in bounds?
 }
 
 void Chunk::render(Renderer& renderer) {
 	// need to pass along the x, y, and zPosition to create model transformation matrix
 }
 
-void Chunk::rebuildMesh(MeshBuilder& meshBuilder) {		// TODO optimize!!!
+void Chunk::rebuildMesh() {		// TODO optimize!!!
 	meshBuilder.deleteMesh(mesh);
 	meshBuilder.createNewMesh();
 
@@ -43,7 +48,7 @@ void Chunk::rebuildMesh(MeshBuilder& meshBuilder) {		// TODO optimize!!!
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
 				if (data[x][y][z] != Empty) {
-					buildBlockMesh(x, y, z, meshBuilder);
+					buildBlockMesh(x, y, z);
 				}
 			}
 		}
@@ -52,7 +57,7 @@ void Chunk::rebuildMesh(MeshBuilder& meshBuilder) {		// TODO optimize!!!
 	mesh = meshBuilder.commitMesh();
 }
 
-void Chunk::buildBlockMesh(int x, int y, int z, MeshBuilder& meshBuilder) {
+void Chunk::buildBlockMesh(int x, int y, int z) {
 	BlockType type = data[x][y][z];
 	float xCoord = x * BLOCK_RENDER_SIZE;
 	float yCoord = y * BLOCK_RENDER_SIZE;

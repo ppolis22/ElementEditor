@@ -18,7 +18,7 @@ public:
 		Point3df& normal, BlockType type);	// replace BlockType param with like Color enum defined in engine, provide mapping in client
 
 private:
-	std::vector<float> currentVertices;
+	std::vector<float> currentVertexData;
 	std::vector<unsigned int> currentIndices;
 	unsigned int numVertices;
 

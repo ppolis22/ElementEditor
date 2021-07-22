@@ -8,7 +8,7 @@
 
 class Chunk {
 public:
-	static const int CHUNK_SIZE = 16;
+	static const int CHUNK_SIZE = 4;
 	static const float BLOCK_RENDER_SIZE;
 	static const float HALF_BLOCK_WIDTH;
 
@@ -17,13 +17,14 @@ public:
 	~Chunk();
 
 	void render(Renderer& renderer);
+	void rebuildMesh();
 	void setBlock(BlockType type, int x, int y, int z);
 
 private:
 	BlockType*** data;
+	MeshBuilder meshBuilder;
 	Mesh mesh;
 	int xPosition, yPosition, zPosition;
 
-	void rebuildMesh(MeshBuilder& meshBuilder);
-	void buildBlockMesh(int x, int y, int z, MeshBuilder& meshBuilder);
+	void buildBlockMesh(int x, int y, int z);
 };

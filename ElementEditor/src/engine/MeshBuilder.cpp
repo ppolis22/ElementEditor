@@ -9,17 +9,17 @@ MeshBuilder::MeshBuilder() {}
 MeshBuilder::~MeshBuilder() {}
 
 void MeshBuilder::createNewMesh() {
-	currentVertices.clear();
+	currentVertexData.clear();
 	currentIndices.clear();
 	numVertices = 0;
 }
 
 Mesh MeshBuilder::commitMesh() {
-	float* meshVertices = &currentVertices[0];
+	float* meshVertices = &currentVertexData[0];
 	unsigned int* meshIndices = &currentIndices[0];
 
 	// Note: as of OpenGL 4.5, vertex buffers can be deleted after vertex array is made with it and the vao is then unbound
-	unsigned int vertexBufferId = buildVertexBuffer(currentVertices.size() * sizeof(float), meshVertices);
+	unsigned int vertexBufferId = buildVertexBuffer(currentVertexData.size() * sizeof(float), meshVertices);
 	unsigned int indexBufferId = buildIndexBuffer(currentIndices.size() * sizeof(unsigned int), meshIndices);
 	unsigned int vertexArrayId = buildVertexArray(vertexBufferId);
 
@@ -36,15 +36,15 @@ void MeshBuilder::deleteMesh(Mesh& mesh) {
 
 void MeshBuilder::addFace(Point3df& p0, Point3df& p1, Point3df& p2, Point3df& p3,
 	Point3df& normal, BlockType type) {
-	currentVertices.insert(currentVertices.end(), { p0.x, p0.y, p0.z, normal.x, normal.y, normal.z, (float)type });
-	currentVertices.insert(currentVertices.end(), { p1.x, p1.y, p1.z, normal.x, normal.y, normal.z, (float)type });
-	currentVertices.insert(currentVertices.end(), { p2.x, p2.y, p2.z, normal.x, normal.y, normal.z, (float)type });
-	currentVertices.insert(currentVertices.end(), { p3.x, p3.y, p3.z, normal.x, normal.y, normal.z, (float)type });
+	currentVertexData.insert(currentVertexData.end(), { p0.x, p0.y, p0.z, normal.x, normal.y, normal.z, (float)type });
+	currentVertexData.insert(currentVertexData.end(), { p1.x, p1.y, p1.z, normal.x, normal.y, normal.z, (float)type });
+	currentVertexData.insert(currentVertexData.end(), { p2.x, p2.y, p2.z, normal.x, normal.y, normal.z, (float)type });
+	currentVertexData.insert(currentVertexData.end(), { p3.x, p3.y, p3.z, normal.x, normal.y, normal.z, (float)type });
 
 	currentIndices.insert(currentIndices.end(), { numVertices, numVertices + 1, numVertices + 2, 
 		numVertices + 2, numVertices + 3, numVertices});
 
-	numVertices += 6;
+	numVertices += 4;
 }
 
 unsigned int MeshBuilder::buildVertexBuffer(unsigned int size, const void* data) {
