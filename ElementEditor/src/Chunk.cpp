@@ -7,7 +7,8 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	xPosition(xPos),
 	yPosition(yPos),
 	zPosition(zPos),
-	mesh({0, 0, 0}) {
+	mesh({0, 0, 0}),
+	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader") {
 	data = new BlockType** [CHUNK_SIZE];
 	for (int i = 0; i < CHUNK_SIZE; i++) {
 		data[i] = new BlockType* [CHUNK_SIZE];
@@ -36,11 +37,15 @@ void Chunk::setBlock(BlockType type, int x, int y, int z) {
 	data[x][y][z] = type;		// should we check if indices are in bounds?
 }
 
-void Chunk::render(Renderer& renderer) {
-	// need to pass along the x, y, and zPosition to create model transformation matrix
+Shader& Chunk::getShader() {
+	return chunkShader;
 }
 
-void Chunk::rebuildMesh() {		// TODO optimize!!!
+Mesh& Chunk::getMesh() {
+	return mesh;
+}
+
+void Chunk::rebuildMesh() {		// TODO optimize to not build interior faces!!!
 	meshBuilder.deleteMesh(mesh);
 	meshBuilder.createNewMesh();
 

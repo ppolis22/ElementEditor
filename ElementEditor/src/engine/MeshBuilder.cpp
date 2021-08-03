@@ -23,7 +23,7 @@ Mesh MeshBuilder::commitMesh() {
 	unsigned int indexBufferId = buildIndexBuffer(currentIndices.size() * sizeof(unsigned int), meshIndices);
 	unsigned int vertexArrayId = buildVertexArray(vertexBufferId);
 
-	return { vertexArrayId, vertexBufferId, indexBufferId };
+	return { vertexArrayId, vertexBufferId, indexBufferId, currentIndices.size() };
 }
 
 void MeshBuilder::deleteMesh(Mesh& mesh) {
@@ -60,7 +60,7 @@ unsigned int MeshBuilder::buildVertexBuffer(unsigned int size, const void* data)
 unsigned int MeshBuilder::buildIndexBuffer(unsigned int size, const unsigned int* data) {
 	unsigned int id;
 	glGenBuffers(1, &id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);	// if this is done while VAO is bound, then simply binding the VAO later also binds this IBO, TODO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -83,7 +83,7 @@ unsigned int MeshBuilder::buildVertexArray(unsigned int vertexBufferId) {
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (const void*)(6 * sizeof(float)));
 	
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);	// Should vertex array also be unbound here?
 
 	return vertexArrayId;
 }

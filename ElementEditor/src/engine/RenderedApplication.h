@@ -1,7 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>		// Must be included before any other OpenGL stuff
-#include <GLFW/glfw3.h>
+#include "Window.h"
 
 class Window;
 

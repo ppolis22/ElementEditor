@@ -14,7 +14,6 @@ public:
 	void renderChunks();
 
 private:
-	Renderer renderer;
 	std::vector<Chunk> allChunks;
 	std::vector<Chunk> chunksToUpdate;
 };

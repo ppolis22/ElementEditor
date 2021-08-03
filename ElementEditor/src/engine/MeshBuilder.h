@@ -2,7 +2,6 @@
 
 #include "../Block.h"
 #include "Point3d.h"
-#include "Mesh.h"
 #include <vector>
 
 class MeshBuilder {

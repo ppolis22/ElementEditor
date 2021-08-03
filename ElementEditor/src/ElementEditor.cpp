@@ -1,6 +1,6 @@
 #include "ElementEditor.h"
 #include "engine/Window.h"
-#include "Chunk.h"
+#include "engine/Renderer.h"
 
 int main(void) {
 	ElementEditor app;
@@ -13,14 +13,20 @@ ElementEditor::~ElementEditor() {}
 
 void ElementEditor::run(Window& window) {
 
-	MeshBuilder meshBuilder;
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+
 	Chunk chunk(0, 0, 0);
 	chunk.setBlock(Stone, 0, 0, 0);
-	chunk.rebuildMesh(meshBuilder);
+	chunk.rebuildMesh();
+	Renderer renderer;
 
 	while (window.isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		renderer.renderChunk(chunk);
 
 		window.swapBuffers();
 		glfwPollEvents();

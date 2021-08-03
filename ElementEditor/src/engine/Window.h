@@ -1,6 +1,7 @@
 #pragma once
 
-#include "RenderedApplication.h"	// TODO try replacing with glew/glfw includes and add Window.h include in RenderedApplication
+#include <GL/glew.h>		// Must be included before any other OpenGL stuff
+#include <GLFW/glfw3.h>
 
 class Window {
 public:

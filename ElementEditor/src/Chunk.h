@@ -2,9 +2,9 @@
 
 #include "Block.h"
 #include "engine/Point3d.h"
-#include "engine/Renderer.h"
 #include "engine/MeshBuilder.h"
 #include "engine/Mesh.h"
+#include "engine/Shader.h"
 
 class Chunk {
 public:
@@ -16,14 +16,16 @@ public:
 	Chunk(int xPos, int yPos, int zPos);
 	~Chunk();
 
-	void render(Renderer& renderer);
 	void rebuildMesh();
 	void setBlock(BlockType type, int x, int y, int z);
+	Shader& getShader();
+	Mesh& getMesh();
 
 private:
 	BlockType*** data;
 	MeshBuilder meshBuilder;
 	Mesh mesh;
+	Shader chunkShader;
 	int xPosition, yPosition, zPosition;
 
 	void buildBlockMesh(int x, int y, int z);
