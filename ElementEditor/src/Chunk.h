@@ -34,4 +34,5 @@ private:
 	int xPosition, yPosition, zPosition;
 
 	void buildBlockMesh(int x, int y, int z);
+	bool checkNeighborChunk(int x, int y, int z);	// placeholder for method, likely in ChunkManager
 };
