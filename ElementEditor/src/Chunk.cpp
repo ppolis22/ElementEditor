@@ -45,6 +45,10 @@ Mesh& Chunk::getMesh() {
 	return mesh;
 }
 
+glm::mat4 Chunk::getTransformation() {
+	return glm::rotate(glm::mat4(1.0f), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));		// arbitrarily rotated for now
+}
+
 void Chunk::rebuildMesh() {		// TODO optimize to not build interior faces!!!
 	meshBuilder.deleteMesh(mesh);
 	meshBuilder.createNewMesh();
@@ -64,7 +68,7 @@ void Chunk::rebuildMesh() {		// TODO optimize to not build interior faces!!!
 
 void Chunk::buildBlockMesh(int x, int y, int z) {
 	BlockType type = data[x][y][z];
-	float xCoord = x * BLOCK_RENDER_SIZE;
+	float xCoord = x * BLOCK_RENDER_SIZE;	// TODO factor in chunk position (i.e. xPosition...)
 	float yCoord = y * BLOCK_RENDER_SIZE;
 	float zCoord = z * BLOCK_RENDER_SIZE;
 

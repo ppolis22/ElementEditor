@@ -1,13 +1,13 @@
 #pragma once
 
-#include "..\Chunk.h"
+#include "Renderable.h"
 
 class Renderer {
 public:
 	Renderer();
 	~Renderer();
 
-	void renderChunk(Chunk& chunk);
+	void render(Renderable& renderable);
 
 private:
 	const float FOV = 45.0f;

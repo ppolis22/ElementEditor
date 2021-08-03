@@ -5,8 +5,12 @@
 #include "engine/MeshBuilder.h"
 #include "engine/Mesh.h"
 #include "engine/Shader.h"
+#include "engine/Renderable.h"
 
-class Chunk {
+#include "../vendor/glm/glm.hpp"
+#include "../vendor/glm/gtc/matrix_transform.hpp"
+
+class Chunk : public Renderable {
 public:
 	static const int CHUNK_SIZE = 4;
 	static const float BLOCK_RENDER_SIZE;
@@ -20,6 +24,7 @@ public:
 	void setBlock(BlockType type, int x, int y, int z);
 	Shader& getShader();
 	Mesh& getMesh();
+	glm::mat4 getTransformation();
 
 private:
 	BlockType*** data;
