@@ -23,13 +23,14 @@ void ElementEditor::run(Window& window) {
 	chunk.setBlock(Stone, 1, 0, 0);
 	chunk.setBlock(Stone, 0, 1, 0);
 	chunk.rebuildMesh();
+	Camera camera;
 	Renderer renderer;
 
 	while (window.isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		renderer.render(chunk);
+		renderer.render(chunk, camera);
 
 		window.swapBuffers();
 		glfwPollEvents();

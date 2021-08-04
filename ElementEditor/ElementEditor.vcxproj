@@ -135,6 +135,7 @@
     <ClCompile Include="src\Chunk.cpp" />
     <ClCompile Include="src\ChunkManager.cpp" />
     <ClCompile Include="src\ElementEditor.cpp" />
+    <ClCompile Include="src\engine\Camera.cpp" />
     <ClCompile Include="src\engine\ElementEngineException.cpp" />
     <ClCompile Include="src\engine\MeshBuilder.cpp" />
     <ClCompile Include="src\engine\RenderedApplication.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\ChunkManager.h" />
     <ClInclude Include="src\ElementEditor.h" />
+    <ClInclude Include="src\engine\Camera.h" />
     <ClInclude Include="src\engine\ElementEngineException.h" />
     <ClInclude Include="src\engine\Mesh.h" />
     <ClInclude Include="src\engine\MeshBuilder.h" />

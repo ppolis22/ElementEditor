@@ -10,10 +10,9 @@ Renderer::Renderer() {}
 
 Renderer::~Renderer() {}
 
-void Renderer::render(Renderable& renderable) {
-	// TODO get proj and view from instance of Camera class
-	glm::mat4 m_Proj = glm::perspective(glm::radians(FOV), 960.0f / 540.0f, NEAR_PLANE, FAR_PLANE);
-	glm::mat4 m_View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+void Renderer::render(Renderable& renderable, Camera& camera) {
+	glm::mat4 m_Proj = camera.getProjectionMatrix();
+	glm::mat4 m_View = camera.getViewMatrix();
 	glm::mat4 m_Model = renderable.getTransformation();
 	glm::mat4 mvp = m_Proj * m_View * m_Model;
 
