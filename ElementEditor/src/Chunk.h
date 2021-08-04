@@ -22,9 +22,9 @@ public:
 
 	void rebuildMesh();
 	void setBlock(BlockType type, int x, int y, int z);
-	Shader& getShader();
-	Mesh& getMesh();
-	glm::mat4 getTransformation();
+	Shader& getShader() override;
+	Mesh& getMesh() override;
+	glm::mat4 getTransformation() override;
 
 private:
 	BlockType*** data;

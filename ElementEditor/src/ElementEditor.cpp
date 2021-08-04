@@ -18,15 +18,23 @@ void ElementEditor::run(Window& window) {
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
+	Camera camera;
+	Renderer renderer;
+	window.registerMouseListener(camera);
+	window.setMouseCaptureMode(true);
+
 	Chunk chunk(0, 0, 0);
 	chunk.setBlock(Stone, 0, 0, 0);
 	chunk.setBlock(Stone, 1, 0, 0);
 	chunk.setBlock(Stone, 0, 1, 0);
+	chunk.setBlock(Stone, 0, 0, 1);
 	chunk.rebuildMesh();
-	Camera camera;
-	Renderer renderer;
 
 	while (window.isOpen()) {
+		if (window.isKeyPressed(GLFW_KEY_W)) {
+			// TODO
+		}
+
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -153,6 +153,7 @@
     <ClInclude Include="src\engine\ElementEngineException.h" />
     <ClInclude Include="src\engine\Mesh.h" />
     <ClInclude Include="src\engine\MeshBuilder.h" />
+    <ClInclude Include="src\engine\MouseListener.h" />
     <ClInclude Include="src\engine\Renderable.h" />
     <ClInclude Include="src\engine\RenderedApplication.h" />
     <ClInclude Include="src\engine\Renderer.h" />
