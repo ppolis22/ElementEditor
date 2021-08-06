@@ -3,14 +3,15 @@
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
-#include "MouseListener.h"
+#include "InputListener.h"
 
-class Camera : public MouseListener {
+class Camera : public InputListener {
 public:
 	Camera();
 	~Camera();
 
-	void processMovement(float deltaX, float deltaY) override;
+	void processMouseMovement(float deltaX, float deltaY) override;
+	void processKeyPress(int keyCode) override;
 	glm::mat4 getProjectionMatrix();
 	glm::mat4 getViewMatrix();
 

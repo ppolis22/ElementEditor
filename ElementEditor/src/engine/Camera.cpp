@@ -26,7 +26,7 @@ glm::mat4 Camera::getViewMatrix() {
 	return glm::lookAt(position, position + front, localUp);
 }
 
-void Camera::processMovement(float deltaX, float deltaY) {
+void Camera::processMouseMovement(float deltaX, float deltaY) {
 	yaw += (deltaX * mouseSensitivity);
 	pitch += (deltaY * mouseSensitivity);
 
@@ -46,3 +46,5 @@ void Camera::processMovement(float deltaX, float deltaY) {
 	right = glm::normalize(glm::cross(front, globalUp));
 	localUp = glm::normalize(glm::cross(right, front));
 }
+
+void Camera::processKeyPress(int keyCode) { /* might not need this */ }

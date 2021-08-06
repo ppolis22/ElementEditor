@@ -20,7 +20,7 @@ void ElementEditor::run(Window& window) {
 
 	Camera camera;
 	Renderer renderer;
-	window.registerMouseListener(camera);
+	window.registerInputListener(camera);
 	window.setMouseCaptureMode(true);
 
 	Chunk chunk(0, 0, 0);
@@ -31,8 +31,8 @@ void ElementEditor::run(Window& window) {
 	chunk.rebuildMesh();
 
 	while (window.isOpen()) {
-		if (window.isKeyPressed(GLFW_KEY_W)) {
-			// TODO
+		if (window.isKeyPressed(GLFW_KEY_ESCAPE)) {
+			window.setMouseCaptureMode(false);
 		}
 
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
@@ -41,6 +41,6 @@ void ElementEditor::run(Window& window) {
 		renderer.render(chunk, camera);
 
 		window.swapBuffers();
-		glfwPollEvents();
+		glfwPollEvents();		// could be glfwWaitEvents() ?
 	}
 }
