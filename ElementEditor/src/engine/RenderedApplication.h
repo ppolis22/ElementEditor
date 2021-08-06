@@ -4,7 +4,7 @@
 
 class Window;
 
-class RenderedApplication {
+class RenderedApplication : public InputListener {
 public:
 	RenderedApplication();
 	virtual ~RenderedApplication();
@@ -12,5 +12,9 @@ public:
 	void start(int width = 960, int height = 540, const char* title = "Element Engine Window");
 
 protected:
-	virtual void run(Window& window) = 0;		// subclasses must provide their own run behavior
+	Window* window = nullptr;
+
+	virtual void run() = 0;		// subclasses must provide their own run behavior
+	virtual void processMouseMovement(float deltaX, float deltaY);
+	virtual void processKeyPress(int keyCode);
 };

@@ -31,16 +31,20 @@ void Window::swapBuffers() {
 	glfwSwapBuffers(glfwWindow);
 }
 
-bool Window::isKeyPressed(unsigned int keyCode) {
+bool Window::isKeyPressed(int keyCode) {
 	return glfwGetKey(glfwWindow, keyCode) == GLFW_PRESS;
+}
+
+bool Window::isClicked(int mouseButtonCode) {
+	return glfwGetMouseButton(glfwWindow, mouseButtonCode);
 }
 
 void Window::setMouseCaptureMode(bool enable) {
 	glfwSetInputMode(glfwWindow, GLFW_CURSOR, (enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
 }
 
-void Window::registerInputListener(InputListener& mouseListener) {
-	listener = &mouseListener;		// support multiple listeners?
+void Window::registerInputListener(InputListener* mouseListener) {
+	listener = mouseListener;		// support multiple listeners?
 }
 
 void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {

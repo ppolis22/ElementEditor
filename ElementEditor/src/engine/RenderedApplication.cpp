@@ -17,13 +17,13 @@ void RenderedApplication::start(int width, int height, const char* title) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	try {
-		Window window(width, height, title);
-		window.makeCurrentContext();
+		window = &Window(width, height, title);
+		window->makeCurrentContext();
 		glfwSwapInterval(1);
 		glewInit();
 		std::cout << glGetString(GL_VERSION) << std::endl;
 
-		run(window);	// runs the overriden custom application code
+		run();	// runs the overriden custom application code
 
 		// all objects with OpenGL calls in their destructors must be destroyed before now
 		glfwTerminate();
@@ -32,3 +32,7 @@ void RenderedApplication::start(int width, int height, const char* title) {
 		throw e;
 	}
 }
+
+void RenderedApplication::processMouseMovement(float deltaX, float deltaY) {}
+
+void RenderedApplication::processKeyPress(int keyCode) {}

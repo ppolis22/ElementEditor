@@ -14,9 +14,10 @@ public:
 	bool isOpen();
 	void makeCurrentContext();
 	void swapBuffers();
-	bool isKeyPressed(unsigned int keyCode);
+	bool isKeyPressed(int keyCode);
+	bool isClicked(int mouseButtonCode);
 	void setMouseCaptureMode(bool enable);
-	void registerInputListener(InputListener& listener);
+	void registerInputListener(InputListener* listener);
 
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);		// could these be private/protected?
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

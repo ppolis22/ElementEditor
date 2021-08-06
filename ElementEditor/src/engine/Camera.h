@@ -5,13 +5,12 @@
 
 #include "InputListener.h"
 
-class Camera : public InputListener {
+class Camera {
 public:
 	Camera();
 	~Camera();
 
-	void processMouseMovement(float deltaX, float deltaY) override;
-	void processKeyPress(int keyCode) override;
+	void rotate(float deltaX, float deltaY);
 	glm::mat4 getProjectionMatrix();
 	glm::mat4 getViewMatrix();
 

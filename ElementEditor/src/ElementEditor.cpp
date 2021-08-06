@@ -12,16 +12,14 @@ ElementEditor::ElementEditor() {}
 
 ElementEditor::~ElementEditor() {}
 
-void ElementEditor::run(Window& window) {
+void ElementEditor::run() {
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
-	Camera camera;
-	Renderer renderer;
-	window.registerInputListener(camera);
-	window.setMouseCaptureMode(true);
+	window->registerInputListener(this);
+	window->setMouseCaptureMode(true);
 
 	Chunk chunk(0, 0, 0);
 	chunk.setBlock(Stone, 0, 0, 0);
@@ -30,17 +28,25 @@ void ElementEditor::run(Window& window) {
 	chunk.setBlock(Stone, 0, 0, 1);
 	chunk.rebuildMesh();
 
-	while (window.isOpen()) {
-		if (window.isKeyPressed(GLFW_KEY_ESCAPE)) {
-			window.setMouseCaptureMode(false);
-		}
-
+	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		renderer.render(chunk, camera);
 
-		window.swapBuffers();
+		window->swapBuffers();
 		glfwPollEvents();		// could be glfwWaitEvents() ?
+	}
+}
+
+void ElementEditor::processMouseMovement(float deltaX, float deltaY) {
+	if (window->isClicked(GLFW_MOUSE_BUTTON_MIDDLE)) {
+		camera.rotate(deltaX, deltaY);
+	}
+}
+
+void ElementEditor::processKeyPress(int keyCode) {
+	if (window->isKeyPressed(GLFW_KEY_ESCAPE)) {
+		window->setMouseCaptureMode(false);
 	}
 }
