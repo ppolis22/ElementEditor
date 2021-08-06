@@ -20,11 +20,10 @@ private:
 	const float FAR_PLANE = 1000.0f;
 
 	glm::vec3 position;
+	glm::vec3 target;
 	glm::vec3 globalUp;
-	glm::vec3 localUp;
-	glm::vec3 front;
-	glm::vec3 right;
 
+	float distance;	// distance
 	float yaw;		// rotation around (in this case, global) y axis
 	float pitch;	// rotation around local x axis
 	float movementSpeed;
