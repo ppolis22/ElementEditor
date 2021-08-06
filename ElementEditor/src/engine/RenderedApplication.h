@@ -15,6 +15,7 @@ protected:
 	Window* window = nullptr;
 
 	virtual void run() = 0;		// subclasses must provide their own run behavior
-	virtual void processMouseMovement(float deltaX, float deltaY);
-	virtual void processKeyPress(int keyCode);
+	virtual void processMouseMovement(float deltaX, float deltaY) override;
+	virtual void processKeyPress(int keyCode) override;
+	virtual void processScroll(float deltaY) override;
 };

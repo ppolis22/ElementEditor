@@ -13,6 +13,7 @@ Window::Window(int width, int height, const char* title) : width(width), height(
 
 	glfwSetCursorPosCallback(glfwWindow, mouse_callback);
 	glfwSetKeyCallback(glfwWindow, key_callback);
+	glfwSetScrollCallback(glfwWindow, scroll_callback);
 	lastCursorXPos = width / 2.0f;
 	lastCursorYPos = height / 2.0f;
 }
@@ -60,5 +61,11 @@ void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (listener != nullptr && action == GLFW_PRESS) {
 		listener->processKeyPress(key);
+	}
+}
+
+void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+	if (listener != nullptr) {
+		listener->processScroll(yOffset);
 	}
 }

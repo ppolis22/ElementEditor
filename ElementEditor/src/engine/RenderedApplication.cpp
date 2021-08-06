@@ -36,3 +36,5 @@ void RenderedApplication::start(int width, int height, const char* title) {
 void RenderedApplication::processMouseMovement(float deltaX, float deltaY) {}
 
 void RenderedApplication::processKeyPress(int keyCode) {}
+
+void RenderedApplication::processScroll(float deltaY) {}

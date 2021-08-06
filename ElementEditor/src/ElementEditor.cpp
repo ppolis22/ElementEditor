@@ -19,7 +19,6 @@ void ElementEditor::run() {
 	glEnable(GL_DEPTH_TEST);
 
 	window->registerInputListener(this);
-	window->setMouseCaptureMode(true);
 
 	Chunk chunk(0, 0, 0);
 	chunk.setBlock(Stone, 0, 0, 0);
@@ -41,12 +40,16 @@ void ElementEditor::run() {
 
 void ElementEditor::processMouseMovement(float deltaX, float deltaY) {
 	if (window->isClicked(GLFW_MOUSE_BUTTON_MIDDLE)) {
-		camera.rotate(deltaX, deltaY);
+		if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
+			camera.pan(deltaX, deltaY);
+		} else {
+			camera.rotate(deltaX, deltaY);
+		}
 	}
 }
 
-void ElementEditor::processKeyPress(int keyCode) {
-	if (window->isKeyPressed(GLFW_KEY_ESCAPE)) {
-		window->setMouseCaptureMode(false);
-	}
+void ElementEditor::processKeyPress(int keyCode) {}
+
+void ElementEditor::processScroll(float deltaY) {
+	camera.zoom(deltaY);
 }

@@ -11,6 +11,7 @@ public:
 
 	void processMouseMovement(float deltaX, float deltaY) override;
 	void processKeyPress(int keyCode) override;
+	void processScroll(float deltaY) override;
 
 protected:
 	void run() override;

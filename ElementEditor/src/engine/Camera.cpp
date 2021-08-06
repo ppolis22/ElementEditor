@@ -9,12 +9,16 @@ Camera::Camera() {
 	position = glm::vec3(0.0f, 0.0, 5.0f);
 	target = glm::vec3(0.0f, 0.0f, 0.0f);
 	globalUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	localUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	right = glm::vec3(1.0f, 0.0f, 0.0f);
+	front = glm::vec3(0.0f, 0.0f, -1.0f);
 
 	distance = 5.0f;
 	yaw = -90.f;
 	pitch = 0.0f;
-	movementSpeed = 2.5f;
-	mouseSensitivity = 0.1f;
+	panSpeed = 0.01f;
+	rotateSpeed = 0.25f;
+	zoomSpeed = 0.5f;
 }
 
 Camera::~Camera() {}
@@ -28,8 +32,8 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 void Camera::rotate(float deltaX, float deltaY) {
-	yaw += (deltaX * mouseSensitivity);
-	pitch += (deltaY * mouseSensitivity);
+	yaw += (deltaX * rotateSpeed);
+	pitch += (deltaY * rotateSpeed);
 
 	if (pitch > 89.0f) {
 		pitch = 89.0f;
@@ -37,7 +41,30 @@ void Camera::rotate(float deltaX, float deltaY) {
 		pitch = -89.0f;
 	}
 
-	position.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch)) * distance;
-	position.y = sin(glm::radians(pitch)) * distance;
-	position.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch)) * distance;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+	position.x = (front.x * distance) + target.x;
+	position.y = (front.y * distance) + target.y;
+	position.z = (front.z * distance) + target.z;
+
+	right = glm::normalize(glm::cross(front, globalUp));
+	localUp = glm::normalize(glm::cross(right, front));
+}
+
+void Camera::pan(float deltaX, float deltaY) {
+	target += (right * deltaX * panSpeed);
+	target += (localUp * deltaY * panSpeed);
+
+	position += (right * deltaX * panSpeed);
+	position += (localUp * deltaY * panSpeed);
+}
+
+void Camera::zoom(float deltaY) {
+	distance += deltaY * zoomSpeed * sqrt(distance / 10.0f);
+
+	position.x = (front.x * distance) + target.x;
+	position.y = (front.y * distance) + target.y;
+	position.z = (front.z * distance) + target.z;
 }

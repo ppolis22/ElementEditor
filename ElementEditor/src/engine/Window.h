@@ -21,6 +21,7 @@ public:
 
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);		// could these be private/protected?
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 
 private:
 	GLFWwindow* glfwWindow;
