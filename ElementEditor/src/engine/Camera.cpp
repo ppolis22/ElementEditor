@@ -45,10 +45,7 @@ void Camera::rotate(float deltaX, float deltaY) {
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
-	position.x = (front.x * distance) + target.x;
-	position.y = (front.y * distance) + target.y;
-	position.z = (front.z * distance) + target.z;
-
+	position = (front * distance) + target;
 	right = glm::normalize(glm::cross(front, globalUp));
 	localUp = glm::normalize(glm::cross(right, front));
 }
@@ -62,9 +59,6 @@ void Camera::pan(float deltaX, float deltaY) {
 }
 
 void Camera::zoom(float deltaY) {
-	distance += deltaY * zoomSpeed * sqrt(distance / 10.0f);
-
-	position.x = (front.x * distance) + target.x;
-	position.y = (front.y * distance) + target.y;
-	position.z = (front.z * distance) + target.z;
+	distance += deltaY * zoomSpeed * sqrt(distance / 10.0f);	// TODO fix this
+	position = (front * distance) + target;
 }

@@ -11,14 +11,20 @@ Renderer::Renderer() {}
 Renderer::~Renderer() {}
 
 void Renderer::render(Renderable& renderable, Camera& camera) {
-	glm::mat4 m_Proj = camera.getProjectionMatrix();
-	glm::mat4 m_View = camera.getViewMatrix();
-	glm::mat4 m_Model = renderable.getTransformation();
-	glm::mat4 mvp = m_Proj * m_View * m_Model;
+	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+	glm::mat4 viewMatrix = camera.getViewMatrix();
+	glm::mat4 modelMatrix = renderable.getTransformation();
+
+	glm::vec3 lightPosition(5.0f, 5.0f, 5.0f);		//TODO move to Light class
+	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	Shader& chunkShader = renderable.getShader();
 	chunkShader.bind();
-	chunkShader.setUniformMat4f("u_MVP", mvp);
+	chunkShader.setUniformMat4f("projectionMatrix", projectionMatrix);
+	chunkShader.setUniformMat4f("viewMatrix", viewMatrix);
+	chunkShader.setUniformMat4f("modelMatrix", modelMatrix);
+	chunkShader.setUniformVec3f("lightPosition", lightPosition);
+	chunkShader.setUniformVec3f("lightColor", lightColor);
 
 	Mesh& mesh = renderable.getMesh();
 	glBindVertexArray(mesh.vertexArrayId);
