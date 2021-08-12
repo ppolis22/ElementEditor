@@ -2,6 +2,7 @@
 #include "engine/Window.h"
 #include "engine/Renderer.h"
 #include "Chunk.h"
+#include "engine/MousePicker.h"
 
 int main(void) {
 	ElementEditor app;
@@ -17,6 +18,7 @@ void ElementEditor::run() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	window->registerInputListener(this);
 
@@ -52,4 +54,9 @@ void ElementEditor::processKeyPress(int keyCode) {}
 
 void ElementEditor::processScroll(float deltaY) {
 	camera.zoom(deltaY);
+}
+
+void ElementEditor::processClick(int buttonCode, float posX, float posY) {
+	MousePicker picker(window->getWidth, window->getHeight, camera.getProjectionMatrix);
+	picker.getCurrentRay(camera.getViewMatrix, posX, posY);
 }

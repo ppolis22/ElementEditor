@@ -38,3 +38,5 @@ void RenderedApplication::processMouseMovement(float deltaX, float deltaY) {}
 void RenderedApplication::processKeyPress(int keyCode) {}
 
 void RenderedApplication::processScroll(float deltaY) {}
+
+void RenderedApplication::processClick(int buttonCode, float posX, float posY) {}

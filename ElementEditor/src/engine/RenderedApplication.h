@@ -18,4 +18,5 @@ protected:
 	virtual void processMouseMovement(float deltaX, float deltaY) override;
 	virtual void processKeyPress(int keyCode) override;
 	virtual void processScroll(float deltaY) override;
+	virtual void processClick(int buttonCode, float posX, float posY) override;
 };

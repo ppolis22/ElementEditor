@@ -8,4 +8,5 @@ public:
 	virtual void processMouseMovement(float deltaX, float deltaY) = 0;
 	virtual void processKeyPress(int keyCode) = 0;
 	virtual void processScroll(float deltaY) = 0;
+	virtual void processClick(int buttonCode, float posX, float posY) = 0;
 };

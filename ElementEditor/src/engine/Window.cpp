@@ -14,11 +14,20 @@ Window::Window(int width, int height, const char* title) : width(width), height(
 	glfwSetCursorPosCallback(glfwWindow, mouse_callback);
 	glfwSetKeyCallback(glfwWindow, key_callback);
 	glfwSetScrollCallback(glfwWindow, scroll_callback);
+	glfwSetMouseButtonCallback(glfwWindow, mouse_button_callback);
 	lastCursorXPos = width / 2.0f;
 	lastCursorYPos = height / 2.0f;
 }
 
 Window::~Window() {}
+
+int Window::getWidth() {
+	return width;
+}
+
+int Window::getHeight() {
+	return height;
+}
 
 bool Window::isOpen() {
 	return !glfwWindowShouldClose(glfwWindow);
@@ -67,5 +76,11 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	if (listener != nullptr) {
 		listener->processScroll(yOffset);
+	}
+}
+
+void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	if (listener != nullptr && action == GLFW_PRESS) {
+		listener->processClick(button);
 	}
 }

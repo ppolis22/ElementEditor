@@ -16,7 +16,12 @@ uniform vec3 lightPosition;
 void main() {
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
 	gl_Position = projectionMatrix * viewMatrix * worldPosition;
+
 	vertexNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+
+	// use this instead if scaling needs to be supported, though it's expensive and should be passed in as a uniform
+	//vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
+
 	toLightVector = normalize(lightPosition - worldPosition.xyz);
 
 	if (type == 0) {

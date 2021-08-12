@@ -138,6 +138,7 @@
     <ClCompile Include="src\engine\Camera.cpp" />
     <ClCompile Include="src\engine\ElementEngineException.cpp" />
     <ClCompile Include="src\engine\MeshBuilder.cpp" />
+    <ClCompile Include="src\engine\MousePicker.cpp" />
     <ClCompile Include="src\engine\RenderedApplication.cpp" />
     <ClCompile Include="src\engine\Renderer.cpp" />
     <ClCompile Include="src\engine\Shader.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="src\engine\Mesh.h" />
     <ClInclude Include="src\engine\MeshBuilder.h" />
     <ClInclude Include="src\engine\InputListener.h" />
+    <ClInclude Include="src\engine\MousePicker.h" />
     <ClInclude Include="src\engine\Renderable.h" />
     <ClInclude Include="src\engine\RenderedApplication.h" />
     <ClInclude Include="src\engine\Renderer.h" />
