@@ -15,6 +15,7 @@ public:
 	void zoom(float deltaY);
 	glm::mat4 getProjectionMatrix();
 	glm::mat4 getViewMatrix();
+	glm::vec3 getPosition();
 
 private:
 	const float FOV = 45.0f;

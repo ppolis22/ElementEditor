@@ -6,7 +6,7 @@
 Camera::Camera() {
 	projectionMatrix = glm::perspective(glm::radians(FOV), 960.0f / 540.0f, NEAR_PLANE, FAR_PLANE);
 
-	position = glm::vec3(0.0f, 0.0, 5.0f);
+	position = glm::vec3(0.0f, 0.0f, 5.0f);
 	target = glm::vec3(0.0f, 0.0f, 0.0f);
 	globalUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	localUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -29,6 +29,10 @@ glm::mat4 Camera::getProjectionMatrix() {
 
 glm::mat4 Camera::getViewMatrix() {
 	return glm::lookAt(position, target, globalUp);
+}
+
+glm::vec3 Camera::getPosition() {
+	return position;
 }
 
 void Camera::rotate(float deltaX, float deltaY) {

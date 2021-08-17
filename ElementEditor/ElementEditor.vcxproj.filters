@@ -51,7 +51,7 @@
     <ClCompile Include="src\engine\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\MousePicker.cpp">
+    <ClCompile Include="src\engine\RayTracer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -947,7 +947,7 @@
     <ClInclude Include="src\engine\InputListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\MousePicker.h">
+    <ClInclude Include="src\engine\RayTracer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

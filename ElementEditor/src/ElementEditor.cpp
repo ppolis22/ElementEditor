@@ -2,7 +2,7 @@
 #include "engine/Window.h"
 #include "engine/Renderer.h"
 #include "Chunk.h"
-#include "engine/MousePicker.h"
+#include "engine/RayTracer.h"
 
 int main(void) {
 	ElementEditor app;
@@ -58,7 +58,7 @@ void ElementEditor::processScroll(float deltaY) {
 
 void ElementEditor::processClick(int buttonCode, float posX, float posY) {
 	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
-		MousePicker picker(window->getWidth(), window->getHeight(), camera.getProjectionMatrix());
-		picker.getRayFromScreenCoords(camera.getViewMatrix(), posX, posY);
+		RayTracer tracer(window->getWidth(), window->getHeight(), camera.getProjectionMatrix(), 10.0f);
+		tracer.traceRay(camera.getPosition(), camera.getViewMatrix(), posX, posY);
 	}
 }

@@ -1,15 +1,20 @@
-#include "MousePicker.h"
+#include "RayTracer.h"
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 
-MousePicker::MousePicker(int windowWidth, int windowHeight, glm::mat4 projectionMatrix) 
-	: windowWidth(windowWidth), windowHeight(windowHeight), projectionMatrix(projectionMatrix) {}
+RayTracer::RayTracer(int windowWidth, int windowHeight, glm::mat4 projectionMatrix, float searchLength)
+	: windowWidth(windowWidth), windowHeight(windowHeight), inverseProjectionMatrix(glm::inverse(projectionMatrix)), searchLength(searchLength) {}
 
-MousePicker::~MousePicker() {}
+RayTracer::~RayTracer() {}
 
-glm::vec3 MousePicker::getRayFromScreenCoords(const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
+std::vector<glm::vec3> RayTracer::traceRay(const glm::vec3& startPos, const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
+	glm::vec3 ray = getRayFromScreenCoords(viewMatrix, mousePosX, mousePosY);
+	return getIntersectingBlocks(startPos, ray);
+}
+
+glm::vec3 RayTracer::getRayFromScreenCoords(const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
 	std::cout << "Pixels: (" << mousePosX << ", " << mousePosY << ")" << std::endl;
 
 	float normalizedX = (2.0f * mousePosX) / windowWidth - 1.0f;
@@ -22,10 +27,9 @@ glm::vec3 MousePicker::getRayFromScreenCoords(const glm::mat4& viewMatrix, float
 
 	std::cout << "Clip space: (" << clipSpaceCoords.x << ", " << clipSpaceCoords.y << ", " << clipSpaceCoords.z << ", " << clipSpaceCoords.w << ")" << std::endl;
 
-	glm::vec4 eyeSpaceCoords = glm::inverse(projectionMatrix) * clipSpaceCoords;
+	glm::vec4 eyeSpaceCoords = inverseProjectionMatrix * clipSpaceCoords;
 	// here z is hardcoded to -1, but I think that only works if clip space w coord is also hardcoded to 1
 	// w set to 0 so this represents a vector rather than a point
-	//eyeSpaceCoords = glm::vec4(eyeSpaceCoords.x, eyeSpaceCoords.y, -1.0, 0.0);
 	eyeSpaceCoords = glm::vec4(eyeSpaceCoords.x, eyeSpaceCoords.y, -1.0, 0.0);
 
 	std::cout << "Eye space: (" << eyeSpaceCoords.x << ", " << eyeSpaceCoords.y << ", " << eyeSpaceCoords.z << ", " << eyeSpaceCoords.w << ")" << std::endl;
@@ -38,7 +42,7 @@ glm::vec3 MousePicker::getRayFromScreenCoords(const glm::mat4& viewMatrix, float
 	return normalizedWorldRay;
 }
 
-std::vector<glm::vec3> traceRay(const glm::vec3& startPos, const glm::vec3& direction, float searchLength) {	// TODO implement correctly somewhere else
+std::vector<glm::vec3> RayTracer::getIntersectingBlocks(const glm::vec3& startPos, const glm::vec3& direction) {
 	glm::vec3 endPos = (direction * searchLength) + startPos;
 	float dx = fabs(endPos.x - startPos.x);
 	float dy = fabs(endPos.y - startPos.y);

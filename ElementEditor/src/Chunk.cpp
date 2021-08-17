@@ -73,12 +73,12 @@ void Chunk::buildBlockMesh(int x, int y, int z) {
 	float yCoord = y * BLOCK_RENDER_SIZE;
 	float zCoord = z * BLOCK_RENDER_SIZE;
 
-	float leftX = xCoord - HALF_BLOCK_WIDTH;
-	float rightX = xCoord + HALF_BLOCK_WIDTH;
-	float downY = yCoord - HALF_BLOCK_WIDTH;
-	float upY = yCoord + HALF_BLOCK_WIDTH;
-	float nearZ = zCoord + HALF_BLOCK_WIDTH;	// +z toward camera, traditionally
-	float farZ = zCoord - HALF_BLOCK_WIDTH;
+	float leftX = xCoord;
+	float rightX = xCoord + BLOCK_RENDER_SIZE;
+	float downY = yCoord;
+	float upY = yCoord + BLOCK_RENDER_SIZE;
+	float nearZ = zCoord + BLOCK_RENDER_SIZE;	// +z toward camera, traditionally
+	float farZ = zCoord;
 
 	Point3df leftBottomNear{leftX, downY, nearZ};
 	Point3df rightBottomNear{ rightX, downY, nearZ };
