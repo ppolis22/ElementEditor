@@ -57,6 +57,8 @@ void ElementEditor::processScroll(float deltaY) {
 }
 
 void ElementEditor::processClick(int buttonCode, float posX, float posY) {
-	MousePicker picker(window->getWidth, window->getHeight, camera.getProjectionMatrix);
-	picker.getCurrentRay(camera.getViewMatrix, posX, posY);
+	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
+		MousePicker picker(window->getWidth(), window->getHeight(), camera.getProjectionMatrix());
+		picker.getRayFromScreenCoords(camera.getViewMatrix(), posX, posY);
+	}
 }

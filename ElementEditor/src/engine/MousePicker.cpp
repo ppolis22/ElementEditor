@@ -1,36 +1,116 @@
 #include "MousePicker.h"
 
-MousePicker::MousePicker(int windowWidth, int windowHeight, glm::mat4& projectionMatrix) 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+MousePicker::MousePicker(int windowWidth, int windowHeight, glm::mat4 projectionMatrix) 
 	: windowWidth(windowWidth), windowHeight(windowHeight), projectionMatrix(projectionMatrix) {}
 
 MousePicker::~MousePicker() {}
 
-glm::vec3 MousePicker::getCurrentRay(glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
-	glm::vec2 normalizedCoords = getNormalizedDeviceCoords(mousePosX, mousePosY);
+glm::vec3 MousePicker::getRayFromScreenCoords(const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
+	std::cout << "Pixels: (" << mousePosX << ", " << mousePosY << ")" << std::endl;
+
+	float normalizedX = (2.0f * mousePosX) / windowWidth - 1.0f;
+	float normalizedY = 1.0f - (2.0f * mousePosY) / windowHeight;	// mouse Y comes in inverted, this corrects for that
+
+	std::cout << "Norm coords: (" << normalizedX << ", " << normalizedY << ")" << std::endl;
 
 	// w must be 1 if x and y are perspective-divided coords, I think z can be anything? Test this
-	glm::vec4 clipCoords(normalizedCoords.x, normalizedCoords.y, -1.0, 1.0);
+	glm::vec4 clipSpaceCoords(normalizedX, normalizedY, -1.0, 1.0);
 
-	glm::vec4 eyeCoords = getEyeSpaceCoords(clipCoords);
-	glm::vec3 worldRay = getWorldSpaceRay(eyeCoords, viewMatrix);
-	return worldRay;
-}
+	std::cout << "Clip space: (" << clipSpaceCoords.x << ", " << clipSpaceCoords.y << ", " << clipSpaceCoords.z << ", " << clipSpaceCoords.w << ")" << std::endl;
 
-glm::vec2 MousePicker::getNormalizedDeviceCoords(float mouseX, float mouseY) {
-	float normalizedX = (2.0f * mouseX) / windowWidth - 1.0f;
-	float normalizedY = 1.0f - (2.0f * mouseY) / windowHeight;	// mouse Y comes in inverted, this corrects for that
-	return glm::vec2(normalizedX, normalizedY);
-}
-
-glm::vec4 MousePicker::getEyeSpaceCoords(glm::vec4& clipSpaceCoords) {
-	glm::vec4 eyeCoords = glm::inverse(projectionMatrix) * clipSpaceCoords;
+	glm::vec4 eyeSpaceCoords = glm::inverse(projectionMatrix) * clipSpaceCoords;
 	// here z is hardcoded to -1, but I think that only works if clip space w coord is also hardcoded to 1
 	// w set to 0 so this represents a vector rather than a point
-	return glm::vec4(eyeCoords.x, eyeCoords.y, -1.0, 0.0);
-}
+	//eyeSpaceCoords = glm::vec4(eyeSpaceCoords.x, eyeSpaceCoords.y, -1.0, 0.0);
+	eyeSpaceCoords = glm::vec4(eyeSpaceCoords.x, eyeSpaceCoords.y, -1.0, 0.0);
 
-glm::vec3 MousePicker::getWorldSpaceRay(glm::vec4& eyeSpaceCoords, glm::mat4& viewMatrix) {
+	std::cout << "Eye space: (" << eyeSpaceCoords.x << ", " << eyeSpaceCoords.y << ", " << eyeSpaceCoords.z << ", " << eyeSpaceCoords.w << ")" << std::endl;
+
 	glm::vec4 worldRay = glm::inverse(viewMatrix) * eyeSpaceCoords;
 	glm::vec3 normalizedWorldRay = glm::normalize(glm::vec3(worldRay.x, worldRay.y, worldRay.z));
+
+	std::cout << "World ray: (" << normalizedWorldRay.x << ", " << normalizedWorldRay.y << ", " << normalizedWorldRay.z << ")" << std::endl;
+
 	return normalizedWorldRay;
+}
+
+std::vector<glm::vec3> traceRay(const glm::vec3& startPos, const glm::vec3& direction, float searchLength) {	// TODO implement correctly somewhere else
+	glm::vec3 endPos = (direction * searchLength) + startPos;
+	float dx = fabs(endPos.x - startPos.x);
+	float dy = fabs(endPos.y - startPos.y);
+	float dz = fabs(endPos.z - startPos.z);
+
+	int x = int(floor(startPos.x));
+	int y = int(floor(startPos.y));
+	int z = int(floor(startPos.z));
+
+	float dt_dx = 1.0f / dx;
+	float dt_dy = 1.0f / dy;
+	float dt_dz = 1.0f / dz;
+
+	int n = 1;
+	int x_inc, y_inc, z_inc;
+	float t_next_vertical, t_next_horizontal, t_next_inward;
+	std::vector<glm::vec3> visited;
+
+	if (dx == 0) {
+		x_inc = 0;
+		t_next_horizontal = dt_dx; // infinity
+	} else if (endPos.x > startPos.x) {
+		x_inc = 1;
+		n += int(floor(endPos.x)) - x;
+		t_next_horizontal = (floor(startPos.x) + 1 - startPos.x) * dt_dx;
+	} else {
+		x_inc = -1;
+		n += x - int(floor(endPos.x));
+		t_next_horizontal = (startPos.x - floor(startPos.x)) * dt_dx;
+	}
+
+	if (dy == 0) {
+		y_inc = 0;
+		t_next_vertical = dt_dy; // infinity
+	} else if (endPos.y > startPos.y) {
+		y_inc = 1;
+		n += int(floor(endPos.y)) - y;
+		t_next_vertical = (floor(startPos.y) + 1 - startPos.y) * dt_dy;
+	} else {
+		y_inc = -1;
+		n += y - int(floor(endPos.y));
+		t_next_vertical = (startPos.y - floor(startPos.y)) * dt_dy;
+	}
+
+	if (dz == 0) {
+		z_inc = 0;
+		t_next_inward = dt_dz; // infinity
+	} else if (endPos.z > startPos.z) {
+		z_inc = 1;
+		n += int(floor(endPos.z)) - z;
+		t_next_inward = (floor(startPos.z) + 1 - startPos.z) * dt_dz;
+	} else {
+		z_inc = -1;
+		n += z - int(floor(endPos.z));
+		t_next_inward = (startPos.z - floor(startPos.z)) * dt_dz;
+	}
+
+	for (; n > 0; --n) {
+		visited.push_back(glm::vec3(x, y, z));
+
+		float min_next(std::min({t_next_horizontal, t_next_vertical, t_next_inward}));
+		if (min_next == t_next_horizontal) {
+			x += x_inc;
+			t_next_horizontal += dt_dx;
+		} else if (min_next == t_next_vertical) {
+			y += y_inc;
+			t_next_vertical += dt_dy;
+		} else {
+			z += z_inc;
+			t_next_inward += dt_dz;
+		}
+	}
+
+	return visited;
 }
