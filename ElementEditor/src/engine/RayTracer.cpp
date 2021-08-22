@@ -1,4 +1,5 @@
 #include "RayTracer.h"
+#include "Point3d.h"
 
 #include <iostream>
 #include <algorithm>
@@ -9,7 +10,7 @@ RayTracer::RayTracer(int windowWidth, int windowHeight, glm::mat4 projectionMatr
 
 RayTracer::~RayTracer() {}
 
-std::vector<glm::vec3> RayTracer::traceRay(const glm::vec3& startPos, const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
+std::vector<Point3di> RayTracer::traceRay(const glm::vec3& startPos, const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
 	glm::vec3 ray = getRayFromScreenCoords(viewMatrix, mousePosX, mousePosY);
 	return getIntersectingBlocks(startPos, ray);
 }
@@ -42,7 +43,7 @@ glm::vec3 RayTracer::getRayFromScreenCoords(const glm::mat4& viewMatrix, float m
 	return normalizedWorldRay;
 }
 
-std::vector<glm::vec3> RayTracer::getIntersectingBlocks(const glm::vec3& startPos, const glm::vec3& direction) {
+std::vector<Point3di> RayTracer::getIntersectingBlocks(const glm::vec3& startPos, const glm::vec3& direction) {
 	glm::vec3 endPos = (direction * searchLength) + startPos;
 	float dx = fabs(endPos.x - startPos.x);
 	float dy = fabs(endPos.y - startPos.y);
@@ -59,7 +60,7 @@ std::vector<glm::vec3> RayTracer::getIntersectingBlocks(const glm::vec3& startPo
 	int n = 1;
 	int x_inc, y_inc, z_inc;
 	float t_next_vertical, t_next_horizontal, t_next_inward;
-	std::vector<glm::vec3> visited;
+	std::vector<Point3di> visited;
 
 	if (dx == 0) {
 		x_inc = 0;
@@ -101,7 +102,7 @@ std::vector<glm::vec3> RayTracer::getIntersectingBlocks(const glm::vec3& startPo
 	}
 
 	for (; n > 0; --n) {
-		visited.push_back(glm::vec3(x, y, z));
+		visited.push_back({ x, y, z });
 
 		float min_next(std::min({t_next_horizontal, t_next_vertical, t_next_inward}));
 		if (min_next == t_next_horizontal) {

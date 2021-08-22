@@ -3,6 +3,7 @@
 #include "engine/RenderedApplication.h"
 #include "engine/Camera.h"
 #include "engine/Renderer.h"
+#include "ChunkManager.h"
 
 class ElementEditor : public RenderedApplication {
 public:
@@ -20,4 +21,5 @@ protected:
 private:
 	Camera camera;
 	Renderer renderer;
+	ChunkManager chunkManager;
 };

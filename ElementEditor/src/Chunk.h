@@ -7,6 +7,8 @@
 #include "engine/Shader.h"
 #include "engine/Renderable.h"
 
+#include <vector>
+
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
@@ -21,13 +23,15 @@ public:
 	~Chunk();
 
 	void rebuildMesh();
-	void setBlock(BlockType type, int x, int y, int z);
+	void unloadMesh();
+	void setBlock(BlockType type, Point3di location);
+	BlockType getBlock(Point3di location);
 	Shader& getShader() override;
 	Mesh& getMesh() override;
 	glm::mat4 getTransformation() override;
 
 private:
-	BlockType*** data;
+	std::vector<std::vector<std::vector<BlockType>>> data;
 	MeshBuilder meshBuilder;
 	Mesh mesh;
 	Shader chunkShader;

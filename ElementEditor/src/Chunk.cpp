@@ -8,33 +8,22 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	yPosition(yPos),
 	zPosition(zPos),
 	mesh({0, 0, 0}),
-	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader") {
-	data = new BlockType** [CHUNK_SIZE];
-	for (int i = 0; i < CHUNK_SIZE; i++) {
-		data[i] = new BlockType* [CHUNK_SIZE];
-		for (int j = 0; j < CHUNK_SIZE; j++) {
-			data[i][j] = new BlockType[CHUNK_SIZE];
-			for (int k = 0; k < CHUNK_SIZE; k++) {
-				data[i][j][k] = Empty;
-			}
-		}
-	}
-}
+	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
+	data(CHUNK_SIZE, std::vector<std::vector<BlockType>>(CHUNK_SIZE, std::vector<BlockType>(CHUNK_SIZE, Empty)))
+	{}
 
-Chunk::~Chunk() {
-	for (int i = 0; i < CHUNK_SIZE; ++i) {
-		for (int j = 0; j < CHUNK_SIZE; ++j) {
-			delete[] data[i][j];
-		}
-		delete[] data[i];
-	}
-	delete[] data;
+Chunk::~Chunk() {}
 
+void Chunk::unloadMesh() {
 	meshBuilder.deleteMesh(mesh);
 }
 
-void Chunk::setBlock(BlockType type, int x, int y, int z) {
-	data[x][y][z] = type;		// should we check if indices are in bounds?
+void Chunk::setBlock(BlockType type, Point3di location) {
+	data[location.x][location.y][location.z] = type;		// should we check if indices are in bounds?
+}
+
+BlockType Chunk::getBlock(Point3di location) {
+	return data[location.x][location.y][location.z];
 }
 
 Shader& Chunk::getShader() {
@@ -46,7 +35,7 @@ Mesh& Chunk::getMesh() {
 }
 
 glm::mat4 Chunk::getTransformation() {
-	return glm::rotate(glm::mat4(1.0f), 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));		// arbitrarily rotated for now
+	return glm::mat4(1.0f);		// chunks will likely not individually translate/rotate/scale
 }
 
 void Chunk::rebuildMesh() {
@@ -69,9 +58,9 @@ void Chunk::rebuildMesh() {
 void Chunk::buildBlockMesh(int x, int y, int z) {
 	BlockType type = data[x][y][z];
 
-	float xCoord = x * BLOCK_RENDER_SIZE;	// TODO factor in chunk position (i.e. xPosition...)
-	float yCoord = y * BLOCK_RENDER_SIZE;
-	float zCoord = z * BLOCK_RENDER_SIZE;
+	float xCoord = x * BLOCK_RENDER_SIZE + xPosition;
+	float yCoord = y * BLOCK_RENDER_SIZE + yPosition;
+	float zCoord = z * BLOCK_RENDER_SIZE + zPosition;
 
 	float leftX = xCoord;
 	float rightX = xCoord + BLOCK_RENDER_SIZE;

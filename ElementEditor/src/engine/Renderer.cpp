@@ -15,7 +15,7 @@ void Renderer::render(Renderable& renderable, Camera& camera) {
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::mat4 modelMatrix = renderable.getTransformation();
 
-	glm::vec3 lightPosition(5.0f, 5.0f, 5.0f);		//TODO move to Light class
+	glm::vec3 lightPosition(5.0f, 3.0f, 2.0f);		//TODO move to Light class
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	Shader& chunkShader = renderable.getShader();

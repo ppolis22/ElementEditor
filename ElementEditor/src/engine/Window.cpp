@@ -81,7 +81,6 @@ void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (listener != nullptr && action == GLFW_PRESS) {
-		double xPos, yPos;
 		listener->processClick(button, lastCursorXPos, lastCursorYPos);
 	}
 }
