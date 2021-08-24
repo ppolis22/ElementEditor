@@ -29,10 +29,7 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 1, 0, 0 });
 	chunkManager.setBlock(Stone, { 0, 1, 0 });
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
-
-	/*Chunk chunk(0, 0, 0);
-	chunk.setBlock(Stone, {0, 0, 0});
-	chunk.rebuildMesh();*/
+	chunkManager.rebuildChunkMeshes();
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
@@ -41,8 +38,6 @@ void ElementEditor::run() {
 		for (Chunk& chunk : chunkManager.getAllChunks()) {
 			renderer.render(chunk, camera);
 		}
-
-		//renderer.render(chunk, camera);
 
 		window->swapBuffers();
 		glfwPollEvents();		// could be glfwWaitEvents() ?
@@ -69,11 +64,12 @@ void ElementEditor::processClick(int buttonCode, float posX, float posY) {
 	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
 		RayTracer tracer(window->getWidth(), window->getHeight(), camera.getProjectionMatrix(), 10.0f);
 		std::vector<Point3di> intersectedBlocks = tracer.traceRay(camera.getPosition(), camera.getViewMatrix(), posX, posY);
-		/*for (Point3di blockLocation : intersectedBlocks) {
-			if (chunk->getBlock(blockLocation) != Empty) {
-				chunk->setBlock(Empty, blockLocation);
-				chunk->rebuildMesh();
+		for (Point3di blockLocation : intersectedBlocks) {
+			if (chunkManager.getBlock(blockLocation) != Empty) {
+				chunkManager.setBlock(Empty, blockLocation);
+				chunkManager.rebuildChunkMeshes();
+				break;
 			}
-		}*/
+		}
 	}
 }

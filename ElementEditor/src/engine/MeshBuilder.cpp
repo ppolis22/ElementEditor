@@ -15,6 +15,10 @@ void MeshBuilder::createNewMesh() {
 }
 
 Mesh MeshBuilder::commitMesh() {
+	if (currentVertexData.size() == 0 || currentIndices.size() == 0) {
+		return { 0, 0, 0, 0 };
+	}
+
 	float* meshVertices = &currentVertexData[0];
 	unsigned int* meshIndices = &currentIndices[0];
 
