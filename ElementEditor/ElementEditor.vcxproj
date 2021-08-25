@@ -142,6 +142,8 @@
     <ClCompile Include="src\engine\RenderedApplication.cpp" />
     <ClCompile Include="src\engine\Renderer.cpp" />
     <ClCompile Include="src\engine\Shader.cpp" />
+    <ClCompile Include="src\engine\ui\UIElement.cpp" />
+    <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
   </ItemGroup>
@@ -161,6 +163,8 @@
     <ClInclude Include="src\engine\Renderer.h" />
     <ClInclude Include="src\engine\Point3d.h" />
     <ClInclude Include="src\engine\Shader.h" />
+    <ClInclude Include="src\engine\ui\UIElement.h" />
+    <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
