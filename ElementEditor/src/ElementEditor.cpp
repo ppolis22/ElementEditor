@@ -4,6 +4,8 @@
 #include "Chunk.h"
 #include "engine/RayTracer.h"
 #include "engine/Point3d.h"
+#include "engine/ui/UIRenderer.h"
+#include "../vendor/glm/glm.hpp"
 
 #include <vector>
 
@@ -31,6 +33,11 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
 	chunkManager.rebuildChunkMeshes();
 
+	MeshBuilder2d meshBuilder2d;
+	UIRenderer uiRenderer(meshBuilder2d);
+
+	UIElement uiElement(glm::vec2(), glm::vec2(), glm::vec3(), 1.0f);
+
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -38,6 +45,8 @@ void ElementEditor::run() {
 		for (Chunk& chunk : chunkManager.getAllChunks()) {
 			renderer.render(chunk, camera);
 		}
+
+		uiRenderer.render(uiElement);
 
 		window->swapBuffers();
 		glfwPollEvents();		// could be glfwWaitEvents() ?

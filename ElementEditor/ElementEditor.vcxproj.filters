@@ -30,9 +30,6 @@
     <ClCompile Include="src\engine\ElementEngineException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\MeshBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,6 +57,15 @@
     <ClCompile Include="src\engine\ui\UIRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\MeshBuilder3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\MeshBuilder2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\MeshBuilderBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -69,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\MeshBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\Point3d.h">
@@ -962,6 +965,15 @@
     <ClInclude Include="src\engine\ui\UIRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\MeshBuilder2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\MeshBuilder3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\MeshBuilderBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1374,5 +1386,7 @@
     </None>
     <None Include="shaders\chunkVertex.shader" />
     <None Include="shaders\chunkFragment.shader" />
+    <None Include="shaders\uiFragment.shader" />
+    <None Include="shaders\uiVertex.shader" />
   </ItemGroup>
 </Project>

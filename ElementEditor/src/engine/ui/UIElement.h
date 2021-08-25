@@ -1,6 +1,6 @@
 #pragma once
 
-#include "InputListener.h"
+#include "../InputListener.h"
 #include "../vendor/glm/glm.hpp"
 
 class UIElement : public InputListener {

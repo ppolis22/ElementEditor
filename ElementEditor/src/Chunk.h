@@ -2,7 +2,7 @@
 
 #include "Block.h"
 #include "engine/Point3d.h"
-#include "engine/MeshBuilder.h"
+#include "engine/MeshBuilder3d.h"
 #include "engine/Mesh.h"
 #include "engine/Shader.h"
 #include "engine/Renderable.h"
@@ -32,7 +32,7 @@ public:
 
 private:
 	std::vector<std::vector<std::vector<BlockType>>> data;
-	MeshBuilder meshBuilder;
+	MeshBuilder3d meshBuilder;
 	Mesh mesh;
 	Shader chunkShader;
 	int xPosition, yPosition, zPosition;

@@ -7,7 +7,7 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	xPosition(xPos),
 	yPosition(yPos),
 	zPosition(zPos),
-	mesh({0, 0, 0}),
+	mesh({0, 0, 0, 0}),
 	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
 	data(CHUNK_SIZE, std::vector<std::vector<BlockType>>(CHUNK_SIZE, std::vector<BlockType>(CHUNK_SIZE, Empty)))
 	{}
