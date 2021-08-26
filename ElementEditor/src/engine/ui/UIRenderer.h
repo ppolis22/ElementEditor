@@ -16,4 +16,6 @@ public:
 private:
 	Mesh quad;
 	Shader shader;
+
+	glm::mat4 buildTransformationMatrix(UIElement& element);
 };

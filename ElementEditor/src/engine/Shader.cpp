@@ -20,12 +20,20 @@ void Shader::bind() const {
 	glUseProgram(id);
 }
 
+void Shader::unbind() const {
+	glUseProgram(0);
+}
+
 void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) {
 	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
 }
 
 void Shader::setUniformVec3f(const std::string& name, const glm::vec3& vector) {
 	glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
+}
+
+void Shader::setUniformVec4f(const std::string& name, const glm::vec4& vector) {
+	glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 }
 
 std::string Shader::parseFile(const std::string& path) {

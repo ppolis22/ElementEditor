@@ -28,6 +28,15 @@ void Renderer::render(Renderable& renderable, Camera& camera) {
 
 	Mesh& mesh = renderable.getMesh();
 	glBindVertexArray(mesh.vertexArrayId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.indexBufferId);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnable(GL_DEPTH_TEST);
 	glDrawElements(GL_TRIANGLES, mesh.indexBufferCount, GL_UNSIGNED_INT, nullptr);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	glBindVertexArray(0);
+	chunkShader.unbind();
 }

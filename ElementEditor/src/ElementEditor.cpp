@@ -22,10 +22,12 @@ void ElementEditor::run() {
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
 	window->registerInputListener(this);
+
+	MeshBuilder2d meshBuilder2d;
+	UIRenderer uiRenderer(meshBuilder2d);
 
 	chunkManager.setBlock(Stone, { 0, 0, 0 });
 	chunkManager.setBlock(Stone, { 1, 0, 0 });
@@ -33,10 +35,7 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
 	chunkManager.rebuildChunkMeshes();
 
-	MeshBuilder2d meshBuilder2d;
-	UIRenderer uiRenderer(meshBuilder2d);
-
-	UIElement uiElement(glm::vec2(), glm::vec2(), glm::vec3(), 1.0f);
+	UIElement uiElement(glm::vec2(0.5, 0.5), glm::vec2(0.25, 0.25), glm::vec3(0.5, 0.5, 0.5), 1.0f);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
