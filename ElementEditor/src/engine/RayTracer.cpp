@@ -16,29 +16,19 @@ std::vector<Point3di> RayTracer::traceRay(const glm::vec3& startPos, const glm::
 }
 
 glm::vec3 RayTracer::getRayFromScreenCoords(const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
-	std::cout << "Pixels: (" << mousePosX << ", " << mousePosY << ")" << std::endl;
-
 	float normalizedX = (2.0f * mousePosX) / windowWidth - 1.0f;
 	float normalizedY = 1.0f - (2.0f * mousePosY) / windowHeight;	// mouse Y comes in inverted, this corrects for that
 
-	std::cout << "Norm coords: (" << normalizedX << ", " << normalizedY << ")" << std::endl;
-
 	// w must be 1 if x and y are perspective-divided coords, I think z can be anything? Test this
 	glm::vec4 clipSpaceCoords(normalizedX, normalizedY, -1.0, 1.0);
-
-	std::cout << "Clip space: (" << clipSpaceCoords.x << ", " << clipSpaceCoords.y << ", " << clipSpaceCoords.z << ", " << clipSpaceCoords.w << ")" << std::endl;
 
 	glm::vec4 eyeSpaceCoords = inverseProjectionMatrix * clipSpaceCoords;
 	// here z is hardcoded to -1, but I think that only works if clip space w coord is also hardcoded to 1
 	// w set to 0 so this represents a vector rather than a point
 	eyeSpaceCoords = glm::vec4(eyeSpaceCoords.x, eyeSpaceCoords.y, -1.0, 0.0);
 
-	std::cout << "Eye space: (" << eyeSpaceCoords.x << ", " << eyeSpaceCoords.y << ", " << eyeSpaceCoords.z << ", " << eyeSpaceCoords.w << ")" << std::endl;
-
 	glm::vec4 worldRay = glm::inverse(viewMatrix) * eyeSpaceCoords;
 	glm::vec3 normalizedWorldRay = glm::normalize(glm::vec3(worldRay.x, worldRay.y, worldRay.z));
-
-	std::cout << "World ray: (" << normalizedWorldRay.x << ", " << normalizedWorldRay.y << ", " << normalizedWorldRay.z << ")" << std::endl;
 
 	return normalizedWorldRay;
 }

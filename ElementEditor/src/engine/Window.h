@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "InputListener.h"
+#include <vector>
 
 class Window {
 public:
@@ -31,7 +32,7 @@ private:
 	int width;
 	int height;
 
-	static InputListener* listener;
+	static std::vector<InputListener*> listeners;
 	static float lastCursorXPos;
 	static float lastCursorYPos;
 };

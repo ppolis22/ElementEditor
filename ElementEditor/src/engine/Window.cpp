@@ -3,7 +3,7 @@
 
 float Window::lastCursorXPos = 0;
 float Window::lastCursorYPos = 0;
-InputListener* Window::listener = nullptr;
+std::vector<InputListener*> Window::listeners;
 
 Window::Window(int width, int height, const char* title) : width(width), height(height) {
 	glfwWindow = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -53,34 +53,42 @@ void Window::setMouseCaptureMode(bool enable) {
 	glfwSetInputMode(glfwWindow, GLFW_CURSOR, (enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
 }
 
-void Window::registerInputListener(InputListener* mouseListener) {
-	listener = mouseListener;		// support multiple listeners?
+void Window::registerInputListener(InputListener* listener) {
+	listeners.push_back(listener);		// support multiple listeners?
 }
 
 void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	if (listener != nullptr) {
-		float deltaX = xpos - lastCursorXPos;
-		float deltaY = ypos - lastCursorYPos;
-		lastCursorXPos = xpos;
-		lastCursorYPos = ypos;
-		listener->processMouseMovement(deltaX, deltaY);
+	for (InputListener* listener : listeners) {
+		if (listener != nullptr) {
+			float deltaX = xpos - lastCursorXPos;
+			float deltaY = ypos - lastCursorYPos;
+			lastCursorXPos = xpos;
+			lastCursorYPos = ypos;
+			listener->processMouseMovement(deltaX, deltaY);
+		}
 	}
 }
 
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (listener != nullptr && action == GLFW_PRESS) {
-		listener->processKeyPress(key);
+	for (InputListener* listener : listeners) {
+		if (listener != nullptr && action == GLFW_PRESS) {
+			listener->processKeyPress(key);
+		}
 	}
 }
 
 void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	if (listener != nullptr) {
-		listener->processScroll(yOffset);
+	for (InputListener* listener : listeners) {
+		if (listener != nullptr) {
+			listener->processScroll(yOffset);
+		}
 	}
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-	if (listener != nullptr && action == GLFW_PRESS) {
-		listener->processClick(button, lastCursorXPos, lastCursorYPos);
+	for (InputListener* listener : listeners) {
+		if (listener != nullptr && action == GLFW_PRESS) {
+			listener->processClick(button, lastCursorXPos, lastCursorYPos);
+		}
 	}
 }

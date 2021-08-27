@@ -1,16 +1,16 @@
 #include <GL/glew.h>		// Must be included before any other OpenGL stuff
 #include <GLFW/glfw3.h>
 
-#include "Renderer.h"
+#include "ModelRenderer.h"
 
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
-Renderer::Renderer() {}
+ModelRenderer::ModelRenderer() {}
 
-Renderer::~Renderer() {}
+ModelRenderer::~ModelRenderer() {}
 
-void Renderer::render(Renderable& renderable, Camera& camera) {
+void ModelRenderer::render(Renderable& renderable, Camera& camera) {
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::mat4 modelMatrix = renderable.getTransformation();
