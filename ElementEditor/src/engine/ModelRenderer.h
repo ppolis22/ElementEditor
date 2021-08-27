@@ -3,10 +3,10 @@
 #include "Renderable.h"
 #include "Camera.h"
 
-class Renderer {
+class ModelRenderer {
 public:
-	Renderer();
-	~Renderer();
+	ModelRenderer();
+	~ModelRenderer();
 
 	void render(Renderable& renderable, Camera& camera);
 };

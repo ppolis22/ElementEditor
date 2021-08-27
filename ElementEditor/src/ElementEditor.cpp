@@ -1,10 +1,11 @@
 #include "ElementEditor.h"
 #include "engine/Window.h"
-#include "engine/Renderer.h"
+#include "engine/ModelRenderer.h"
 #include "Chunk.h"
 #include "engine/RayTracer.h"
 #include "engine/Point3d.h"
 #include "engine/ui/UIRenderer.h"
+#include "engine/ui/Button.h"
 #include "../vendor/glm/glm.hpp"
 
 #include <vector>
@@ -27,7 +28,7 @@ void ElementEditor::run() {
 	window->registerInputListener(this);
 
 	MeshBuilder2d meshBuilder2d;
-	UIRenderer uiRenderer(meshBuilder2d);
+	UIRenderer uiRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
 
 	chunkManager.setBlock(Stone, { 0, 0, 0 });
 	chunkManager.setBlock(Stone, { 1, 0, 0 });
@@ -35,7 +36,8 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
 	chunkManager.rebuildChunkMeshes();
 
-	UIElement uiElement(glm::vec2(0.5, 0.5), glm::vec2(0.25, 0.25), glm::vec3(0.5, 0.5, 0.5), 1.0f);
+	Button button(10.0f, 20.0f, 25.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true);
+	window->registerInputListener(&button);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
@@ -45,7 +47,7 @@ void ElementEditor::run() {
 			renderer.render(chunk, camera);
 		}
 
-		uiRenderer.render(uiElement);
+		uiRenderer.render(button);
 
 		window->swapBuffers();
 		glfwPollEvents();		// could be glfwWaitEvents() ?

@@ -6,7 +6,8 @@
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
-UIRenderer::UIRenderer(MeshBuilder2d& meshBuilder) : shader("shaders/uiVertex.shader", "shaders/uiFragment.shader") {
+UIRenderer::UIRenderer(MeshBuilder2d& meshBuilder, int windowWidth, int windowHeight) 
+	: shader("shaders/uiVertex.shader", "shaders/uiFragment.shader"), windowWidth(windowWidth), windowHeight(windowHeight) {
 	meshBuilder.addQuad({-1.0f, -1.0f}, {1.0f, -1.0f}, {1.0f, 1.0f}, {-1.0f, 1.0f});
 	quad = meshBuilder.commitMesh();
 }
@@ -34,7 +35,11 @@ void UIRenderer::render(UIElement& element) {
 
 glm::mat4 UIRenderer::buildTransformationMatrix(UIElement& element) {
 	glm::mat4 transform(1.0f);
-	transform = glm::translate(transform, glm::vec3(element.getPosition(), 0.0f));
-	transform = glm::scale(transform, glm::vec3(element.getScale(), 1.0f));
+	float viewPortX = ((element.getX() + (element.getWidth() / 2.0f)) * 2.0f / (float)windowWidth) - 1.0f;
+	float viewPortY = ((element.getY() + (element.getHeight() / 2.0f)) * -2.0f / (float)windowHeight) + 1.0f;
+	transform = glm::translate(transform, glm::vec3(viewPortX, viewPortY, 0.0f));
+	float widthRatio = element.getWidth() / (float)windowWidth;
+	float heightRatio = element.getHeight() / (float)windowHeight;
+	transform = glm::scale(transform, glm::vec3(widthRatio, heightRatio, 1.0f));
 	return transform;
 }

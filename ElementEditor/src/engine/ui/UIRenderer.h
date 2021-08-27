@@ -8,7 +8,7 @@
 class UIRenderer {
 public:
 	UIRenderer() = delete;
-	UIRenderer(MeshBuilder2d& meshBuilder);
+	UIRenderer(MeshBuilder2d& meshBuilder, int windowWidth, int windowHeight);
 	~UIRenderer();
 
 	void render(UIElement& element);
@@ -16,6 +16,7 @@ public:
 private:
 	Mesh quad;
 	Shader shader;
+	int windowWidth, windowHeight;
 
 	glm::mat4 buildTransformationMatrix(UIElement& element);
 };
