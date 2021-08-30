@@ -1,12 +1,10 @@
 #pragma once
 
-#include <GL/glew.h>		// Must be included before any other OpenGL stuff
-#include <GLFW/glfw3.h>
-
 class InputListener {
 public:
-	virtual void processMouseMovement(float deltaX, float deltaY) = 0;
+	virtual void processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) = 0;
 	virtual void processKeyPress(int keyCode) = 0;
 	virtual void processScroll(float deltaY) = 0;
-	virtual void processClick(int buttonCode, float posX, float posY) = 0;
+	virtual void processMouseDown(int buttonCode, float posX, float posY) = 0;
+	virtual void processMouseUp(int buttonCode, float posX, float posY) = 0;
 };

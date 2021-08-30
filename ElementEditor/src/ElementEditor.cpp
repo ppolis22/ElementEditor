@@ -6,9 +6,13 @@
 #include "engine/Point3d.h"
 #include "engine/ui/UIRenderer.h"
 #include "engine/ui/Button.h"
+#include "engine/ui/Command.h"
+
 #include "../vendor/glm/glm.hpp"
 
 #include <vector>
+#include <iostream>
+#include <algorithm>
 
 int main(void) {
 	ElementEditor app;
@@ -36,7 +40,11 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
 	chunkManager.rebuildChunkMeshes();
 
-	Button button(10.0f, 20.0f, 25.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true);
+	Button button(10.0f, 20.0f, 25.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
+		[this]() {
+			this->button1Pressed();
+		}
+	));
 	window->registerInputListener(&button);
 
 	while (window->isOpen()) {
@@ -54,7 +62,7 @@ void ElementEditor::run() {
 	}
 }
 
-void ElementEditor::processMouseMovement(float deltaX, float deltaY) {
+void ElementEditor::processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) {
 	if (window->isClicked(GLFW_MOUSE_BUTTON_MIDDLE)) {
 		if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
 			camera.pan(deltaX, deltaY);
@@ -70,7 +78,7 @@ void ElementEditor::processScroll(float deltaY) {
 	camera.zoom(deltaY);
 }
 
-void ElementEditor::processClick(int buttonCode, float posX, float posY) {
+void ElementEditor::processMouseDown(int buttonCode, float posX, float posY) {
 	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
 		RayTracer tracer(window->getWidth(), window->getHeight(), camera.getProjectionMatrix(), 10.0f);
 		std::vector<Point3di> intersectedBlocks = tracer.traceRay(camera.getPosition(), camera.getViewMatrix(), posX, posY);
@@ -82,4 +90,8 @@ void ElementEditor::processClick(int buttonCode, float posX, float posY) {
 			}
 		}
 	}
+}
+
+void ElementEditor::button1Pressed() {
+	std::cout << "Button clicked!" << std::endl;
 }

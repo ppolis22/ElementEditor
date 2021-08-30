@@ -1,7 +1,6 @@
 #include "RayTracer.h"
 #include "Point3d.h"
 
-#include <iostream>
 #include <algorithm>
 #include <vector>
 

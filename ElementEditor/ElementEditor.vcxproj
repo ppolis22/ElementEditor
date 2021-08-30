@@ -145,6 +145,7 @@
     <ClCompile Include="src\engine\ModelRenderer.cpp" />
     <ClCompile Include="src\engine\Shader.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
+    <ClCompile Include="src\engine\ui\Command.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\engine\Point3d.h" />
     <ClInclude Include="src\engine\Shader.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
+    <ClInclude Include="src\engine\ui\Command.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />

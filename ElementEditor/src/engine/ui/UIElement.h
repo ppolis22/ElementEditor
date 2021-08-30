@@ -15,10 +15,11 @@ public:
 	virtual glm::vec3 getColor();
 	virtual float getAlpha();
 
-	virtual void processMouseMovement(float deltaX, float deltaY);
-	virtual void processKeyPress(int keyCode);
-	virtual void processScroll(float deltaY);
-	virtual void processClick(int buttonCode, float posX, float posY);
+	virtual void processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) override;
+	virtual void processKeyPress(int keyCode) override;
+	virtual void processScroll(float deltaY) override;
+	virtual void processMouseDown(int buttonCode, float posX, float posY) override;
+	virtual void processMouseUp(int buttonCode, float posX, float posY) override;
 
 protected:
 	float x, y, width, height;

@@ -30,7 +30,8 @@ float UIElement::getAlpha() {
 	return alpha;
 }
 
-void UIElement::processMouseMovement(float deltaX, float deltaY) {}
+void UIElement::processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) {}
 void UIElement::processKeyPress(int keyCode) {}
 void UIElement::processScroll(float deltaY) {}
-void UIElement::processClick(int buttonCode, float posX, float posY) {}
+void UIElement::processMouseDown(int buttonCode, float posX, float posY) {}
+void UIElement::processMouseUp(int buttonCode, float posX, float posY) {}

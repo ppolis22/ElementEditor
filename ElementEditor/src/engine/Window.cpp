@@ -64,7 +64,7 @@ void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 			float deltaY = ypos - lastCursorYPos;
 			lastCursorXPos = xpos;
 			lastCursorYPos = ypos;
-			listener->processMouseMovement(deltaX, deltaY);
+			listener->processMouseMovement(xpos, ypos, deltaX, deltaY);
 		}
 	}
 }
@@ -87,8 +87,12 @@ void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	for (InputListener* listener : listeners) {
-		if (listener != nullptr && action == GLFW_PRESS) {
-			listener->processClick(button, lastCursorXPos, lastCursorYPos);
+		if (listener != nullptr) {
+			if (action == GLFW_PRESS) {
+				listener->processMouseDown(button, lastCursorXPos, lastCursorYPos);
+			} else {
+				listener->processMouseUp(button, lastCursorXPos, lastCursorYPos);
+			}
 		}
 	}
 }
