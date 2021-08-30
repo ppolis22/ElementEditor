@@ -33,6 +33,10 @@ void RenderedApplication::start(int width, int height, const char* title) {
 	}
 }
 
+Window* RenderedApplication::getWindow() {
+	return window;
+}
+
 void RenderedApplication::processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) {}
 
 void RenderedApplication::processKeyPress(int keyCode) {}

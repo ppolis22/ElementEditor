@@ -10,6 +10,7 @@ public:
 	virtual ~RenderedApplication();
 
 	void start(int width = 960, int height = 540, const char* title = "Element Engine Window");
+	Window* getWindow();
 
 protected:
 	Window* window = nullptr;

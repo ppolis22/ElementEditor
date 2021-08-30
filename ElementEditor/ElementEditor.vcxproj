@@ -131,9 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AddState.cpp" />
     <ClCompile Include="src\Block.cpp" />
     <ClCompile Include="src\Chunk.cpp" />
     <ClCompile Include="src\ChunkManager.cpp" />
+    <ClCompile Include="src\EditorState.cpp" />
     <ClCompile Include="src\ElementEditor.cpp" />
     <ClCompile Include="src\engine\Camera.cpp" />
     <ClCompile Include="src\engine\ElementEngineException.cpp" />
@@ -149,12 +151,15 @@
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\SubtractState.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AddState.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\ChunkManager.h" />
+    <ClInclude Include="src\EditorState.h" />
     <ClInclude Include="src\ElementEditor.h" />
     <ClInclude Include="src\engine\Camera.h" />
     <ClInclude Include="src\engine\ElementEngineException.h" />
@@ -174,6 +179,7 @@
     <ClInclude Include="src\engine\ui\UIElement.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
+    <ClInclude Include="src\SubtractState.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />

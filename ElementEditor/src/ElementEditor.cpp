@@ -7,11 +7,12 @@
 #include "engine/ui/UIRenderer.h"
 #include "engine/ui/Button.h"
 #include "engine/ui/Command.h"
+#include "SubtractState.h"
+#include "AddState.h"
 
 #include "../vendor/glm/glm.hpp"
 
 #include <vector>
-#include <iostream>
 #include <algorithm>
 
 int main(void) {
@@ -19,7 +20,10 @@ int main(void) {
 	app.start();
 }
 
-ElementEditor::ElementEditor() {}
+ElementEditor::ElementEditor()
+	:state(nullptr) {
+	changeEditorState(new SubtractState());
+}
 
 ElementEditor::~ElementEditor() {}
 
@@ -40,25 +44,37 @@ void ElementEditor::run() {
 	chunkManager.setBlock(Stone, { 0, 0, 1 });
 	chunkManager.rebuildChunkMeshes();
 
-	Button button(10.0f, 20.0f, 25.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
+	Button button1(20.0f, 20.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
 		[this]() {
-			this->button1Pressed();
+			this->changeEditorState(new AddState());
 		}
 	));
-	window->registerInputListener(&button);
+	window->registerInputListener(&button1);
+
+	Button button2(20.0f, 75.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
+		[this]() {
+			this->changeEditorState(new SubtractState());
+		}
+	));
+	window->registerInputListener(&button2);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		for (Chunk& chunk : chunkManager.getAllChunks()) {
-			renderer.render(chunk, camera);
-		}
+		state->render();
 
-		uiRenderer.render(button);
+		uiRenderer.render(button1);
+		uiRenderer.render(button2);
 
 		window->swapBuffers();
 		glfwPollEvents();		// could be glfwWaitEvents() ?
+	}
+}
+
+void ElementEditor::processMouseDown(int buttonCode, float posX, float posY) {
+	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
+		state->processLeftClick(posX, posY);
 	}
 }
 
@@ -72,26 +88,26 @@ void ElementEditor::processMouseMovement(float rawX, float rawY, float deltaX, f
 	}
 }
 
-void ElementEditor::processKeyPress(int keyCode) {}
-
 void ElementEditor::processScroll(float deltaY) {
 	camera.zoom(deltaY);
 }
 
-void ElementEditor::processMouseDown(int buttonCode, float posX, float posY) {
-	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT) {
-		RayTracer tracer(window->getWidth(), window->getHeight(), camera.getProjectionMatrix(), 10.0f);
-		std::vector<Point3di> intersectedBlocks = tracer.traceRay(camera.getPosition(), camera.getViewMatrix(), posX, posY);
-		for (Point3di blockLocation : intersectedBlocks) {
-			if (chunkManager.getBlock(blockLocation) != Empty) {
-				chunkManager.setBlock(Empty, blockLocation);
-				chunkManager.rebuildChunkMeshes();
-				break;
-			}
-		}
+void ElementEditor::changeEditorState(EditorState* newState) {
+	if (state != nullptr) {
+		delete state;
 	}
+	this->state = newState;
+	this->state->setContext(this);
 }
 
-void ElementEditor::button1Pressed() {
-	std::cout << "Button clicked!" << std::endl;
+Camera* ElementEditor::getCamera() {
+	return &camera;
+}
+
+ChunkManager* ElementEditor::getChunkManager() {
+	return &chunkManager;
+}
+
+ModelRenderer* ElementEditor::getModelRenderer() {
+	return &modelRenderer;
 }
