@@ -13,9 +13,9 @@ void AddState::processLeftClick(float posX, float posY) {
 
 	RayTracer tracer(window->getWidth(), window->getHeight(), camera->getProjectionMatrix(), 10.0f);
 	std::vector<Point3di> intersectedBlocks = tracer.traceRay(camera->getPosition(), camera->getViewMatrix(), posX, posY);
-	for (Point3di blockLocation : intersectedBlocks) {
-		if (chunkManager->getBlock(blockLocation) != Empty) {
-			chunkManager->setBlock(Grass, blockLocation);
+	for (int i = 1; i < intersectedBlocks.size(); i++) {
+		if (chunkManager->getBlock(intersectedBlocks[i]) != Empty) {
+			chunkManager->setBlock(Grass, intersectedBlocks[i - 1]);
 			chunkManager->rebuildChunkMeshes();
 			break;
 		}

@@ -8,11 +8,12 @@ void ChunkManager::setBlock(BlockType type, Point3di location) {
 	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkZ = location.z - ((CHUNK_SIZE + (location.z % CHUNK_SIZE)) % CHUNK_SIZE);
+	Point3di targetChunkOrigin = { chunkX, chunkY, chunkZ };
 
-	if (allChunks.find({ chunkX, chunkY, chunkZ }) == allChunks.end()) {
-		allChunks.emplace(location, Chunk(chunkX, chunkY, chunkZ));
+	if (allChunks.find(targetChunkOrigin) == allChunks.end()) {
+		allChunks.emplace(targetChunkOrigin, Chunk(chunkX, chunkY, chunkZ));
 	}
-	Chunk& targetChunk = allChunks.find({ chunkX, chunkY, chunkZ })->second;
+	Chunk& targetChunk = allChunks.find(targetChunkOrigin)->second;
 	targetChunk.setBlock(type, { location.x - chunkX, location.y - chunkY, location.z - chunkZ });
 	chunksToRebuild.push_back(&targetChunk);	// TODO add neighboring chunks too if applicable!
 }
