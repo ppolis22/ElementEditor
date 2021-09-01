@@ -18,7 +18,6 @@ void RenderedApplication::start(int width, int height, const char* title) {
 
 	try {
 		window = &Window(width, height, title);
-		window->makeCurrentContext();
 		glfwSwapInterval(1);
 		glewInit();
 		std::cout << glGetString(GL_VERSION) << std::endl;

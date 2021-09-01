@@ -159,6 +159,7 @@
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\ChunkManager.h" />
+    <ClInclude Include="src\EditorController.h" />
     <ClInclude Include="src\EditorState.h" />
     <ClInclude Include="src\ElementEditor.h" />
     <ClInclude Include="src\engine\Camera.h" />

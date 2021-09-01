@@ -67,8 +67,7 @@ void ElementEditor::run() {
 		uiRenderer.render(button1);
 		uiRenderer.render(button2);
 
-		window->swapBuffers();
-		glfwPollEvents();		// could be glfwWaitEvents() ?
+		window->update();
 	}
 }
 
