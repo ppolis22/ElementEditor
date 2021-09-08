@@ -49,7 +49,7 @@ bool Window::isClicked(int mouseButtonCode) {
 	return glfwGetMouseButton(glfwWindow, mouseButtonCode);
 }
 
-void Window::registerInputListener(InputListener* listener) {
+void Window::registerEventListener(EventListener* listener) {
 	if (listener != nullptr) {
 		data.listeners.push_back(listener);
 	}
@@ -61,34 +61,46 @@ void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	float deltaY = ypos - data.lastCursorYPos;
 	data.lastCursorXPos = xpos;
 	data.lastCursorYPos = ypos;
-	for (InputListener* listener : data.listeners) {
-		listener->processMouseMovement(xpos, ypos, deltaX, deltaY);
+	MouseMoveEvent event(xpos, ypos, deltaX, deltaY);
+	for (EventListener* listener : data.listeners) {
+		if (event.isHandled) break;
+		listener->processMouseMovement(event);
 	}
 }
 
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 	if (action == GLFW_PRESS) {
-		for (InputListener* listener : data.listeners) {
-			listener->processKeyPress(key);
+		KeyPressEvent event(key);
+		for (EventListener* listener : data.listeners) {
+			if (event.isHandled) break;
+			listener->processKeyPress(event);
 		}
 	}
 }
 
 void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-	for (InputListener* listener : data.listeners) {
-		listener->processScroll(yOffset);
+	MouseScrollEvent event(yOffset);
+	for (EventListener* listener : data.listeners) {
+		if (event.isHandled) break;
+		listener->processScroll(event);
 	}
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-	for (InputListener* listener : data.listeners) {
-		if (action == GLFW_PRESS) {
-			listener->processMouseDown(button, data.lastCursorXPos, data.lastCursorYPos);
-		} else {
-			listener->processMouseUp(button, data.lastCursorXPos, data.lastCursorYPos);
+	if (action == GLFW_PRESS) {
+		MouseButtonDownEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
+		for (EventListener* listener : data.listeners) {
+			if (event.isHandled) break;
+			listener->processMouseDown(event);
+		}
+	} else {
+		MouseButtonUpEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
+		for (EventListener* listener : data.listeners) {
+			if (event.isHandled) break;
+			listener->processMouseUp(event);
 		}
 	}
 }

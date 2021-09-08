@@ -18,18 +18,19 @@ glm::vec3 Button::getColor() {
 	return color;
 }
 
-void Button::processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) {
-	isHovered = withinBounds(rawX, rawY);
+void Button::processMouseMovement(MouseMoveEvent& event) {
+	isHovered = withinBounds(event.rawX, event.rawY);
 }
 
-void Button::processMouseDown(int buttonCode, float posX, float posY) {
-	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT && withinBounds(posX, posY)) {
+void Button::processMouseDown(MouseButtonDownEvent& event) {
+	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && withinBounds(event.posX, event.posY)) {
 		isClicked = true;
+		event.isHandled = true;
 	}
 }
 
-void Button::processMouseUp(int buttonCode, float posX, float posY) {
-	if (buttonCode == GLFW_MOUSE_BUTTON_LEFT && isClicked && withinBounds(posX, posY)) {
+void Button::processMouseUp(MouseButtonUpEvent& event) {
+	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && isClicked && withinBounds(event.posX, event.posY)) {
 		onClick->execute();
 	}
 	isClicked = false;

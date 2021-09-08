@@ -132,10 +132,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AddState.cpp" />
+    <ClCompile Include="src\AppController.cpp" />
     <ClCompile Include="src\Block.cpp" />
     <ClCompile Include="src\Chunk.cpp" />
     <ClCompile Include="src\ChunkManager.cpp" />
-    <ClCompile Include="src\EditorState.cpp" />
+    <ClCompile Include="src\BaseEditorState.cpp" />
     <ClCompile Include="src\ElementEditor.cpp" />
     <ClCompile Include="src\engine\Camera.cpp" />
     <ClCompile Include="src\engine\ElementEngineException.cpp" />
@@ -148,6 +149,10 @@
     <ClCompile Include="src\engine\Shader.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
     <ClCompile Include="src\engine\ui\Command.cpp" />
+    <ClCompile Include="src\engine\ui\RenderRegion.cpp" />
+    <ClCompile Include="src\engine\ui\RenderRegionController.cpp" />
+    <ClCompile Include="src\engine\ui\ToolbarController.cpp" />
+    <ClCompile Include="src\engine\ui\UIController.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
@@ -156,17 +161,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AddState.h" />
+    <ClInclude Include="src\AppController.h" />
     <ClInclude Include="src\Block.h" />
     <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\ChunkManager.h" />
-    <ClInclude Include="src\EditorController.h" />
-    <ClInclude Include="src\EditorState.h" />
+    <ClInclude Include="src\BaseEditorState.h" />
     <ClInclude Include="src\ElementEditor.h" />
     <ClInclude Include="src\engine\Camera.h" />
     <ClInclude Include="src\engine\ElementEngineException.h" />
+    <ClInclude Include="src\engine\event\Event.h" />
+    <ClInclude Include="src\engine\event\KeyEvent.h" />
+    <ClInclude Include="src\engine\event\MouseEvent.h" />
     <ClInclude Include="src\engine\Mesh.h" />
     <ClInclude Include="src\engine\MeshBuilderBase.h" />
-    <ClInclude Include="src\engine\InputListener.h" />
+    <ClInclude Include="src\engine\EventListener.h" />
     <ClInclude Include="src\engine\MeshBuilder2d.h" />
     <ClInclude Include="src\engine\MeshBuilder3d.h" />
     <ClInclude Include="src\engine\RayTracer.h" />
@@ -177,7 +185,11 @@
     <ClInclude Include="src\engine\Shader.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\Command.h" />
+    <ClInclude Include="src\engine\ui\RenderRegion.h" />
+    <ClInclude Include="src\engine\ui\RenderRegionController.h" />
+    <ClInclude Include="src\engine\ui\ToolbarController.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
+    <ClInclude Include="src\engine\ui\UIController.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\SubtractState.h" />

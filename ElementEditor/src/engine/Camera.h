@@ -3,8 +3,6 @@
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
-#include "InputListener.h"
-
 class Camera {
 public:
 	Camera();

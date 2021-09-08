@@ -31,17 +31,3 @@ void RenderedApplication::start(int width, int height, const char* title) {
 		throw e;
 	}
 }
-
-Window* RenderedApplication::getWindow() {
-	return window;
-}
-
-void RenderedApplication::processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) {}
-
-void RenderedApplication::processKeyPress(int keyCode) {}
-
-void RenderedApplication::processScroll(float deltaY) {}
-
-void RenderedApplication::processMouseDown(int buttonCode, float posX, float posY) {}
-
-void RenderedApplication::processMouseUp(int buttonCode, float posX, float posY) {}

@@ -1,9 +1,8 @@
 #pragma once
 
-#include "EditorState.h"
+#include "BaseEditorState.h"
 
-class SubtractState : public EditorState {
+class SubtractState : public BaseEditorState {
 public:
-	void processLeftClick(float posX, float posY) override;
-	void render() override;
+	void processClick(MouseButtonUpEvent& event) override;
 };

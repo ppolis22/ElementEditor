@@ -9,9 +9,9 @@ public:
 	virtual ~Button();
 
 	virtual glm::vec3 getColor();
-	virtual void processMouseMovement(float rawX, float rawY, float deltaX, float deltaY) override;
-	virtual void processMouseDown(int buttonCode, float posX, float posY) override;
-	virtual void processMouseUp(int buttonCode, float posX, float posY) override;
+	virtual void processMouseMovement(MouseMoveEvent& event) override;
+	virtual void processMouseDown(MouseButtonDownEvent& event) override;
+	virtual void processMouseUp(MouseButtonUpEvent& event) override;
 
 private:
 	bool isClickable;

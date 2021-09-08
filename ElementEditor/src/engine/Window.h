@@ -3,7 +3,7 @@
 #include <GL/glew.h>		// Must be included before any other OpenGL stuff
 #include <GLFW/glfw3.h>
 
-#include "InputListener.h"
+#include "EventListener.h"
 #include <vector>
 
 class Window {
@@ -18,7 +18,7 @@ public:
 	void makeCurrentContext();
 	bool isKeyPressed(int keyCode);
 	bool isClicked(int mouseButtonCode);
-	void registerInputListener(InputListener* listener);
+	void registerEventListener(EventListener* listener);
 	void update();
 
 private:
@@ -29,7 +29,7 @@ private:
 	struct WindowData {
 		float lastCursorXPos;
 		float lastCursorYPos;
-		std::vector<InputListener*> listeners;
+		std::vector<EventListener*> listeners;
 	};
 
 	WindowData data;

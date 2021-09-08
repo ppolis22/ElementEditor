@@ -72,13 +72,28 @@
     <ClCompile Include="src\engine\ui\Command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\EditorState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\SubtractState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\AddState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseEditorState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\RenderRegion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\ToolbarController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AppController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\UIController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\RenderRegionController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -965,9 +980,6 @@
     <ClInclude Include="src\engine\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\InputListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\RayTracer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -995,16 +1007,40 @@
     <ClInclude Include="src\engine\ui\Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\EditorState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\SubtractState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\AddState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\EditorController.h">
+    <ClInclude Include="src\engine\event\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\event\MouseEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\event\KeyEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\EventListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseEditorState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\UIController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\RenderRegion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\ToolbarController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AppController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\RenderRegionController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
