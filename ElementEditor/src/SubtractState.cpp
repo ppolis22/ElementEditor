@@ -6,7 +6,9 @@
 
 SubtractState::SubtractState(AppController* context)
 	: BaseEditorState(context),
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {}
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {
+	context->getPreviewChunkManager()->clear();
+}
 
 void SubtractState::processClick(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {

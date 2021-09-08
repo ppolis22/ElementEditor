@@ -44,3 +44,10 @@ void ChunkManager::rebuildChunkMeshes() {
 	}
 	chunksToRebuild.clear();
 }
+
+void ChunkManager::clear() {
+	for (auto it = allChunks.begin(); it != allChunks.end(); ++it) {
+		it->second.unloadMesh();
+	}
+	allChunks.clear();
+}

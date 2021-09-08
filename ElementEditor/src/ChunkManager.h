@@ -18,6 +18,7 @@ public:
 	BlockType getBlock(Point3di location);
 	std::vector<Chunk> getAllChunks();
 	void rebuildChunkMeshes();
+	void clear();
 
 private:
 	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;

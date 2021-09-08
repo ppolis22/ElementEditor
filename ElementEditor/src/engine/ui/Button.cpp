@@ -25,13 +25,13 @@ void Button::processMouseMovement(MouseMoveEvent& event) {
 void Button::processMouseDown(MouseButtonDownEvent& event) {
 	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && withinBounds(event.posX, event.posY)) {
 		isClicked = true;
-		event.isHandled = true;
 	}
 }
 
 void Button::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && isClicked && withinBounds(event.posX, event.posY)) {
 		onClick->execute();
+		event.isHandled = true;
 	}
 	isClicked = false;
 }

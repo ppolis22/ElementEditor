@@ -45,6 +45,7 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 
 	if (readyToAdd) {
 		previewChunkManager->setBlock(Empty, toAddCoords);
+		previewChunkManager->rebuildChunkMeshes();
 	}
 	readyToAdd = false;
 }
