@@ -7,6 +7,7 @@ in vec3 vertexNormal;
 in vec3 toLightVector;
 
 uniform vec3 lightColor;
+uniform float alpha;
 
 void main() {
 	float ambientPercent = 0.25;
@@ -15,5 +16,5 @@ void main() {
 	vec3 diffuseLight = diffusePercent * lightColor;
 
 	vec3 totalColor = (ambientLight + diffuseLight) * vertexColor;
-	color = vec4(totalColor, 1.0);
+	color = vec4(totalColor, alpha);
 };

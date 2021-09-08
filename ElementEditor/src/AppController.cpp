@@ -3,10 +3,11 @@
 #include "AddState.h"
 #include "SubtractState.h"
 
-AppController::AppController(BaseEditorState* state, Camera* camera, ModelRenderer* modelRenderer, ChunkManager* chunkManager, 
+AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
-	: state(state), camera(camera), modelRenderer(modelRenderer), chunkManager(chunkManager), uiRenderer(uiRenderer), window(window) {
-	this->state->setContext(this);
+	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
+	uiRenderer(uiRenderer), window(window) {
+	this->state = new AddState(this);
 }
 
 void AppController::addUIController(UIController* uiController) {
@@ -15,11 +16,11 @@ void AppController::addUIController(UIController* uiController) {
 }
 
 void AppController::setAddTool() {
-	changeActiveTool(new AddState());
+	changeActiveTool(new AddState(this));
 }
 
 void AppController::setSubtractTool() {
-	changeActiveTool(new SubtractState());
+	changeActiveTool(new SubtractState(this));
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -62,8 +63,12 @@ Camera* AppController::getCamera() {
 	return camera;
 }
 
-ChunkManager* AppController::getChunkManager() {
-	return chunkManager;
+ChunkManager* AppController::getModelChunkManager() {
+	return modelChunkManager;
+}
+
+ChunkManager* AppController::getPreviewChunkManager() {
+	return previewChunkManager;
 }
 
 ModelRenderer* AppController::getModelRenderer() {
@@ -79,5 +84,4 @@ void AppController::changeActiveTool(BaseEditorState* newState) {
 		delete state;
 	}
 	this->state = newState;
-	this->state->setContext(this);
 }

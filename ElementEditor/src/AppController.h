@@ -15,7 +15,7 @@
 
 class AppController {
 public:
-	AppController(BaseEditorState* state, Camera* camera, ModelRenderer* modelRenderer, ChunkManager* chunkManager, 
+	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
 		UIRenderer* uiRenderer, Window* window);
 
 	void addUIController(UIController* uiController);
@@ -29,7 +29,8 @@ public:
 
 	Camera* getCamera();
 	ModelRenderer* getModelRenderer();
-	ChunkManager* getChunkManager();
+	ChunkManager* getModelChunkManager();
+	ChunkManager* getPreviewChunkManager();
 	Window* getWindow();
 
 private:
@@ -37,7 +38,8 @@ private:
 	BaseEditorState* state;
 	Camera* camera;
 	ModelRenderer* modelRenderer;
-	ChunkManager* chunkManager;
+	ChunkManager* modelChunkManager;
+	ChunkManager* previewChunkManager;
 	Window* window;
 	UIRenderer* uiRenderer;
 

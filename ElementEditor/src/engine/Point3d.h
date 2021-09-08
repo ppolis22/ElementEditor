@@ -17,6 +17,10 @@ struct Point3di {
 		return (this->x == other.x && this->y == other.y && this->z == other.z);
 	}
 
+	bool operator!=(const Point3di& other) const {
+		return !(other == *this);
+	}
+
 	struct HashFunction {
 		size_t operator()(const Point3di& point) const {
 			size_t res = 17;

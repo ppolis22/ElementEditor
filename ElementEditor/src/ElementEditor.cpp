@@ -36,17 +36,17 @@ void ElementEditor::run() {
 	UIRenderer* uiRenderer = new UIRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer();
-	ChunkManager* chunkManager = new ChunkManager();
+	ChunkManager* modelChunkManager = new ChunkManager();
+	ChunkManager* previewChunkManager = new ChunkManager();
 
 	// TODO replace with some sort of Loader class
-	chunkManager->setBlock(Stone, { 0, 0, 0 });
-	chunkManager->setBlock(Stone, { 1, 0, 0 });
-	chunkManager->setBlock(Stone, { 0, 1, 0 });
-	chunkManager->setBlock(Stone, { 0, 0, 1 });
+	modelChunkManager->setBlock(Stone, { 0, 0, 0 });
+	modelChunkManager->setBlock(Stone, { 1, 0, 0 });
+	modelChunkManager->setBlock(Stone, { 0, 1, 0 });
+	modelChunkManager->setBlock(Stone, { 0, 0, 1 });
+	modelChunkManager->rebuildChunkMeshes();
 
-	chunkManager->rebuildChunkMeshes();
-
-	AppController appController(new AddState(), camera, modelRenderer, chunkManager, uiRenderer, window);
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);
 
 	ToolbarController toolbarController(window);
 	appController.addUIController(&toolbarController);

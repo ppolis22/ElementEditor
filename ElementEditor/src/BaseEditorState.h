@@ -8,9 +8,8 @@ class AppController;
 
 class BaseEditorState {
 public:
+	BaseEditorState(AppController* context);
 	virtual ~BaseEditorState();
-
-	void setContext(AppController* context);
 
 	virtual void processMouseMovement(MouseMoveEvent& event);
 	virtual void processKeyPress(KeyPressEvent& event);

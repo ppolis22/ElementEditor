@@ -1,10 +1,12 @@
 #include "SubtractState.h"
-#include "engine/RayTracer.h"
 #include "engine/Window.h"
 #include "engine/Camera.h"
-#include "engine/ModelRenderer.h"
 #include "ChunkManager.h"
 #include "AppController.h"
+
+SubtractState::SubtractState(AppController* context)
+	: BaseEditorState(context),
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {}
 
 void SubtractState::processClick(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
@@ -12,14 +14,13 @@ void SubtractState::processClick(MouseButtonUpEvent& event) {
 	}
 	Window* window = context->getWindow();
 	Camera* camera = context->getCamera();
-	ChunkManager* chunkManager = context->getChunkManager();
+	ChunkManager* modelChunkManager = context->getModelChunkManager();
 
-	RayTracer tracer(window->getWidth(), window->getHeight(), camera->getProjectionMatrix(), 10.0f);
-	std::vector<Point3di> intersectedBlocks = tracer.traceRay(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
+	std::vector<Point3di> intersectedBlocks = rayTracer.traceRay(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
 	for (Point3di blockLocation : intersectedBlocks) {
-		if (chunkManager->getBlock(blockLocation) != Empty) {
-			chunkManager->setBlock(Empty, blockLocation);
-			chunkManager->rebuildChunkMeshes();
+		if (modelChunkManager->getBlock(blockLocation) != Empty) {
+			modelChunkManager->setBlock(Empty, blockLocation);
+			modelChunkManager->rebuildChunkMeshes();
 			break;
 		}
 	}

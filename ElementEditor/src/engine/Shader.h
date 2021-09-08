@@ -20,6 +20,7 @@ public:
 	void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 	void setUniformVec3f(const std::string& name, const glm::vec3& vector);
 	void setUniformVec4f(const std::string& name, const glm::vec4& vector);
+	void setUniformFloat(const std::string& name, const float value);
 
 private:
 	unsigned int id;

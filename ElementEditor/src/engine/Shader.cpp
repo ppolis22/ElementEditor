@@ -36,6 +36,10 @@ void Shader::setUniformVec4f(const std::string& name, const glm::vec4& vector) {
 	glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 }
 
+void Shader::setUniformFloat(const std::string& name, const float value) {
+	glUniform1f(getUniformLocation(name), value);
+}
+
 std::string Shader::parseFile(const std::string& path) {
 	std::ifstream shaderFile(path);
 	std::stringstream shaderStream;

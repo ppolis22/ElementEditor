@@ -7,11 +7,10 @@
 #include "ChunkManager.h"
 #include "AppController.h"
 
-BaseEditorState::~BaseEditorState() {}
+BaseEditorState::BaseEditorState(AppController* context)
+	: context(context) {}
 
-void BaseEditorState::setContext(AppController* context) {
-	this->context = context;
-}
+BaseEditorState::~BaseEditorState() {}
 
 void BaseEditorState::processMouseMovement(MouseMoveEvent& event) {}
 
@@ -23,10 +22,15 @@ void BaseEditorState::processClick(MouseButtonUpEvent& event) {}
 
 void BaseEditorState::render() {
 	ModelRenderer* modelRenderer = context->getModelRenderer();
-	ChunkManager* chunkManager = context->getChunkManager();
+	ChunkManager* modelChunkManager = context->getModelChunkManager();
+	ChunkManager* previewChunkManager = context->getPreviewChunkManager();
 	Camera* camera = context->getCamera();
 
-	for (Chunk& chunk : chunkManager->getAllChunks()) {
+	for (Chunk& chunk : modelChunkManager->getAllChunks()) {
 		modelRenderer->render(chunk, *camera);
+	}
+
+	for (Chunk& chunk : previewChunkManager->getAllChunks()) {
+		modelRenderer->renderPreview(chunk, *camera);
 	}
 }

@@ -11,6 +11,14 @@ ModelRenderer::ModelRenderer() {}
 ModelRenderer::~ModelRenderer() {}
 
 void ModelRenderer::render(Renderable& renderable, Camera& camera) {
+	renderWithTransparency(renderable, camera, 1.0f);
+}
+
+void ModelRenderer::renderPreview(Renderable& renderable, Camera& camera) {
+	renderWithTransparency(renderable, camera, 0.5f);
+}
+
+void ModelRenderer::renderWithTransparency(Renderable& renderable, Camera& camera, float alpha) {
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::mat4 modelMatrix = renderable.getTransformation();
@@ -25,6 +33,7 @@ void ModelRenderer::render(Renderable& renderable, Camera& camera) {
 	chunkShader.setUniformMat4f("modelMatrix", modelMatrix);
 	chunkShader.setUniformVec3f("lightPosition", lightPosition);
 	chunkShader.setUniformVec3f("lightColor", lightColor);
+	chunkShader.setUniformFloat("alpha", alpha);
 
 	Mesh& mesh = renderable.getMesh();
 	glBindVertexArray(mesh.vertexArrayId);
