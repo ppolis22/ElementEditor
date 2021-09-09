@@ -25,6 +25,8 @@ public:
 	void rebuildMesh();
 	void unloadMesh();
 	void setBlock(BlockType type, Point3di location);
+	void addSelection(Point3di location);
+	void removeSelection(Point3di location);
 	BlockType getBlock(Point3di location);
 	Shader& getShader() override;
 	Mesh& getMesh() override;
@@ -32,11 +34,12 @@ public:
 
 private:
 	std::vector<std::vector<std::vector<BlockType>>> data;
+	std::vector <Point3di> selectedBlocks;
 	MeshBuilder3d meshBuilder;
 	Mesh mesh;
 	Shader chunkShader;
 	int xPosition, yPosition, zPosition;
 
-	void buildBlockMesh(int x, int y, int z);
+	void buildBlockMesh(int x, int y, int z, BlockType type);
 	bool checkNeighborChunk(int x, int y, int z);	// placeholder for method, likely in ChunkManager
 };

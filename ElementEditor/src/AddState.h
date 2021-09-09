@@ -10,6 +10,7 @@ public:
 
 	void processClick(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
+	void cleanUp() override;
 
 private:
 	RayTracer rayTracer;

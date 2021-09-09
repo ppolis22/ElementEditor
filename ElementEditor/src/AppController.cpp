@@ -2,6 +2,7 @@
 
 #include "AddState.h"
 #include "SubtractState.h"
+#include "SelectState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
@@ -21,6 +22,14 @@ void AppController::setAddTool() {
 
 void AppController::setSubtractTool() {
 	changeActiveTool(new SubtractState(this));
+}
+
+void AppController::setSelectTool() {
+	changeActiveTool(new SelectState(this));
+}
+
+std::vector<Point3di>* AppController::getSelection() {
+	return &selection;
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -81,6 +90,7 @@ Window* AppController::getWindow() {
 
 void AppController::changeActiveTool(BaseEditorState* newState) {
 	if (state != nullptr) {
+		state->cleanUp();
 		delete state;
 	}
 	this->state = newState;

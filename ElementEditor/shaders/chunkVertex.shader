@@ -30,6 +30,8 @@ void main() {
 		vertexColor = vec3(0.0, 1.0, 0.0);
 	} else if (type == 2) {
 		vertexColor = vec3(0.0, 0.0, 1.0);
+	} else if (type == 3) {
+		vertexColor = vec3(1.0, 0.55, 0.16);
 	} else {
 		vertexColor = vec3(0.5, 0.5, 0.5);
 	}

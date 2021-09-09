@@ -49,3 +49,7 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	}
 	readyToAdd = false;
 }
+
+void AddState::cleanUp() {
+	context->getPreviewChunkManager()->clear();
+}

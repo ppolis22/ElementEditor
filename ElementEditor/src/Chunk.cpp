@@ -1,5 +1,7 @@
 #include "Chunk.h"
 
+#include <algorithm>
+
 const float Chunk::BLOCK_RENDER_SIZE = 1.0f;
 const float Chunk::HALF_BLOCK_WIDTH = Chunk::BLOCK_RENDER_SIZE / 2.0f;
 
@@ -20,6 +22,16 @@ void Chunk::unloadMesh() {
 
 void Chunk::setBlock(BlockType type, Point3di location) {
 	data[location.x][location.y][location.z] = type;		// should we check if indices are in bounds?
+}
+
+void Chunk::addSelection(Point3di location) {
+	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) == selectedBlocks.end()) {
+		selectedBlocks.push_back(location);
+	}
+}
+
+void Chunk::removeSelection(Point3di location) {
+	selectedBlocks.erase(std::remove(selectedBlocks.begin(), selectedBlocks.end(), location), selectedBlocks.end());
 }
 
 BlockType Chunk::getBlock(Point3di location) {
@@ -46,7 +58,7 @@ void Chunk::rebuildMesh() {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
 				if (data[x][y][z] != Empty) {
-					buildBlockMesh(x, y, z);
+					buildBlockMesh(x, y, z, data[x][y][z]);
 				}
 			}
 		}
@@ -55,8 +67,11 @@ void Chunk::rebuildMesh() {
 	mesh = meshBuilder.commitMesh();
 }
 
-void Chunk::buildBlockMesh(int x, int y, int z) {
-	BlockType type = data[x][y][z];
+void Chunk::buildBlockMesh(int x, int y, int z, BlockType type) {
+	Point3di location {x, y, z};
+	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) != selectedBlocks.end()) {
+		type = Selected;
+	}
 
 	float xCoord = x * BLOCK_RENDER_SIZE + xPosition;
 	float yCoord = y * BLOCK_RENDER_SIZE + yPosition;
@@ -110,5 +125,5 @@ void Chunk::buildBlockMesh(int x, int y, int z) {
 }
 
 bool Chunk::checkNeighborChunk(int x, int y, int z) {
-	return false;
+	return false;		// TODO consult owning ChunkManager
 }

@@ -20,6 +20,8 @@ void BaseEditorState::processScroll(MouseScrollEvent& event) {}
 
 void BaseEditorState::processClick(MouseButtonUpEvent& event) {}
 
+void BaseEditorState::cleanUp() {}
+
 void BaseEditorState::render() {
 	ModelRenderer* modelRenderer = context->getModelRenderer();
 	ChunkManager* modelChunkManager = context->getModelChunkManager();

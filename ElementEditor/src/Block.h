@@ -3,7 +3,8 @@
 enum BlockType : unsigned char {
 	Empty = 0,
 	Grass,
-	Stone
+	Stone,
+	Selected
 };
 
 class Block {

@@ -10,6 +10,7 @@
 #include "engine/event/MouseEvent.h"
 #include "engine/event/KeyEvent.h"
 #include "engine/Window.h"
+#include "engine/Point3d.h"
 
 #include <vector>
 
@@ -21,6 +22,9 @@ public:
 	void addUIController(UIController* uiController);
 	void setAddTool();
 	void setSubtractTool();
+	void setSelectTool();
+	std::vector<Point3di>* getSelection();
+
 	void processMouseMovement(MouseMoveEvent& event);
 	void processScroll(MouseScrollEvent& event);
 	void processKeyPress(KeyPressEvent& event);
@@ -42,6 +46,7 @@ private:
 	ChunkManager* previewChunkManager;
 	Window* window;
 	UIRenderer* uiRenderer;
+	std::vector<Point3di> selection;
 
 	void changeActiveTool(BaseEditorState* newState);
 };

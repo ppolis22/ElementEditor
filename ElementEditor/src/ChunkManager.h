@@ -15,6 +15,7 @@ public:
 	static const int CHUNK_SIZE = 4;
 
 	void setBlock(BlockType type, Point3di location);
+	void setSelected(bool isSelected, Point3di location);
 	BlockType getBlock(Point3di location);
 	std::vector<Chunk> getAllChunks();
 	void rebuildChunkMeshes();
@@ -22,5 +23,7 @@ public:
 
 private:
 	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;
-	std::vector<Chunk*> chunksToRebuild;
+	std::vector<Chunk*> chunksToRebuild;	// TODO make this a set!
+
+	Point3di getChunkOrigin(Point3di location);
 };

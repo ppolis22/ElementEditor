@@ -17,6 +17,7 @@ public:
 	virtual void processClick(MouseButtonUpEvent& event);
 
 	virtual void render();
+	virtual void cleanUp();
 
 protected:
 	AppController* context;

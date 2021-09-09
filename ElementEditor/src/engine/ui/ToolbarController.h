@@ -12,7 +12,9 @@ public:
 private:
 	Button addButton;
 	Button subtractButton;
+	Button selectButton;
 
 	void addToolButtonClicked();
 	void subtractToolButtonClicked();
+	void selectToolButtonClicked();
 };
