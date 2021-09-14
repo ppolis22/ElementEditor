@@ -3,6 +3,7 @@
 #include "AddState.h"
 #include "SubtractState.h"
 #include "SelectState.h"
+#include "MoveState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
@@ -28,8 +29,8 @@ void AppController::setSelectTool() {
 	changeActiveTool(new SelectState(this));
 }
 
-std::vector<Point3di>* AppController::getSelection() {
-	return &selection;
+void AppController::setMoveTool() {
+	changeActiveTool(new MoveState(this));
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -55,8 +56,12 @@ void AppController::processKeyPress(KeyPressEvent& event) {
 	state->processKeyPress(event);
 }
 
-void AppController::processClick(MouseButtonUpEvent& event) {
-	state->processClick(event);
+void AppController::processMouseUp(MouseButtonUpEvent& event) {
+	state->processMouseUp(event);
+}
+
+void AppController::processMouseDown(MouseButtonDownEvent& event) {
+	state->processMouseDown(event);
 }
 
 void AppController::render() {
@@ -88,10 +93,19 @@ Window* AppController::getWindow() {
 	return window;
 }
 
+std::vector<Point3di> AppController::getSelection() {
+	// TODO query ChunkManager for selections within chunks
+	std::vector<Point3di> temp;
+	Point3di tempPoint { 3.0f, 3.0f, 3.0f };
+	temp.push_back(tempPoint);
+	return temp;
+}
+
 void AppController::changeActiveTool(BaseEditorState* newState) {
 	if (state != nullptr) {
 		state->cleanUp();
 		delete state;
 	}
-	this->state = newState;
+	state = newState;
+	state->init();
 }

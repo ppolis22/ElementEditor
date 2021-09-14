@@ -8,7 +8,7 @@ SubtractState::SubtractState(AppController* context)
 	: BaseEditorState(context),
 	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {}
 
-void SubtractState::processClick(MouseButtonUpEvent& event) {
+void SubtractState::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;
 	}
@@ -16,7 +16,7 @@ void SubtractState::processClick(MouseButtonUpEvent& event) {
 	Camera* camera = context->getCamera();
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 
-	std::vector<Point3di> intersectedBlocks = rayTracer.traceRay(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
+	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
 	for (Point3di blockLocation : intersectedBlocks) {
 		if (modelChunkManager->getBlock(blockLocation) != Empty) {
 			modelChunkManager->setBlock(Empty, blockLocation);

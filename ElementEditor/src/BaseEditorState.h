@@ -14,9 +14,11 @@ public:
 	virtual void processMouseMovement(MouseMoveEvent& event);
 	virtual void processKeyPress(KeyPressEvent& event);
 	virtual void processScroll(MouseScrollEvent& event);
-	virtual void processClick(MouseButtonUpEvent& event);
+	virtual void processMouseDown(MouseButtonDownEvent& event);
+	virtual void processMouseUp(MouseButtonUpEvent& event);
 
 	virtual void render();
+	virtual void init();
 	virtual void cleanUp();
 
 protected:

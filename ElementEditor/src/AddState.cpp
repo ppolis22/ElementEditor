@@ -8,7 +8,7 @@ AddState::AddState(AppController* context)
 	: BaseEditorState(context),
 	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {}
 
-void AddState::processClick(MouseButtonUpEvent& event) {
+void AddState::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;
 	}
@@ -26,7 +26,7 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 	ChunkManager* previewChunkManager = context->getPreviewChunkManager();
 
-	std::vector<Point3di> intersectedBlocks = rayTracer.traceRay(camera->getPosition(), camera->getViewMatrix(), event.rawX, event.rawY);
+	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.rawX, event.rawY);
 	for (int i = 1; i < intersectedBlocks.size(); i++) {
 		if (modelChunkManager->getBlock(intersectedBlocks[i]) != Empty) {
 			Point3di targetToAdd = intersectedBlocks[i - 1];

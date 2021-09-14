@@ -13,8 +13,10 @@ private:
 	Button addButton;
 	Button subtractButton;
 	Button selectButton;
+	Button moveButton;
 
 	void addToolButtonClicked();
 	void subtractToolButtonClicked();
 	void selectToolButtonClicked();
+	void moveToolButtonClicked();
 };

@@ -9,11 +9,12 @@ RayTracer::RayTracer(int windowWidth, int windowHeight, glm::mat4 projectionMatr
 
 RayTracer::~RayTracer() {}
 
-std::vector<Point3di> RayTracer::traceRay(const glm::vec3& startPos, const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
+std::vector<Point3di> RayTracer::getIntersectingBlocks(const glm::vec3& startPos, const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
 	glm::vec3 ray = getRayFromScreenCoords(viewMatrix, mousePosX, mousePosY);
 	return getIntersectingBlocks(startPos, ray);
 }
 
+// TODO move to Camera class?
 glm::vec3 RayTracer::getRayFromScreenCoords(const glm::mat4& viewMatrix, float mousePosX, float mousePosY) {
 	float normalizedX = (2.0f * mousePosX) / windowWidth - 1.0f;
 	float normalizedY = 1.0f - (2.0f * mousePosY) / windowHeight;	// mouse Y comes in inverted, this corrects for that
@@ -107,4 +108,26 @@ std::vector<Point3di> RayTracer::getIntersectingBlocks(const glm::vec3& startPos
 	}
 
 	return visited;
+}
+
+float RayTracer::getDistanceToTarget(const AABB& target, const glm::vec3& startPos, const glm::vec3& direction) {
+	float tx1 = (target.min.x - startPos.x) / direction.x;
+	float tx2 = (target.max.x - startPos.x) / direction.x;
+
+	float tmin = std::min(tx1, tx2);
+	float tmax = std::max(tx1, tx2);
+
+	float ty1 = (target.min.y - startPos.y) / direction.y;
+	float ty2 = (target.max.y - startPos.y) / direction.y;
+
+	tmin = std::max(tmin, std::min(ty1, ty2));
+	tmax = std::min(tmax, std::max(ty1, ty2));
+
+	float tz1 = (target.min.z - startPos.z) / direction.z;
+	float tz2 = (target.max.z - startPos.z) / direction.z;
+
+	tmin = std::max(tmin, std::min(tz1, tz2));
+	tmax = std::min(tmax, std::max(tz1, tz2));
+
+	return (tmax > std::max(tmin, 0.0f)) ? tmin : MAX_DISTANCE;
 }

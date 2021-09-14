@@ -14,7 +14,8 @@ public:
 private:
 	RenderRegion renderRegion;
 
-	void clickedInRenderRegion(MouseButtonUpEvent& event);
+	void mouseUpInRenderRegion(MouseButtonUpEvent& event);
+	void mouseDownInRenderRegion(MouseButtonDownEvent& event);
 	void scrolled(MouseScrollEvent& event);
 	void mouseMovedInRenderRegion(MouseMoveEvent& event);
 	void keyPressed(KeyPressEvent& event);

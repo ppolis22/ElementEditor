@@ -8,7 +8,7 @@ class AddState : public BaseEditorState {
 public:
 	AddState(AppController* context);
 
-	void processClick(MouseButtonUpEvent& event) override;
+	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void cleanUp() override;
 

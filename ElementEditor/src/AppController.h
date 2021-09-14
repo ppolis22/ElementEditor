@@ -23,12 +23,14 @@ public:
 	void setAddTool();
 	void setSubtractTool();
 	void setSelectTool();
-	std::vector<Point3di>* getSelection();
+	void setMoveTool();
+	std::vector<Point3di> getSelection();
 
 	void processMouseMovement(MouseMoveEvent& event);
 	void processScroll(MouseScrollEvent& event);
 	void processKeyPress(KeyPressEvent& event);
-	void processClick(MouseButtonUpEvent& event);
+	void processMouseUp(MouseButtonUpEvent& event);
+	void processMouseDown(MouseButtonDownEvent& event);
 	void render();
 
 	Camera* getCamera();
@@ -46,7 +48,6 @@ private:
 	ChunkManager* previewChunkManager;
 	Window* window;
 	UIRenderer* uiRenderer;
-	std::vector<Point3di> selection;
 
 	void changeActiveTool(BaseEditorState* newState);
 };

@@ -18,7 +18,11 @@ void BaseEditorState::processKeyPress(KeyPressEvent& event) {}
 
 void BaseEditorState::processScroll(MouseScrollEvent& event) {}
 
-void BaseEditorState::processClick(MouseButtonUpEvent& event) {}
+void BaseEditorState::processMouseDown(MouseButtonDownEvent& event) {}
+
+void BaseEditorState::processMouseUp(MouseButtonUpEvent& event) {}
+
+void BaseEditorState::init() {}
 
 void BaseEditorState::cleanUp() {}
 

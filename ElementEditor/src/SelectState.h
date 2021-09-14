@@ -7,7 +7,7 @@ class SelectState : public BaseEditorState {
 public:
 	SelectState(AppController* context);
 
-	void processClick(MouseButtonUpEvent& event) override;
+	void processMouseUp(MouseButtonUpEvent& event) override;
 
 private:
 	RayTracer rayTracer;

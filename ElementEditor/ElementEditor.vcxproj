@@ -147,6 +147,7 @@
     <ClCompile Include="src\engine\RenderedApplication.cpp" />
     <ClCompile Include="src\engine\ModelRenderer.cpp" />
     <ClCompile Include="src\engine\Shader.cpp" />
+    <ClCompile Include="src\engine\TranslateHandles.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
     <ClCompile Include="src\engine\ui\Command.cpp" />
     <ClCompile Include="src\engine\ui\RenderRegion.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\MoveState.cpp" />
     <ClCompile Include="src\SelectState.cpp" />
     <ClCompile Include="src\SubtractState.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -168,6 +170,7 @@
     <ClInclude Include="src\ChunkManager.h" />
     <ClInclude Include="src\BaseEditorState.h" />
     <ClInclude Include="src\ElementEditor.h" />
+    <ClInclude Include="src\engine\AABB.h" />
     <ClInclude Include="src\engine\Camera.h" />
     <ClInclude Include="src\engine\ElementEngineException.h" />
     <ClInclude Include="src\engine\event\Event.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="src\engine\ModelRenderer.h" />
     <ClInclude Include="src\engine\Point3d.h" />
     <ClInclude Include="src\engine\Shader.h" />
+    <ClInclude Include="src\engine\TranslateHandles.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\Command.h" />
     <ClInclude Include="src\engine\ui\RenderRegion.h" />
@@ -193,6 +197,7 @@
     <ClInclude Include="src\engine\ui\UIController.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
+    <ClInclude Include="src\MoveState.h" />
     <ClInclude Include="src\SelectState.h" />
     <ClInclude Include="src\SubtractState.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
@@ -481,6 +486,8 @@
   <ItemGroup>
     <None Include="shaders\chunkFragment.shader" />
     <None Include="shaders\chunkVertex.shader" />
+    <None Include="shaders\handleFragment.shader" />
+    <None Include="shaders\handleVertex.shader" />
     <None Include="shaders\uiFragment.shader" />
     <None Include="shaders\uiVertex.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />

@@ -3,7 +3,8 @@
 
 RenderRegionController::RenderRegionController(Window* window)
 	:renderRegion(0, 0, window->getWidth(), window->getHeight(), 
-		[this](MouseButtonUpEvent& event) { this->clickedInRenderRegion(event); },
+		[this](MouseButtonUpEvent& event) { this->mouseUpInRenderRegion(event); },
+		[this](MouseButtonDownEvent& event) { this->mouseDownInRenderRegion(event); },
 		[this](MouseScrollEvent& event) { this->scrolled(event); },
 		[this](MouseMoveEvent& event) { this->mouseMovedInRenderRegion(event); }, 
 		[this](KeyPressEvent& event) { this->keyPressed(event); }) {
@@ -14,8 +15,12 @@ void RenderRegionController::update() {
 	// nothing for now
 }
 
-void RenderRegionController::clickedInRenderRegion(MouseButtonUpEvent& event) {
-	appController->processClick(event);
+void RenderRegionController::mouseUpInRenderRegion(MouseButtonUpEvent& event) {
+	appController->processMouseUp(event);
+}
+
+void RenderRegionController::mouseDownInRenderRegion(MouseButtonDownEvent& event) {
+	appController->processMouseDown(event);
 }
 
 void RenderRegionController::scrolled(MouseScrollEvent& event) {

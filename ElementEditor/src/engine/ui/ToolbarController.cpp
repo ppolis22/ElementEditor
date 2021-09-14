@@ -10,15 +10,20 @@ ToolbarController::ToolbarController(Window* window)
 	)),
 	selectButton(20.0f, 130.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
 		[this]() { this->selectToolButtonClicked(); }
+	)),
+	moveButton(20.0f, 185.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
+		[this]() { this->moveToolButtonClicked(); }
 	))
 {
 	window->registerEventListener(&addButton);
 	window->registerEventListener(&subtractButton);
 	window->registerEventListener(&selectButton);
+	window->registerEventListener(&moveButton);
 
 	uiElements.push_back(&addButton);
 	uiElements.push_back(&subtractButton);
 	uiElements.push_back(&selectButton);
+	uiElements.push_back(&moveButton);
 }
 
 void ToolbarController::update() {
@@ -35,4 +40,8 @@ void ToolbarController::subtractToolButtonClicked() {
 
 void ToolbarController::selectToolButtonClicked() {
 	appController->setSelectTool();
+}
+
+void ToolbarController::moveToolButtonClicked() {
+	appController->setMoveTool();
 }

@@ -99,6 +99,12 @@
     <ClCompile Include="src\SelectState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MoveState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\TranslateHandles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1049,6 +1055,15 @@
     <ClInclude Include="src\SelectState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MoveState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\TranslateHandles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\AABB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1463,5 +1478,7 @@
     <None Include="shaders\chunkFragment.shader" />
     <None Include="shaders\uiFragment.shader" />
     <None Include="shaders\uiVertex.shader" />
+    <None Include="shaders\handleVertex.shader" />
+    <None Include="shaders\handleFragment.shader" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ class SubtractState : public BaseEditorState {
 public:
 	SubtractState(AppController* context);
 
-	void processClick(MouseButtonUpEvent& event) override;
+	void processMouseUp(MouseButtonUpEvent& event) override;
 
 private:
 	RayTracer rayTracer;
