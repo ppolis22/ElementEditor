@@ -9,15 +9,15 @@
 
 class MoveState : public BaseEditorState {
 public:
-	MoveState(AppController* context);
+	MoveState(AppController* context, std::vector<Point3di> selection);
 
 	void processMouseDown(MouseButtonDownEvent& event) override;
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void render() override;
-	void init() override;
 
 private:
+	std::vector<Point3di> selection;
 	Direction moveDirection = NONE;
 	TranslateHandles handles;
 	RayTracer rayTracer;

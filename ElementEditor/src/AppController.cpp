@@ -30,7 +30,10 @@ void AppController::setSelectTool() {
 }
 
 void AppController::setMoveTool() {
-	changeActiveTool(new MoveState(this));
+	std::vector<Point3di> selection = modelChunkManager->getSelected();
+	if (selection.size() > 0) {
+		changeActiveTool(new MoveState(this, selection));
+	}
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -91,14 +94,6 @@ ModelRenderer* AppController::getModelRenderer() {
 
 Window* AppController::getWindow() {
 	return window;
-}
-
-std::vector<Point3di> AppController::getSelection() {
-	// TODO query ChunkManager for selections within chunks
-	std::vector<Point3di> temp;
-	Point3di tempPoint { 3.0f, 3.0f, 3.0f };
-	temp.push_back(tempPoint);
-	return temp;
 }
 
 void AppController::changeActiveTool(BaseEditorState* newState) {

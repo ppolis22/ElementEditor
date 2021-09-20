@@ -34,6 +34,15 @@ void Chunk::removeSelection(Point3di location) {
 	selectedBlocks.erase(std::remove(selectedBlocks.begin(), selectedBlocks.end(), location), selectedBlocks.end());
 }
 
+std::vector<Point3di> Chunk::getSelection() {
+	std::vector<Point3di> worldCoordsSelection;
+	for (Point3di& selection : selectedBlocks) {
+		Point3di adjustedPoint{selection.x + xPosition, selection.y + yPosition, selection.z + zPosition};
+		worldCoordsSelection.push_back(adjustedPoint);
+	}
+	return worldCoordsSelection;
+}
+
 BlockType Chunk::getBlock(Point3di location) {
 	return data[location.x][location.y][location.z];
 }

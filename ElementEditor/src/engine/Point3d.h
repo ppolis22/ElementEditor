@@ -21,6 +21,20 @@ struct Point3di {
 		return !(other == *this);
 	}
 
+	Point3di& operator+=(const Point3di& other) {
+		this->x += other.x;
+		this->y += other.y;
+		this->z += other.z;
+		return *this;
+	}
+
+	Point3di& operator+=(const int& val) {
+		this->x += val;
+		this->y += val;
+		this->z += val;
+		return *this;
+	}
+
 	struct HashFunction {
 		size_t operator()(const Point3di& point) const {
 			size_t res = 17;

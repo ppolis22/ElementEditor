@@ -24,7 +24,6 @@ public:
 	void setSubtractTool();
 	void setSelectTool();
 	void setMoveTool();
-	std::vector<Point3di> getSelection();
 
 	void processMouseMovement(MouseMoveEvent& event);
 	void processScroll(MouseScrollEvent& event);

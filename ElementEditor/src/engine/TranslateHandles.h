@@ -28,5 +28,11 @@ private:
 	Shader shader;
 	glm::vec3 position;
 
+	float xHandleLeft, xHandleRight, xHandleTop, xHandleBottom, xHandleNear, xHandleFar;
+	float yHandleLeft, yHandleRight, yHandleTop, yHandleBottom, yHandleNear, yHandleFar;
+	float zHandleLeft, zHandleRight, zHandleTop, zHandleBottom, zHandleNear, zHandleFar;
+	BlockType xColor, yColor, zColor;
+
 	Mesh buildMesh();
+	void buildHandleMesh(MeshBuilder3d& meshBuilder, BlockType color, float left, float right, float top, float bottom, float near, float far);
 };

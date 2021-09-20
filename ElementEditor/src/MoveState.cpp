@@ -7,14 +7,12 @@
 
 #include <vector>
 
-MoveState::MoveState(AppController* context)
+MoveState::MoveState(AppController* context, std::vector<Point3di> selection)
 	: BaseEditorState(context),
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) {}
-
-void MoveState::init() {
-	std::vector<Point3di> selection = context->getSelection();
-	glm::vec3 selectionPoint = averagePoints(selection);
-	handles.setPosition(selectionPoint);
+	selection(selection),
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) 
+{
+	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH);
 }
 
 void MoveState::processMouseMovement(MouseMoveEvent& event) {
@@ -49,7 +47,8 @@ void MoveState::render() {
 	for (Chunk& chunk : modelChunkManager->getAllChunks()) {
 		modelRenderer->render(chunk, *camera);
 	}
-	// TODO figure out how to render separate model with depth check on top of existing model. Clear depth buffer?
+	// clear depth buffer to endure handles are rendered on top of the model
+	glClear(GL_DEPTH_BUFFER_BIT);
 	modelRenderer->render(handles, *camera);
 }
 
@@ -74,12 +73,7 @@ Direction MoveState::getHandleAtPoint(float x, float y) {
 glm::vec3 MoveState::averagePoints(const std::vector<Point3di>& points) {
 	glm::vec3 average(0.0f, 0.0f, 0.0f);
 	for (const Point3di& point : points) {
-		average.x += point.x;
-		average.y += point.y;
-		average.z += point.z;
+		average += glm::vec3((float)point.x, (float)point.y, (float)point.z);
 	}
-	average.x /= (float)points.size();
-	average.y /= (float)points.size();
-	average.z /= (float)points.size();
-	return average;
+	return average / (float)points.size();
 }
