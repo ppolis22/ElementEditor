@@ -22,6 +22,8 @@ public:
 	void setPosition(glm::vec3 position);
 	void setSelectedDirection(Direction direction);
 	AABB getXBoundingBox();
+	AABB getYBoundingBox();
+	AABB getZBoundingBox();
 
 private:
 	Mesh mesh;

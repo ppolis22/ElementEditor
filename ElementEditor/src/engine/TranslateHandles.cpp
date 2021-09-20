@@ -51,8 +51,22 @@ void TranslateHandles::setSelectedDirection(Direction direction) {
 
 AABB TranslateHandles::getXBoundingBox() {
 	return AABB{ 
-		Point3df{ 0.1f + position.x, -0.1f + position.y, -0.1f + position.z }, 
-		Point3df{ 1.0f + position.x, 0.1f + position.y, 0.1f + position.z } 
+		Point3df{ xHandleLeft + position.x, xHandleBottom + position.y, xHandleFar + position.z }, 
+		Point3df{ xHandleRight + position.x, xHandleTop + position.y, xHandleNear + position.z } 
+	};
+}
+
+AABB TranslateHandles::getYBoundingBox() {
+	return AABB{
+		Point3df{ yHandleLeft + position.x, yHandleBottom + position.y, yHandleFar + position.z },
+		Point3df{ yHandleRight + position.x, yHandleTop + position.y, yHandleNear + position.z }
+	};
+}
+
+AABB TranslateHandles::getZBoundingBox() {
+	return AABB{
+		Point3df{ zHandleLeft + position.x, zHandleBottom + position.y, zHandleFar + position.z },
+		Point3df{ zHandleRight + position.x, zHandleTop + position.y, zHandleNear + position.z }
 	};
 }
 
