@@ -6,7 +6,6 @@
 #include "engine/Camera.h"
 
 #include <vector>
-#include <iostream>
 
 MoveState::MoveState(AppController* context, std::vector<Point3di> selection)
 	: BaseEditorState(context),
@@ -19,9 +18,8 @@ MoveState::MoveState(AppController* context, std::vector<Point3di> selection)
 void MoveState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
 		// get closest point from mouse ray to handle ray
-		//closestPointOnLineToOtherLine(handles.setPosition(), , glm::vec3(2.0f, 5.0f, -3.0f), glm::vec3(1.0f, 1.0f, 2.0f));
-
-		// calculate change from last movement
+		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);
+		handles.setPosition(pointOnAxis);
 		// update handle position
 		// update mesh if handle moved full block width
 		// update last closest point
@@ -37,14 +35,16 @@ void MoveState::processMouseDown(MouseButtonDownEvent& event) {
 		return;
 	}
 	moveDirection = getHandleAtPoint(event.posX, event.posY);
-	handles.setSelectedDirection(moveDirection);
-	// store closest point from mouse ray to corresponding handle ray
+	if (moveDirection != NONE) {
+		handles.setSelectedDirection(moveDirection);
+		// store closest point from mouse ray to corresponding handle ray
+		handleGrabPoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
+	}
 }
 
 void MoveState::processMouseUp(MouseButtonUpEvent& event) {
 	moveDirection = NONE;
 	// commit mesh changes if any were made?
-	// unhighlight axis handle?
 	handles.setSelectedDirection(NONE);
 }
 
@@ -88,7 +88,6 @@ Direction MoveState::getHandleAtPoint(float x, float y) {
 		minDistToHandle = distToXHandle;
 	}
 
-	std::cout << "Selected move direction: " << targetDirection << std::endl;
 	return targetDirection;
 }
 
@@ -98,6 +97,12 @@ glm::vec3 MoveState::averagePoints(const std::vector<Point3di>& points) {
 		average += glm::vec3((float)point.x, (float)point.y, (float)point.z);
 	}
 	return average / (float)points.size();
+}
+
+glm::vec3 MoveState::getClosestPointOnAxisToMouse(float mouseX, float mouseY) {
+	Camera* camera = context->getCamera();
+	glm::vec3 mouseDirVector = rayTracer.getRayFromScreenCoords(camera->getViewMatrix(), mouseX, mouseY);
+	return closestPointOnLineToOtherLine(handles.getPosition(), handles.getAxisVector(moveDirection), camera->getPosition(), mouseDirVector);
 }
 
 // based on http://paulbourke.net/geometry/pointlineplane/, the several computed terms serve as a simple solution to 

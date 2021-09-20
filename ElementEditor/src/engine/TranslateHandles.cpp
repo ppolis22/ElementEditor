@@ -45,8 +45,24 @@ void TranslateHandles:: setPosition(glm::vec3 position) {
 	this->position = position;
 }
 
+glm::vec3 TranslateHandles::getPosition() {
+	return position;
+}
+
 void TranslateHandles::setSelectedDirection(Direction direction) {
 	// TODO highlight/rebuild mesh?
+}
+
+glm::vec3 TranslateHandles::getAxisVector(Direction direction) {
+	if (direction == X) {
+		return glm::vec3(1.0f, 0.0f, 0.0f);
+	} else if (direction == Y) {
+		return glm::vec3(0.0f, 1.0f, 0.0f);
+	} else if (direction == Z) {
+		return glm::vec3(0.0f, 0.0f, 1.0f);
+	} else {
+		return glm::vec3(0.0f, 0.0f, 0.0f);
+	}
 }
 
 AABB TranslateHandles::getXBoundingBox() {

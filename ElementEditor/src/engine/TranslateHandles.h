@@ -20,10 +20,12 @@ public:
 	glm::mat4 getTransformation();
 
 	void setPosition(glm::vec3 position);
+	glm::vec3 getPosition();
 	void setSelectedDirection(Direction direction);
 	AABB getXBoundingBox();
 	AABB getYBoundingBox();
 	AABB getZBoundingBox();
+	glm::vec3 getAxisVector(Direction direction);
 
 private:
 	Mesh mesh;
