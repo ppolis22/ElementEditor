@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <set>
 #include <unordered_map>
 
 #include "Chunk.h"
@@ -26,7 +27,7 @@ public:
 
 private:
 	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;
-	std::vector<Chunk*> chunksToRebuild;	// TODO make this a set!
+	std::set<Chunk*> chunksToRebuild;
 
 	Point3di getChunkOrigin(Point3di location);
 };

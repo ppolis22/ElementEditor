@@ -15,7 +15,7 @@ void ChunkManager::setBlock(BlockType type, Point3di location) {
 	}
 	Chunk& targetChunk = allChunks.find(targetChunkOrigin)->second;
 	targetChunk.setBlock(type, { location.x - chunkX, location.y - chunkY, location.z - chunkZ });
-	chunksToRebuild.push_back(&targetChunk);	// TODO add neighboring chunks too if applicable!
+	chunksToRebuild.insert(&targetChunk);	// TODO add neighboring chunks too if applicable!
 }
 
 void ChunkManager::setSelected(bool selected, Point3di location) {
@@ -29,7 +29,7 @@ void ChunkManager::setSelected(bool selected, Point3di location) {
 	} else {
 		targetChunk.removeSelection({ location.x - targetChunkOrigin.x, location.y - targetChunkOrigin.y, location.z - targetChunkOrigin.z });
 	}
-	chunksToRebuild.push_back(&targetChunk);
+	chunksToRebuild.insert(&targetChunk);
 }
 
 std::unordered_map<Point3di, BlockType, Point3di::HashFunction> ChunkManager::getSelected() {
@@ -47,7 +47,7 @@ std::unordered_map<Point3di, BlockType, Point3di::HashFunction> ChunkManager::ge
 void ChunkManager::selectAll() {
 	for (auto& entry : allChunks) {
 		entry.second.selectAll();
-		chunksToRebuild.push_back(&entry.second);
+		chunksToRebuild.insert(&entry.second);
 	}
 	this->rebuildChunkMeshes();
 }
@@ -55,7 +55,7 @@ void ChunkManager::selectAll() {
 void ChunkManager::deselectAll() {
 	for (auto& entry : allChunks) {
 		entry.second.deselectAll();
-		chunksToRebuild.push_back(&entry.second);
+		chunksToRebuild.insert(&entry.second);
 	}
 	this->rebuildChunkMeshes();
 }
