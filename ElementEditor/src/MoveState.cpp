@@ -6,6 +6,7 @@
 #include "engine/Camera.h"
 
 #include <vector>
+#include <algorithm>
 
 MoveState::MoveState(AppController* context, std::vector<Point3di> selection)
 	: BaseEditorState(context),
@@ -19,10 +20,10 @@ void MoveState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
 		// get closest point from mouse ray to handle ray
 		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);
-		handles.setPosition(pointOnAxis);
 		// update handle position
+		handles.setPosition(pointOnAxis - handleGrabPointOffset);
 		// update mesh if handle moved full block width
-		// update last closest point
+
 	} 
 	//else {
 	//	Direction hoveredDirection = getHandleAtPoint(event.rawX, event.rawY);
@@ -38,7 +39,8 @@ void MoveState::processMouseDown(MouseButtonDownEvent& event) {
 	if (moveDirection != NONE) {
 		handles.setSelectedDirection(moveDirection);
 		// store closest point from mouse ray to corresponding handle ray
-		handleGrabPoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
+		handleInitialGrabPoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
+		handleGrabPointOffset = handleInitialGrabPoint - handles.getPosition();
 	}
 }
 
@@ -64,31 +66,21 @@ void MoveState::render() {
 Direction MoveState::getHandleAtPoint(float x, float y) {
 	Camera* camera = context->getCamera();
 	glm::vec3 mouseDirVector = rayTracer.getRayFromScreenCoords(camera->getViewMatrix(), x, y);
-	Direction targetDirection = NONE;
-	float minDistToHandle = RayTracer::MAX_DISTANCE;
 
-	AABB xHandleBox = handles.getXBoundingBox();
-	float distToXHandle = rayTracer.getDistanceToTarget(xHandleBox, camera->getPosition(), mouseDirVector);
-	if (distToXHandle < minDistToHandle) {
-		targetDirection = X;
-		minDistToHandle = distToXHandle;
+	float distToXHandle = rayTracer.getDistanceToTarget(handles.getXBoundingBox(), camera->getPosition(), mouseDirVector);
+	float distToYHandle = rayTracer.getDistanceToTarget(handles.getYBoundingBox(), camera->getPosition(), mouseDirVector);
+	float distToZHandle = rayTracer.getDistanceToTarget(handles.getZBoundingBox(), camera->getPosition(), mouseDirVector);
+
+	float minDistToHandle = std::min({ distToXHandle , distToYHandle, distToZHandle });
+	if (minDistToHandle == RayTracer::MAX_DISTANCE) {
+		return NONE;
+	} else if (minDistToHandle == distToXHandle) {
+		return X;
+	} else if (minDistToHandle == distToYHandle) {
+		return Y;
+	} else {
+		return Z;
 	}
-
-	AABB yHandleBox = handles.getYBoundingBox();
-	distToXHandle = rayTracer.getDistanceToTarget(yHandleBox, camera->getPosition(), mouseDirVector);
-	if (distToXHandle < minDistToHandle) {
-		targetDirection = Y;
-		minDistToHandle = distToXHandle;
-	}
-
-	AABB zHandleBox = handles.getZBoundingBox();
-	distToXHandle = rayTracer.getDistanceToTarget(zHandleBox, camera->getPosition(), mouseDirVector);
-	if (distToXHandle < minDistToHandle) {
-		targetDirection = Z;
-		minDistToHandle = distToXHandle;
-	}
-
-	return targetDirection;
 }
 
 glm::vec3 MoveState::averagePoints(const std::vector<Point3di>& points) {

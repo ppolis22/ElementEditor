@@ -21,7 +21,8 @@ private:
 	Direction moveDirection = NONE;
 	TranslateHandles handles;
 	RayTracer rayTracer;
-	glm::vec3 handleGrabPoint;
+	glm::vec3 handleInitialGrabPoint;
+	glm::vec3 handleGrabPointOffset;
 
 	Direction getHandleAtPoint(float x, float y);
 	glm::vec3 averagePoints(const std::vector<Point3di>& points);
