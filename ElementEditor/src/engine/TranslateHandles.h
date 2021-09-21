@@ -14,6 +14,7 @@ enum Direction {	// TODO find a better home for this
 class TranslateHandles : public Renderable {
 public:
 	TranslateHandles();
+	~TranslateHandles();
 
 	Mesh& getMesh();
 	Shader& getShader();

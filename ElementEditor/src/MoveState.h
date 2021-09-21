@@ -15,7 +15,6 @@ public:
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void render() override;
-	void cleanUp() override;
 
 private:
 	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection;

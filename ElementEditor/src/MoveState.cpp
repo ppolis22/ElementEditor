@@ -20,10 +20,6 @@ MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockT
 	}
 }
 
-void MoveState::cleanUp() {
-	// TODO delete handle mesh
-}
-
 void MoveState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
 		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);

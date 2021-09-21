@@ -29,6 +29,11 @@ TranslateHandles::TranslateHandles()
 	mesh = buildMesh();
 }
 
+TranslateHandles::~TranslateHandles() {
+	MeshBuilder3d meshBuilder;
+	meshBuilder.deleteMesh(mesh);
+}
+
 Mesh& TranslateHandles::getMesh() {
 	return mesh;
 }
