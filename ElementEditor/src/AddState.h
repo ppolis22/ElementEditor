@@ -11,6 +11,7 @@ public:
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void cleanUp() override;
+	void init() override;
 
 private:
 	RayTracer rayTracer;

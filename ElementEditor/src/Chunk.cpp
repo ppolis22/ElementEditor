@@ -34,6 +34,23 @@ void Chunk::removeSelection(Point3di location) {
 	selectedBlocks.erase(std::remove(selectedBlocks.begin(), selectedBlocks.end(), location), selectedBlocks.end());
 }
 
+void Chunk::selectAll() {
+	selectedBlocks.clear();
+	for (int x = 0; x < CHUNK_SIZE; x++) {
+		for (int y = 0; y < CHUNK_SIZE; y++) {
+			for (int z = 0; z < CHUNK_SIZE; z++) {
+				if (data[x][y][z] != Empty) {
+					selectedBlocks.push_back({x, y, z});
+				}
+			}
+		}
+	}
+}
+
+void Chunk::deselectAll() {
+	selectedBlocks.clear();
+}
+
 std::vector<Point3di> Chunk::getSelection() {
 	std::vector<Point3di> worldCoordsSelection;
 	for (Point3di& selection : selectedBlocks) {

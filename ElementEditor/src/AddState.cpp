@@ -8,6 +8,10 @@ AddState::AddState(AppController* context)
 	: BaseEditorState(context),
 	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) {}
 
+void AddState::init() {
+	context->getModelChunkManager()->deselectAll();
+}
+
 void AddState::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;

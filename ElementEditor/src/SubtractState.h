@@ -8,6 +8,7 @@ public:
 	SubtractState(AppController* context);
 
 	void processMouseUp(MouseButtonUpEvent& event) override;
+	void init() override;
 
 private:
 	RayTracer rayTracer;

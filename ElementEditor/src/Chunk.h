@@ -27,6 +27,8 @@ public:
 	void setBlock(BlockType type, Point3di location);
 	void addSelection(Point3di location);
 	void removeSelection(Point3di location);
+	void selectAll();
+	void deselectAll();
 	std::vector<Point3di> getSelection();
 	BlockType getBlock(Point3di location);
 	Shader& getShader() override;

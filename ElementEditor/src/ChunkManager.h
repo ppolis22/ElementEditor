@@ -21,6 +21,8 @@ public:
 	void rebuildChunkMeshes();
 	void clear();
 	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> getSelected();
+	void selectAll();
+	void deselectAll();
 
 private:
 	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;

@@ -44,6 +44,22 @@ std::unordered_map<Point3di, BlockType, Point3di::HashFunction> ChunkManager::ge
 	return totalSelection;
 }
 
+void ChunkManager::selectAll() {
+	for (auto& entry : allChunks) {
+		entry.second.selectAll();
+		chunksToRebuild.push_back(&entry.second);
+	}
+	this->rebuildChunkMeshes();
+}
+
+void ChunkManager::deselectAll() {
+	for (auto& entry : allChunks) {
+		entry.second.deselectAll();
+		chunksToRebuild.push_back(&entry.second);
+	}
+	this->rebuildChunkMeshes();
+}
+
 BlockType ChunkManager::getBlock(Point3di location) {
 	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);	
