@@ -20,7 +20,7 @@ public:
 	std::vector<Chunk> getAllChunks();
 	void rebuildChunkMeshes();
 	void clear();
-	std::vector<Point3di> getSelected();
+	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> getSelected();
 
 private:
 	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;

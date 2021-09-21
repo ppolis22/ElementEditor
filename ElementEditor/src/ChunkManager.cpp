@@ -32,13 +32,13 @@ void ChunkManager::setSelected(bool selected, Point3di location) {
 	chunksToRebuild.push_back(&targetChunk);
 }
 
-std::vector<Point3di> ChunkManager::getSelected() {
-	std::vector<Point3di> totalSelection;
+std::unordered_map<Point3di, BlockType, Point3di::HashFunction> ChunkManager::getSelected() {
+	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> totalSelection;
 	for (const auto& entry : allChunks) {
 		Chunk chunk = entry.second;
 		std::vector<Point3di> selectionInChunk = chunk.getSelection();
-		if (selectionInChunk.size() > 0) {
-			totalSelection.insert(totalSelection.end(), selectionInChunk.begin(), selectionInChunk.end());
+		for (Point3di& selectedPoint : selectionInChunk) {
+			totalSelection.emplace(selectedPoint, this->getBlock(selectedPoint));
 		}
 	}
 	return totalSelection;

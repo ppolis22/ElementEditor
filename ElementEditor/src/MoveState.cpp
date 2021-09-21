@@ -8,12 +8,20 @@
 #include <vector>
 #include <algorithm>
 
-MoveState::MoveState(AppController* context, std::vector<Point3di> selection)
+MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection)
 	: BaseEditorState(context),
 	selection(selection),
+	moveVector{0, 0, 0},
 	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) 
 {
 	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH);
+	for (const auto& entry : selection) {
+		coveredModelCopy.emplace(entry.first, Empty);
+	}
+}
+
+void MoveState::cleanUp() {
+	// TODO delete handle mesh
 }
 
 void MoveState::processMouseMovement(MouseMoveEvent& event) {
@@ -23,7 +31,32 @@ void MoveState::processMouseMovement(MouseMoveEvent& event) {
 		// update handle position
 		handles.setPosition(pointOnAxis - handleGrabPointOffset);
 		// update mesh if handle moved full block width
+		float handleMoveDistance = glm::length(pointOnAxis - handleInitialGrabPoint);
+		if (handleMoveDistance > 1.0f) {
+			float deltaX = std::floor(pointOnAxis.x - handleInitialGrabPoint.x);
+			float deltaY = std::floor(pointOnAxis.y - handleInitialGrabPoint.y);
+			float deltaZ = std::floor(pointOnAxis.z - handleInitialGrabPoint.z);
+			moveVector += Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
+			handleInitialGrabPoint += glm::vec3(deltaX, deltaY, deltaZ);
 
+			// replace blocks selection is covering from copy
+			ChunkManager* chunkManager = context->getModelChunkManager();
+			for (const auto& entry : coveredModelCopy) {
+				chunkManager->setBlock(entry.second, entry.first);
+				chunkManager->setSelected(false, entry.first);
+			}
+
+			// copy the next blocks at the new offset, this should be done after all blocks are replaced
+			coveredModelCopy.clear();
+			for (auto& entry : selection) {
+				Point3di offsetPoint = moveVector + entry.first;
+				coveredModelCopy.emplace(offsetPoint, chunkManager->getBlock(offsetPoint));
+				// set selection at offsetPoint
+				chunkManager->setBlock(entry.second, offsetPoint);
+				chunkManager->setSelected(true, offsetPoint);
+			}
+			chunkManager->rebuildChunkMeshes();
+		}
 	} 
 	//else {
 	//	Direction hoveredDirection = getHandleAtPoint(event.rawX, event.rawY);
@@ -46,8 +79,8 @@ void MoveState::processMouseDown(MouseButtonDownEvent& event) {
 
 void MoveState::processMouseUp(MouseButtonUpEvent& event) {
 	moveDirection = NONE;
-	// commit mesh changes if any were made?
 	handles.setSelectedDirection(NONE);
+	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH + glm::vec3(moveVector.x, moveVector.y, moveVector.z));
 }
 
 void MoveState::render() {
@@ -58,7 +91,7 @@ void MoveState::render() {
 	for (Chunk& chunk : modelChunkManager->getAllChunks()) {
 		modelRenderer->render(chunk, *camera);
 	}
-	// clear depth buffer to endure handles are rendered on top of the model
+	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);
 	modelRenderer->render(handles, *camera);
 }
@@ -83,9 +116,10 @@ Direction MoveState::getHandleAtPoint(float x, float y) {
 	}
 }
 
-glm::vec3 MoveState::averagePoints(const std::vector<Point3di>& points) {
+glm::vec3 MoveState::averagePoints(const std::unordered_map<Point3di, BlockType, Point3di::HashFunction>& points) {
 	glm::vec3 average(0.0f, 0.0f, 0.0f);
-	for (const Point3di& point : points) {
+	for (const auto& entry : points) {
+		Point3di point = entry.first;
 		average += glm::vec3((float)point.x, (float)point.y, (float)point.z);
 	}
 	return average / (float)points.size();

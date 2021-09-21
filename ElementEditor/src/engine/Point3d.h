@@ -35,6 +35,10 @@ struct Point3di {
 		return *this;
 	}
 
+	Point3di operator+(const Point3di& other) {
+		return Point3di{this->x + other.x, this->y + other.y, this->z + other.z};
+	}
+
 	struct HashFunction {
 		size_t operator()(const Point3di& point) const {
 			size_t res = 17;

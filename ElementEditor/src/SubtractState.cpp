@@ -19,6 +19,7 @@ void SubtractState::processMouseUp(MouseButtonUpEvent& event) {
 	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
 	for (Point3di blockLocation : intersectedBlocks) {
 		if (modelChunkManager->getBlock(blockLocation) != Empty) {
+			modelChunkManager->setSelected(false, blockLocation);
 			modelChunkManager->setBlock(Empty, blockLocation);
 			modelChunkManager->rebuildChunkMeshes();
 			break;
