@@ -26,16 +26,13 @@ void MoveState::cleanUp() {
 
 void MoveState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
-		// get closest point from mouse ray to handle ray
 		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);
-		// update handle position
 		handles.setPosition(pointOnAxis - handleGrabPointOffset);
-		// update mesh if handle moved full block width
-		float handleMoveDistance = glm::length(pointOnAxis - handleInitialGrabPoint);
-		if (handleMoveDistance > 1.0f) {
-			float deltaX = std::floor(pointOnAxis.x - handleInitialGrabPoint.x);
-			float deltaY = std::floor(pointOnAxis.y - handleInitialGrabPoint.y);
-			float deltaZ = std::floor(pointOnAxis.z - handleInitialGrabPoint.z);
+		float deltaX = std::floor(pointOnAxis.x + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.x);
+		float deltaY = std::floor(pointOnAxis.y + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.y);
+		float deltaZ = std::floor(pointOnAxis.z + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.z);
+
+		if (std::max({ std::abs(deltaX), std::abs(deltaY), std::abs(deltaZ) }) > 0.0f) {
 			moveVector += Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
 			handleInitialGrabPoint += glm::vec3(deltaX, deltaY, deltaZ);
 
