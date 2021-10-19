@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/EventListener.h"
-#include "engine/event/MouseEvent.h"
-#include "engine/event/KeyEvent.h"
+#include "../engine/EventListener.h"
+#include "../engine/event/MouseEvent.h"
+#include "../engine/event/KeyEvent.h"
 
 class AppController;
 

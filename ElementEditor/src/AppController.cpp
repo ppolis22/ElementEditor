@@ -1,9 +1,9 @@
 #include "AppController.h"
 
-#include "AddState.h"
-#include "SubtractState.h"
-#include "SelectState.h"
-#include "MoveState.h"
+#include "state/AddState.h"
+#include "state/SubtractState.h"
+#include "state/SelectState.h"
+#include "state/MoveState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)

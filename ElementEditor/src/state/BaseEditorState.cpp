@@ -1,11 +1,11 @@
 #include "BaseEditorState.h"
 
-#include "engine/RayTracer.h"
-#include "engine/Window.h"
-#include "engine/Camera.h"
-#include "engine/ModelRenderer.h"
-#include "ChunkManager.h"
-#include "AppController.h"
+#include "../engine/RayTracer.h"
+#include "../engine/Window.h"
+#include "../engine/Camera.h"
+#include "../engine/ModelRenderer.h"
+#include "../ChunkManager.h"
+#include "../AppController.h"
 
 BaseEditorState::BaseEditorState(AppController* context)
 	: context(context) {}

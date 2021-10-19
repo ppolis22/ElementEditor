@@ -1,10 +1,10 @@
 #pragma once
 
-#include "BaseEditorState.h"
-#include "engine/RayTracer.h"
-#include "engine/Point3d.h"
+#include "SelectableState.h"
+#include "../engine/RayTracer.h"
+#include "../engine/Point3d.h"
 
-class AddState : public BaseEditorState {
+class AddState : public SelectableState {
 public:
 	AddState(AppController* context);
 
@@ -14,7 +14,6 @@ public:
 	void init() override;
 
 private:
-	RayTracer rayTracer;
 	Point3di toAddCoords;
 	bool readyToAdd = false;
 };

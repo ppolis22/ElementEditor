@@ -1,9 +1,9 @@
 #include "MoveState.h"
 
-#include "engine/ModelRenderer.h"
-#include "AppController.h"
-#include "ChunkManager.h"
-#include "engine/Camera.h"
+#include "../engine/ModelRenderer.h"
+#include "../AppController.h"
+#include "../ChunkManager.h"
+#include "../engine/Camera.h"
 
 #include <vector>
 #include <algorithm>

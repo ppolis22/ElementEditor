@@ -1,9 +1,9 @@
 #pragma once
 
 #include "BaseEditorState.h"
-#include "engine/TranslateHandles.h"
-#include "engine/RayTracer.h"
-#include "engine/Point3d.h"
+#include "../engine/TranslateHandles.h"
+#include "../engine/RayTracer.h"
+#include "../engine/Point3d.h"
 
 #include <unordered_map>
 

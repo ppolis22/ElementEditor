@@ -1,12 +1,11 @@
 #include "AddState.h"
-#include "engine/Window.h"
-#include "engine/Camera.h"
-#include "ChunkManager.h"
-#include "AppController.h"
+#include "../engine/Window.h"
+#include "../engine/Camera.h"
+#include "../ChunkManager.h"
+#include "../AppController.h"
 
 AddState::AddState(AppController* context)
-	: BaseEditorState(context),
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) {}
+	: SelectableState(context) {}
 
 void AddState::init() {
 	context->getModelChunkManager()->deselectAll();

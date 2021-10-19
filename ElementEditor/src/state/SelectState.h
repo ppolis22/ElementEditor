@@ -1,17 +1,15 @@
 #pragma once
 
-#include "BaseEditorState.h"
-#include "engine/RayTracer.h"
+#include "SelectableState.h"
+#include "../engine/RayTracer.h"
 
-class SelectState : public BaseEditorState {
+class SelectState : public SelectableState {
 public:
 	SelectState(AppController* context);
 
 	void processMouseUp(MouseButtonUpEvent& event) override;
 
 private:
-	RayTracer rayTracer;
-
 	void addToSelection(Point3di& block);
 	void removeFromSelection(Point3di& block);
 };
