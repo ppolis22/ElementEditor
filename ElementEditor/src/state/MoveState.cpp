@@ -9,12 +9,9 @@
 #include <algorithm>
 
 MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection)
-	: BaseEditorState(context),
-	selection(selection),
-	moveVector{0, 0, 0},
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 10.0f) 
+	: MoveableSelectionState(context, selection),
+	moveVector{0, 0, 0}
 {
-	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH);
 	for (const auto& entry : selection) {
 		coveredModelCopy.emplace(entry.first, Empty);
 	}
@@ -24,13 +21,13 @@ void MoveState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
 		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);
 		handles.setPosition(pointOnAxis - handleGrabPointOffset);
-		float deltaX = std::floor(pointOnAxis.x + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.x);
-		float deltaY = std::floor(pointOnAxis.y + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.y);
-		float deltaZ = std::floor(pointOnAxis.z + Chunk::HALF_BLOCK_WIDTH - handleInitialGrabPoint.z);
+		float deltaX = std::floor(pointOnAxis.x + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.x);
+		float deltaY = std::floor(pointOnAxis.y + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.y);
+		float deltaZ = std::floor(pointOnAxis.z + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.z);
 
 		if (std::max({ std::abs(deltaX), std::abs(deltaY), std::abs(deltaZ) }) > 0.0f) {
 			moveVector += Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
-			handleInitialGrabPoint += glm::vec3(deltaX, deltaY, deltaZ);
+			movementReferencePoint += glm::vec3(deltaX, deltaY, deltaZ);
 
 			// replace blocks selection is covering from copy
 			ChunkManager* chunkManager = context->getModelChunkManager();
@@ -65,8 +62,8 @@ void MoveState::processMouseDown(MouseButtonDownEvent& event) {
 	if (moveDirection != NONE) {
 		handles.setSelectedDirection(moveDirection);
 		// store closest point from mouse ray to corresponding handle ray
-		handleInitialGrabPoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
-		handleGrabPointOffset = handleInitialGrabPoint - handles.getPosition();
+		movementReferencePoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
+		handleGrabPointOffset = movementReferencePoint - handles.getPosition();
 	}
 }
 
@@ -87,60 +84,4 @@ void MoveState::render() {
 	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);
 	modelRenderer->render(handles, *camera);
-}
-
-Direction MoveState::getHandleAtPoint(float x, float y) {
-	Camera* camera = context->getCamera();
-	glm::vec3 mouseDirVector = rayTracer.getRayFromScreenCoords(camera->getViewMatrix(), x, y);
-
-	float distToXHandle = rayTracer.getDistanceToTarget(handles.getXBoundingBox(), camera->getPosition(), mouseDirVector);
-	float distToYHandle = rayTracer.getDistanceToTarget(handles.getYBoundingBox(), camera->getPosition(), mouseDirVector);
-	float distToZHandle = rayTracer.getDistanceToTarget(handles.getZBoundingBox(), camera->getPosition(), mouseDirVector);
-
-	float minDistToHandle = std::min({ distToXHandle , distToYHandle, distToZHandle });
-	if (minDistToHandle == RayTracer::MAX_DISTANCE) {
-		return NONE;
-	} else if (minDistToHandle == distToXHandle) {
-		return X;
-	} else if (minDistToHandle == distToYHandle) {
-		return Y;
-	} else {
-		return Z;
-	}
-}
-
-glm::vec3 MoveState::averagePoints(const std::unordered_map<Point3di, BlockType, Point3di::HashFunction>& points) {
-	glm::vec3 average(0.0f, 0.0f, 0.0f);
-	for (const auto& entry : points) {
-		Point3di point = entry.first;
-		average += glm::vec3((float)point.x, (float)point.y, (float)point.z);
-	}
-	return average / (float)points.size();
-}
-
-glm::vec3 MoveState::getClosestPointOnAxisToMouse(float mouseX, float mouseY) {
-	Camera* camera = context->getCamera();
-	glm::vec3 mouseDirVector = rayTracer.getRayFromScreenCoords(camera->getViewMatrix(), mouseX, mouseY);
-	return closestPointOnLineToOtherLine(handles.getPosition(), handles.getAxisVector(moveDirection), camera->getPosition(), mouseDirVector);
-}
-
-// based on http://paulbourke.net/geometry/pointlineplane/, the several computed terms serve as a simple solution to 
-// a system of equations to solve for the parametric eq variable t to get the target distance along line 1
-glm::vec3 MoveState::closestPointOnLineToOtherLine(const glm::vec3& line1Pt1, const glm::vec3& line1Dir,
-	const glm::vec3& line2Pt1, const glm::vec3& line2Dir) {
-	glm::vec3 line1Pt2 = line1Pt1 + line1Dir;
-	glm::vec3 line2Pt2 = line2Pt1 + line2Dir;
-
-	float term1343 = calculateTerm(line1Pt1, line2Pt1, line2Pt2, line2Pt1);
-	float term4321 = calculateTerm(line2Pt2, line2Pt1, line1Pt2, line1Pt1);
-	float term1321 = calculateTerm(line1Pt1, line2Pt1, line1Pt2, line1Pt1);
-	float term4343 = calculateTerm(line2Pt2, line2Pt1, line2Pt2, line2Pt1);
-	float term2121 = calculateTerm(line1Pt2, line1Pt1, line1Pt2, line1Pt1);
-
-	float t = (term1343 * term4321 - term1321 * term4343) / (term2121 * term4343 - term4321 * term4321);
-	return line1Dir * t + line1Pt1;
-}
-
-float MoveState::calculateTerm(const glm::vec3& ptA, const glm::vec3& ptB, const glm::vec3& ptC, const glm::vec3& ptD) {
-	return (ptA.x - ptB.x) * (ptC.x - ptD.x) + (ptA.y - ptB.y) * (ptC.y - ptD.y) + (ptA.z - ptB.z) * (ptC.z - ptD.z);
 }

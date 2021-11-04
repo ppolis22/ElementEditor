@@ -157,6 +157,7 @@
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\state\MoveableSelectionState.cpp" />
     <ClCompile Include="src\state\MoveState.cpp" />
     <ClCompile Include="src\state\SelectableState.cpp" />
     <ClCompile Include="src\state\SelectState.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\state\ExtrudeState.h" />
+    <ClInclude Include="src\state\MoveableSelectionState.h" />
     <ClInclude Include="src\state\MoveState.h" />
     <ClInclude Include="src\state\SelectableState.h" />
     <ClInclude Include="src\state\SelectState.h" />

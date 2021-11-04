@@ -108,6 +108,9 @@
     <ClCompile Include="src\state\SelectableState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\state\MoveableSelectionState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1071,6 +1074,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\state\SelectableState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\state\MoveableSelectionState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
