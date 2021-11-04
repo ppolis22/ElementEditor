@@ -21,4 +21,6 @@ private:
 	Point3di moveVector;
 	glm::vec3 movementReferencePoint;
 	glm::vec3 handleGrabPointOffset;
+
+	void moveSelection();
 };

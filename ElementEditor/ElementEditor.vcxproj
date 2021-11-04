@@ -157,6 +157,7 @@
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
+    <ClCompile Include="src\state\ExtrudeState.cpp" />
     <ClCompile Include="src\state\MoveableSelectionState.cpp" />
     <ClCompile Include="src\state\MoveState.cpp" />
     <ClCompile Include="src\state\SelectableState.cpp" />

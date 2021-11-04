@@ -4,6 +4,7 @@
 #include "state/SubtractState.h"
 #include "state/SelectState.h"
 #include "state/MoveState.h"
+#include "state/ExtrudeState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
@@ -32,7 +33,7 @@ void AppController::setSelectTool() {
 void AppController::setMoveTool() {
 	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection = modelChunkManager->getSelected();
 	if (selection.size() > 0) {
-		changeActiveTool(new MoveState(this, selection));
+		changeActiveTool(new ExtrudeState(this, selection));
 	}
 }
 
