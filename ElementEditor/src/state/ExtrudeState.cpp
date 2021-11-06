@@ -29,7 +29,6 @@ void ExtrudeState::processMouseDown(MouseButtonDownEvent& event) {
 	}
 }
 
-// TODO all this
 void ExtrudeState::processMouseMovement(MouseMoveEvent& event) {
 	if (moveDirection != NONE) {
 		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);

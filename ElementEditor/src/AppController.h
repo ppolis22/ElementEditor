@@ -24,6 +24,7 @@ public:
 	void setSubtractTool();
 	void setSelectTool();
 	void setMoveTool();
+	void setExtrudeTool();
 
 	void processMouseMovement(MouseMoveEvent& event);
 	void processScroll(MouseScrollEvent& event);

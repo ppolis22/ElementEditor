@@ -13,17 +13,22 @@ ToolbarController::ToolbarController(Window* window)
 	)),
 	moveButton(20.0f, 185.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
 		[this]() { this->moveToolButtonClicked(); }
+	)),
+	extrudeButton(20.0f, 240.0f, 45.0f, 45.0f, glm::vec3(0.5, 0.5, 0.5), 1.0f, true, new Command(
+		[this]() { this->extrudeToolButtonClicked(); }
 	))
 {
 	window->registerEventListener(&addButton);
 	window->registerEventListener(&subtractButton);
 	window->registerEventListener(&selectButton);
 	window->registerEventListener(&moveButton);
+	window->registerEventListener(&extrudeButton);
 
 	uiElements.push_back(&addButton);
 	uiElements.push_back(&subtractButton);
 	uiElements.push_back(&selectButton);
 	uiElements.push_back(&moveButton);
+	uiElements.push_back(&extrudeButton);
 }
 
 void ToolbarController::update() {
@@ -44,4 +49,8 @@ void ToolbarController::selectToolButtonClicked() {
 
 void ToolbarController::moveToolButtonClicked() {
 	appController->setMoveTool();
+}
+
+void ToolbarController::extrudeToolButtonClicked() {
+	appController->setExtrudeTool();
 }

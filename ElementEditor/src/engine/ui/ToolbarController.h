@@ -14,9 +14,11 @@ private:
 	Button subtractButton;
 	Button selectButton;
 	Button moveButton;
+	Button extrudeButton;
 
 	void addToolButtonClicked();
 	void subtractToolButtonClicked();
 	void selectToolButtonClicked();
 	void moveToolButtonClicked();
+	void extrudeToolButtonClicked();
 };

@@ -33,6 +33,13 @@ void AppController::setSelectTool() {
 void AppController::setMoveTool() {
 	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection = modelChunkManager->getSelected();
 	if (selection.size() > 0) {
+		changeActiveTool(new MoveState(this, selection));
+	}
+}
+
+void AppController::setExtrudeTool() {
+	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection = modelChunkManager->getSelected();
+	if (selection.size() > 0) {
 		changeActiveTool(new ExtrudeState(this, selection));
 	}
 }
