@@ -1,10 +1,10 @@
 #pragma once
 
 #include "UIController.h"
-#include "RenderRegion.h"
-#include "../Window.h"
-#include "../event/KeyEvent.h"
-#include "../event/MouseEvent.h"
+#include "engine/ui/RenderRegion.h"
+#include "engine/Window.h"
+#include "engine/event/KeyEvent.h"
+#include "engine/event/MouseEvent.h"
 
 class RenderRegionController : public UIController {
 public:

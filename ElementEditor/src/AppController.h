@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/ui/UIController.h"
+#include "UIController.h"
 #include "engine/Camera.h"
 #include "engine/ModelRenderer.h"
 #include "ChunkManager.h"

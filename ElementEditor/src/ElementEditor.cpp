@@ -7,8 +7,8 @@
 #include "engine/ui/Button.h"
 #include "engine/ui/Command.h"
 #include "engine/event/Event.h"
-#include "engine/ui/ToolbarController.h"
-#include "engine/ui/RenderRegionController.h"
+#include "ToolbarController.h"
+#include "RenderRegionController.h"
 
 #include "../vendor/glm/glm.hpp"
 

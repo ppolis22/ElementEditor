@@ -151,9 +151,9 @@
     <ClCompile Include="src\engine\ui\Button.cpp" />
     <ClCompile Include="src\engine\ui\Command.cpp" />
     <ClCompile Include="src\engine\ui\RenderRegion.cpp" />
-    <ClCompile Include="src\engine\ui\RenderRegionController.cpp" />
-    <ClCompile Include="src\engine\ui\ToolbarController.cpp" />
-    <ClCompile Include="src\engine\ui\UIController.cpp" />
+    <ClCompile Include="src\RenderRegionController.cpp" />
+    <ClCompile Include="src\ToolbarController.cpp" />
+    <ClCompile Include="src\UIController.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
@@ -166,6 +166,7 @@
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\ui\Slider.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
     <ClInclude Include="src\Block.h" />
@@ -194,10 +195,10 @@
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\Command.h" />
     <ClInclude Include="src\engine\ui\RenderRegion.h" />
-    <ClInclude Include="src\engine\ui\RenderRegionController.h" />
-    <ClInclude Include="src\engine\ui\ToolbarController.h" />
+    <ClInclude Include="src\RenderRegionController.h" />
+    <ClInclude Include="src\ToolbarController.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
-    <ClInclude Include="src\engine\ui\UIController.h" />
+    <ClInclude Include="src\UIController.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\state\ExtrudeState.h" />
