@@ -131,6 +131,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
+    <ClCompile Include="src\engine\ui\UIBlock.cpp" />
+    <ClCompile Include="src\engine\ui\UIControl.cpp" />
+    <ClCompile Include="src\engine\ui\UISlider.cpp" />
     <ClCompile Include="src\state\AddState.cpp" />
     <ClCompile Include="src\AppController.cpp" />
     <ClCompile Include="src\Block.cpp" />
@@ -155,7 +159,6 @@
     <ClCompile Include="src\ToolbarController.cpp" />
     <ClCompile Include="src\UIController.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
-    <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\state\ExtrudeState.cpp" />
     <ClCompile Include="src\state\MoveableSelectionState.cpp" />
@@ -166,7 +169,13 @@
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\event\ActionEvent.h" />
+    <ClInclude Include="src\engine\event\ActionListener.h" />
+    <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
     <ClInclude Include="src\engine\ui\Slider.h" />
+    <ClInclude Include="src\engine\ui\UIBlock.h" />
+    <ClInclude Include="src\engine\ui\UIControl.h" />
+    <ClInclude Include="src\engine\ui\UISlider.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
     <ClInclude Include="src\Block.h" />

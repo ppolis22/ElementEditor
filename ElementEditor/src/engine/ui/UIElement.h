@@ -1,29 +1,30 @@
 #pragma once
 
-#include "../EventListener.h"
-#include "../vendor/glm/glm.hpp"
+#include "UIRenderer.h"
+#include <vector>
 
-class UIElement : public EventListener {
+class UIElement {
 public:
-	UIElement(float x, float y, float width, float height, glm::vec3 color, float alpha, bool isEnabled);
+	UIElement(float x, float y, float width, float height);
 	virtual ~UIElement();
 
-	float getX();
-	float getY();
-	float getWidth();
-	float getHeight();
-	virtual glm::vec3 getColor();
-	virtual float getAlpha();
+	virtual float getX();
+	virtual void setX(float x);
+	virtual float getY();
+	virtual void setY(float y);
+	virtual float getWidth();
+	virtual void setWidth(float width);
+	virtual float getHeight();
+	virtual void setHeight(float height);
 
-	virtual void processMouseMovement(MouseMoveEvent& event) override;
-	virtual void processKeyPress(KeyPressEvent& event) override;
-	virtual void processScroll(MouseScrollEvent& event) override;
-	virtual void processMouseDown(MouseButtonDownEvent& event) override;
-	virtual void processMouseUp(MouseButtonUpEvent& event) override;
+	virtual void addChild(UIElement* child);
+	virtual bool withinBounds(float x, float y);
+	virtual void render(UIRenderer* renderer);
+	virtual void update();
 
 protected:
 	float x, y, width, height;
-	bool isHovered, isClicked, isEnabled;
-	glm::vec3 color;
-	float alpha;
+	std::vector<UIElement*> children;
+
+	virtual void renderElement(UIRenderer* renderer);
 };

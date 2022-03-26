@@ -1,8 +1,7 @@
 #include "UIElement.h"
 
-UIElement::UIElement(float x, float y, float width, float height, glm::vec3 color, float alpha, bool isEnabled)
-	: x(x), y(y), width(width), height(height), color(color), alpha(alpha), isEnabled(isEnabled),
-	isHovered(false), isClicked(false) {}
+UIElement::UIElement(float x, float y, float width, float height)
+	: x(x), y(y), width(width), height(height) {}
 
 UIElement::~UIElement() {}
 
@@ -10,28 +9,51 @@ float UIElement::getX() {
 	return x;
 }
 
+void UIElement::setX(float x) {
+	this->x = x;
+}
+
 float UIElement::getY() {
 	return y;
+}
+
+void UIElement::setY(float y) {
+	this->y = y;
 }
 
 float UIElement::getWidth() {
 	return width;
 }
 
+void UIElement::setWidth(float width) {
+	this->width = width;
+}
+
 float UIElement::getHeight() {
 	return height;
 }
 
-glm::vec3 UIElement::getColor() {
-	return color;
+void UIElement::setHeight(float height) {
+	this->height = height;
 }
 
-float UIElement::getAlpha() {
-	return alpha;
+void UIElement::addChild(UIElement* child) {
+	children.push_back(child);
 }
 
-void UIElement::processMouseMovement(MouseMoveEvent& event) {}
-void UIElement::processKeyPress(KeyPressEvent& event) {}
-void UIElement::processScroll(MouseScrollEvent& event) {}
-void UIElement::processMouseDown(MouseButtonDownEvent& event) {}
-void UIElement::processMouseUp(MouseButtonUpEvent& event) {}
+bool UIElement::withinBounds(float x, float y) {
+	return x >= this->x && x <= (this->x + width) && y >= this->y && y <= (this->y + height);
+}
+
+void UIElement::render(UIRenderer* renderer) {
+	this->renderElement(renderer);
+	for (UIElement* child : children) {
+		child->render(renderer);
+	}
+}
+
+void UIElement::renderElement(UIRenderer* renderer) { /* To be overridden in subclasses */ }
+
+void UIElement::update() {
+	// nothing by default, might not need this method
+}

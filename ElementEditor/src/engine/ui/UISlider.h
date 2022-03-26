@@ -1,21 +1,27 @@
 #pragma once
 
 #include "UIControl.h"
-#include "UIBlock.h"
 
-class Button : public UIControl {
+class UISlider : public UIControl {
 public:
-	Button(float x, float y, float width, float height, glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f));
-	virtual ~Button();
+	UISlider(float x, float y, float width, float height);
+	virtual ~UISlider();
 
 	virtual void processMouseMovement(MouseMoveEvent& event) override;
 	virtual void processMouseDown(MouseButtonDownEvent& event) override;
 	virtual void processMouseUp(MouseButtonUpEvent& event) override;
 
 	virtual void renderElement(UIRenderer* renderer) override;
+	virtual float getValue();
+	virtual float setValue(float value);
 
-private:
-	UIBlock* body;
-	glm::vec3 color;
+protected:
 	bool isHovered, isClicked;
+	UIBlock* marker;
+	UIBlock* line;
+	glm::vec3 markerColor;
+	float value;
+
+	static const float MARKER_WIDTH;
+	static const float LINE_HEIGHT;
 };
