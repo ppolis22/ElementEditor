@@ -13,11 +13,6 @@ AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, Chunk
 	this->state = new AddState(this);
 }
 
-void AppController::addUIController(UIController* uiController) {
-	uiController->setController(this);
-	uiControllers.push_back(uiController);
-}
-
 void AppController::setAddTool() {
 	changeActiveTool(new AddState(this));
 }
@@ -77,10 +72,9 @@ void AppController::processMouseDown(MouseButtonDownEvent& event) {
 
 void AppController::render() {
 	state->render();
-	for (UIController* uiController : uiControllers) {
-		for (UIElement* uiElement : uiController->getUIElements()) {
-			uiRenderer->render(*uiElement);
-		}
+	UIElement* rootElement = window->getRootUIElement();
+	if (rootElement != nullptr) {
+		rootElement->render(uiRenderer);
 	}
 }
 

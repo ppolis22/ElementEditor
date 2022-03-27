@@ -1,7 +1,7 @@
 #include "UIElement.h"
 
 UIElement::UIElement(float x, float y, float width, float height)
-	: x(x), y(y), width(width), height(height) {}
+	: x(x), y(y), width(width), height(height), color(glm::vec3(0.5f, 0.5f, 0.5f)), alpha(0.0f), enabled(true) {}
 
 UIElement::~UIElement() {}
 
@@ -37,8 +37,46 @@ void UIElement::setHeight(float height) {
 	this->height = height;
 }
 
+glm::vec3 UIElement::getColor() {
+	return color;
+}
+
+void UIElement::setColor(glm::vec3 color) {
+	this->color = color;
+}
+
+float UIElement::getAlpha() {
+	return alpha;
+}
+
+void UIElement::setAlpha(float alpha) {
+	this->alpha = alpha;
+}
+
 void UIElement::addChild(UIElement* child) {
 	children.push_back(child);
+}
+
+std::vector<UIElement*> UIElement::getChildren() {
+	return children;
+}
+
+bool UIElement::isEnabled() {
+	return enabled;
+}
+
+void UIElement::setEnabled(bool enabled) {
+	this->enabled = enabled;
+}
+
+void UIElement::addListener(ActionListner* listener) {
+	listeners.push_back(listener);
+}
+
+void UIElement::alertListeners() {
+	for (ActionListner* listener : listeners) {
+		listener->actionPerformed({ this });
+	}
 }
 
 bool UIElement::withinBounds(float x, float y) {
@@ -52,7 +90,11 @@ void UIElement::render(UIRenderer* renderer) {
 	}
 }
 
-void UIElement::renderElement(UIRenderer* renderer) { /* To be overridden in subclasses */ }
+void UIElement::renderElement(UIRenderer* renderer) { 
+	if (alpha != 0.0f) {
+		renderer->renderQuad(x, y, width, height, color, alpha);
+	}
+}
 
 void UIElement::update() {
 	// nothing by default, might not need this method

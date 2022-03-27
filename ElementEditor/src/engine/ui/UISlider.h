@@ -1,8 +1,8 @@
 #pragma once
 
-#include "UIControl.h"
+#include "UIElement.h"
 
-class UISlider : public UIControl {
+class UISlider : public UIElement {
 public:
 	UISlider(float x, float y, float width, float height);
 	virtual ~UISlider();
@@ -13,13 +13,14 @@ public:
 
 	virtual void renderElement(UIRenderer* renderer) override;
 	virtual float getValue();
-	virtual float setValue(float value);
+	virtual void setValue(float value);
 
 protected:
 	bool isHovered, isClicked;
-	UIBlock* marker;
-	UIBlock* line;
+	UIElement* marker;
+	UIElement* line;
 	glm::vec3 markerColor;
+	glm::vec3 lineColor;
 	float value;
 
 	static const float MARKER_WIDTH;

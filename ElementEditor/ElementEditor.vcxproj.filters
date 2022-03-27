@@ -66,12 +66,6 @@
     <ClCompile Include="src\engine\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ui\Command.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\RenderRegion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\AppController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,25 +96,13 @@
     <ClCompile Include="src\state\ExtrudeState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\UIController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderRegionController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ToolbarController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\UIControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\ui\UISlider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ui\UIBlock.cpp">
+    <ClCompile Include="src\ToolbarUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1031,9 +1013,6 @@
     <ClInclude Include="src\engine\ui\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ui\Command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\event\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1044,9 +1023,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\EventListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\ui\RenderRegion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\AppController.h">
@@ -1085,31 +1061,19 @@
     <ClInclude Include="src\engine\ui\Slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\UIController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderRegionController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ToolbarController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\ui\UIControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\ui\UISlider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\ui\BasicUIRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ui\UIBlock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\event\ActionEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\event\ActionListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolbarUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

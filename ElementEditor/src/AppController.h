@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UIController.h"
 #include "engine/Camera.h"
 #include "engine/ModelRenderer.h"
 #include "ChunkManager.h"
@@ -14,23 +13,22 @@
 
 #include <vector>
 
-class AppController {
+class AppController : public EventListener {
 public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
 		UIRenderer* uiRenderer, Window* window);
 
-	void addUIController(UIController* uiController);
 	void setAddTool();
 	void setSubtractTool();
 	void setSelectTool();
 	void setMoveTool();
 	void setExtrudeTool();
 
-	void processMouseMovement(MouseMoveEvent& event);
-	void processScroll(MouseScrollEvent& event);
-	void processKeyPress(KeyPressEvent& event);
-	void processMouseUp(MouseButtonUpEvent& event);
-	void processMouseDown(MouseButtonDownEvent& event);
+	void processMouseMovement(MouseMoveEvent& event) override;
+	void processScroll(MouseScrollEvent& event) override;
+	void processKeyPress(KeyPressEvent& event) override;
+	void processMouseUp(MouseButtonUpEvent& event) override;
+	void processMouseDown(MouseButtonDownEvent& event) override;
 	void render();
 
 	Camera* getCamera();
@@ -40,7 +38,6 @@ public:
 	Window* getWindow();
 
 private:
-	std::vector<UIController*> uiControllers;
 	BaseEditorState* state;
 	Camera* camera;
 	ModelRenderer* modelRenderer;

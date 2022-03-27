@@ -132,8 +132,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
-    <ClCompile Include="src\engine\ui\UIBlock.cpp" />
-    <ClCompile Include="src\engine\ui\UIControl.cpp" />
     <ClCompile Include="src\engine\ui\UISlider.cpp" />
     <ClCompile Include="src\state\AddState.cpp" />
     <ClCompile Include="src\AppController.cpp" />
@@ -153,11 +151,7 @@
     <ClCompile Include="src\engine\Shader.cpp" />
     <ClCompile Include="src\engine\TranslateHandles.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
-    <ClCompile Include="src\engine\ui\Command.cpp" />
-    <ClCompile Include="src\engine\ui\RenderRegion.cpp" />
-    <ClCompile Include="src\RenderRegionController.cpp" />
-    <ClCompile Include="src\ToolbarController.cpp" />
-    <ClCompile Include="src\UIController.cpp" />
+    <ClCompile Include="src\ToolbarUI.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\state\ExtrudeState.cpp" />
@@ -173,8 +167,6 @@
     <ClInclude Include="src\engine\event\ActionListener.h" />
     <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
     <ClInclude Include="src\engine\ui\Slider.h" />
-    <ClInclude Include="src\engine\ui\UIBlock.h" />
-    <ClInclude Include="src\engine\ui\UIControl.h" />
     <ClInclude Include="src\engine\ui\UISlider.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
@@ -202,12 +194,8 @@
     <ClInclude Include="src\engine\Shader.h" />
     <ClInclude Include="src\engine\TranslateHandles.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
-    <ClInclude Include="src\engine\ui\Command.h" />
-    <ClInclude Include="src\engine\ui\RenderRegion.h" />
-    <ClInclude Include="src\RenderRegionController.h" />
-    <ClInclude Include="src\ToolbarController.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
-    <ClInclude Include="src\UIController.h" />
+    <ClInclude Include="src\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\state\ExtrudeState.h" />

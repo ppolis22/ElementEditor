@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ui/UIElement"
+class UIElement;
 
 struct ActionEvent {
 	UIElement* source;

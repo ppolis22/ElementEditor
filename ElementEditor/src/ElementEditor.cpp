@@ -5,10 +5,9 @@
 #include "engine/Point3d.h"
 #include "engine/ui/UIRenderer.h"
 #include "engine/ui/Button.h"
-#include "engine/ui/Command.h"
+#include "engine/ui/BasicUIRenderer.h"
 #include "engine/event/Event.h"
-#include "ToolbarController.h"
-#include "RenderRegionController.h"
+#include "ToolbarUI.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -31,7 +30,7 @@ void ElementEditor::run() {
 	glEnable(GL_CULL_FACE);
 
 	MeshBuilder2d meshBuilder2d;
-	UIRenderer* uiRenderer = new UIRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
+	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer();
 	ChunkManager* modelChunkManager = new ChunkManager();
@@ -45,12 +44,10 @@ void ElementEditor::run() {
 	modelChunkManager->rebuildChunkMeshes();
 
 	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);
+	window->setApplicationEventListener(&appController);
 
-	ToolbarController toolbarController(window);
-	appController.addUIController(&toolbarController);
-
-	RenderRegionController renderRegionController(window);
-	appController.addUIController(&renderRegionController);
+	ToolbarUI toolbarUI(&appController);
+	window->setRootUIElement(&toolbarUI);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
