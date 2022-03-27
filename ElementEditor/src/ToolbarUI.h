@@ -23,5 +23,7 @@ private:
 	Button* moveButton;
 	Button* extrudeButton;
 
-	UISlider* slider;
+	UISlider* rSlider;
+	UISlider* gSlider;
+	UISlider* bSlider;
 };

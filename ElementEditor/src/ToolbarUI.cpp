@@ -3,7 +3,7 @@
 #include "AppController.h"
 
 ToolbarUI::ToolbarUI(AppController* controller)
-	: UIElement(10.0f, 10.0f, 65.0f, 295.0f), controller(controller)
+	: UIElement(10.0f, 10.0f, 65.0f, 500.0f), controller(controller)
 {
 	addButton = new Button(20.0f, 20.0f, 45.0f, 45.0f);
 	addButton->addListener(this);
@@ -25,9 +25,20 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	extrudeButton->addListener(this);
 	addChild(extrudeButton);
 
-	slider = new UISlider(20.0f, 290.0f, 100.0f, 45.0f);
-	slider->addListener(this);
-	addChild(slider);
+	rSlider = new UISlider(20.0f, 295.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	rSlider->addListener(this);
+	rSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
+	addChild(rSlider);
+
+	gSlider = new UISlider(20.0f, 330.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	gSlider->addListener(this);
+	gSlider->setMarkerColor(glm::vec3(0.20f, 0.49f, 0.22f));
+	addChild(gSlider);
+
+	bSlider = new UISlider(20.0f, 365.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	bSlider->addListener(this);
+	bSlider->setMarkerColor(glm::vec3(0.22f, 0.55f, 0.96f));
+	addChild(bSlider);
 }
 
 ToolbarUI::~ToolbarUI() {
@@ -36,7 +47,9 @@ ToolbarUI::~ToolbarUI() {
 	delete selectButton;
 	delete moveButton;
 	delete extrudeButton;
-	delete slider;
+	delete rSlider;
+	delete gSlider;
+	delete bSlider;
 }
 
 void ToolbarUI::actionPerformed(const ActionEvent& e) {

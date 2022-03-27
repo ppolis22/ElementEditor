@@ -5,9 +5,10 @@
 const float UISlider::MARKER_WIDTH = 10.0f;
 const float UISlider::LINE_HEIGHT = 5.0f;
 
-UISlider::UISlider(float x, float y, float width, float height)
+UISlider::UISlider(float x, float y, float width, float height, float minValue, float maxValue)
 	: UIElement(x, y, width, height), 
-	isHovered(false), isClicked(false), markerColor(glm::vec3(0.5, 0.5, 0.8)), lineColor(glm::vec3(0.75, 0.75, 0.75))
+	isHovered(false), isClicked(false), minValue(minValue), maxValue(maxValue), 
+	markerColor(glm::vec3(0.4, 0.4, 0.4)), lineColor(glm::vec3(0.75, 0.75, 0.75))
 {
 	marker = new UIElement(x, y, MARKER_WIDTH, height);
 	marker->setColor(markerColor);
@@ -31,11 +32,17 @@ float UISlider::getValue() {
 }
 
 void UISlider::setValue(float value) {
-	if (value < 0.0f || value > width) {
+	if (value < minValue || value > maxValue) {
 		return;
 	}
 
-	marker->setX(value + x);
+	this->value = value;
+	float markerXPos = calculatePositionFromValue(value);
+	marker->setX(markerXPos);
+}
+
+void UISlider::setMarkerColor(glm::vec3 color) {
+	markerColor = color;
 }
 
 void UISlider::processMouseMovement(MouseMoveEvent& event) {
@@ -44,7 +51,8 @@ void UISlider::processMouseMovement(MouseMoveEvent& event) {
 		float markerXPos = fminf(event.rawX, x + width);
 		markerXPos = fmaxf(markerXPos, x);
 		marker->setX(markerXPos);
-		setValue(markerXPos - x);
+
+		value = calculateValueFromPosition(markerXPos);
 		alertListeners();
 	}
 }
@@ -69,4 +77,12 @@ void UISlider::renderElement(UIRenderer* renderer) {
 	}
 
 	UIElement::renderElement(renderer);
+}
+
+float UISlider::calculateValueFromPosition(float position) {
+	return (((position - x) / width) * (maxValue - minValue)) + minValue;
+}
+
+float UISlider::calculatePositionFromValue(float value) {
+	return (((value - minValue) / (maxValue - minValue)) * width) + x;
 }
