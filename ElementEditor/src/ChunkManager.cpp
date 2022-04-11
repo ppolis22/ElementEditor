@@ -67,7 +67,7 @@ BlockColor ChunkManager::getBlockColor(Point3di location) {
 
 	auto it = allChunks.find({ chunkX, chunkY, chunkZ });
 	if (it == allChunks.end()) {
-		return {0, 0, 0, true};
+		return BlockColor::EMPTY();
 	}
 	return it->second.getBlockColor({ location.x - chunkX, location.y - chunkY, location.z - chunkZ });
 }

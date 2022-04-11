@@ -9,7 +9,7 @@
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
 	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0, false}) {
+	uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0 }) {
 	this->state = new AddState(this);
 }
 

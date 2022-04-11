@@ -11,7 +11,7 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	zPosition(zPos),
 	mesh({0, 0, 0, 0}),
 	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
-	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor())))
+	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor::EMPTY())))
 	{}
 
 Chunk::~Chunk() {}
@@ -21,11 +21,11 @@ void Chunk::unloadMesh() {
 }
 
 void Chunk::setBlockColor(BlockColor color, Point3di location) {
-	data[location.x][location.y][location.z] = {color.r, color.b, color.g, color.empty};		// should we check if indices are in bounds?
+	data[location.x][location.y][location.z] = { color.r, color.b, color.g, color.alpha };		// should we check if indices are in bounds?
 }
 
 void Chunk::removeBlock(Point3di location) {
-	data[location.x][location.y][location.z].empty = true;
+	data[location.x][location.y][location.z] = BlockColor::EMPTY();
 }
 
 void Chunk::addSelection(Point3di location) {
@@ -43,7 +43,7 @@ void Chunk::selectAll() {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
-				if (!data[x][y][z].empty) {
+				if (!data[x][y][z].isEmpty()) {
 					selectedBlocks.push_back({x, y, z});
 				}
 			}
@@ -87,7 +87,7 @@ void Chunk::rebuildMesh() {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
-				if (!data[x][y][z].empty) {
+				if (!data[x][y][z].isEmpty()) {
 					buildBlockMesh(x, y, z, data[x][y][z]);
 				}
 			}
@@ -125,32 +125,32 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	Point3df leftTopFar{ leftX, upY, farZ };
 	Point3df rightTopFar{ rightX, upY, farZ };
 
-	if ((x == 0 && !checkNeighborChunk(x - 1, y, z)) || (x != 0 && data[x - 1][y][z].empty)) {
+	if ((x == 0 && !checkNeighborChunk(x - 1, y, z)) || (x != 0 && data[x - 1][y][z].isEmpty())) {
 		Point3df leftNormal{ -1.0f, 0.0f, 0.0f };
 		meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, leftNormal, renderColor);
 	}
 
-	if ((x == CHUNK_SIZE - 1 && !checkNeighborChunk(x + 1, y, z)) || (x != CHUNK_SIZE - 1 && data[x + 1][y][z].empty)) {
+	if ((x == CHUNK_SIZE - 1 && !checkNeighborChunk(x + 1, y, z)) || (x != CHUNK_SIZE - 1 && data[x + 1][y][z].isEmpty())) {
 		Point3df rightNormal{ 1.0f, 0.0f, 0.0f };
 		meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, rightNormal, renderColor);
 	}
 
-	if ((z == 0 && !checkNeighborChunk(x, y, z - 1)) || (z != 0 && data[x][y][z - 1].empty)) {
+	if ((z == 0 && !checkNeighborChunk(x, y, z - 1)) || (z != 0 && data[x][y][z - 1].isEmpty())) {
 		Point3df backNormal{ 0.0f, 0.0f, -1.0f };
 		meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, backNormal, renderColor);
 	}
 
-	if ((z == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y, z + 1)) || (z != CHUNK_SIZE - 1 && data[x][y][z + 1].empty)) {
+	if ((z == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y, z + 1)) || (z != CHUNK_SIZE - 1 && data[x][y][z + 1].isEmpty())) {
 		Point3df frontNormal{ 0.0f, 0.0f, 1.0f };
 		meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, frontNormal, renderColor);
 	}
 
-	if ((y == 0 && !checkNeighborChunk(x, y - 1, z)) || (y != 0 && data[x][y - 1][z].empty)) {
+	if ((y == 0 && !checkNeighborChunk(x, y - 1, z)) || (y != 0 && data[x][y - 1][z].isEmpty())) {
 		Point3df bottomNormal{ 0.0f, -1.0f, 0.0f };
 		meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, renderColor);
 	}
 
-	if ((y == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y + 1, z)) || (y != CHUNK_SIZE - 1 && data[x][y + 1][z].empty)) {
+	if ((y == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y + 1, z)) || (y != CHUNK_SIZE - 1 && data[x][y + 1][z].isEmpty())) {
 		Point3df topNormal{ 0.0f, 1.0f, 0.0f };
 		meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, topNormal, renderColor);
 	}

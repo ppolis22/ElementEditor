@@ -37,7 +37,7 @@ void ElementEditor::run() {
 	ChunkManager* previewChunkManager = new ChunkManager();
 
 	// TODO replace with some sort of Loader class
-	BlockColor defaultColor{ 0, 0, 255, false };
+	BlockColor defaultColor{ 0, 0, 255 };
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });

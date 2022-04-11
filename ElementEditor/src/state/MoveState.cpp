@@ -13,7 +13,7 @@ MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockC
 	moveVector{0, 0, 0}
 {
 	for (const auto& entry : selection) {
-		coveredModelCopy.emplace(entry.first, BlockColor{ 0, 0, 0, true });
+		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
 	}
 }
 
