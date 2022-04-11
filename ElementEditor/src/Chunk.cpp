@@ -21,7 +21,7 @@ void Chunk::unloadMesh() {
 }
 
 void Chunk::setBlockColor(BlockColor color, Point3di location) {
-	data[location.x][location.y][location.z] = { color.r, color.b, color.g, color.alpha };		// should we check if indices are in bounds?
+	data[location.x][location.y][location.z] = color;		// should we check if indices are in bounds?
 }
 
 void Chunk::removeBlock(Point3di location) {
@@ -102,7 +102,7 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	glm::vec3 renderColor((float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f);
 
 	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) != selectedBlocks.end()) {	
-		renderColor = { 1.0, 0.55, 0.16 };		// TODO refernce constant System colors for "selected" color
+		renderColor = { 1.0f, 0.55f, 0.16f };		// TODO refernce constant System colors for "selected" color
 	}
 
 	float xCoord = x * BLOCK_RENDER_SIZE + xPosition;

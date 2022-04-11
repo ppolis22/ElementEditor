@@ -9,10 +9,10 @@ MeshBuilder3d::~MeshBuilder3d() {}
 
 void MeshBuilder3d::addFace(Point3df& p0, Point3df& p1, Point3df& p2, Point3df& p3,
 	Point3df& normal, glm::vec3 color) {
-	currentVertexData.insert(currentVertexData.end(), { p0.x, p0.y, p0.z, normal.x, normal.y, normal.z, color.r, color.b, color.g });
-	currentVertexData.insert(currentVertexData.end(), { p1.x, p1.y, p1.z, normal.x, normal.y, normal.z, color.r, color.b, color.g });
-	currentVertexData.insert(currentVertexData.end(), { p2.x, p2.y, p2.z, normal.x, normal.y, normal.z, color.r, color.b, color.g });
-	currentVertexData.insert(currentVertexData.end(), { p3.x, p3.y, p3.z, normal.x, normal.y, normal.z, color.r, color.b, color.g });
+	currentVertexData.insert(currentVertexData.end(), { p0.x, p0.y, p0.z, normal.x, normal.y, normal.z, color.r, color.g, color.b });
+	currentVertexData.insert(currentVertexData.end(), { p1.x, p1.y, p1.z, normal.x, normal.y, normal.z, color.r, color.g, color.b });
+	currentVertexData.insert(currentVertexData.end(), { p2.x, p2.y, p2.z, normal.x, normal.y, normal.z, color.r, color.g, color.b });
+	currentVertexData.insert(currentVertexData.end(), { p3.x, p3.y, p3.z, normal.x, normal.y, normal.z, color.r, color.g, color.b });
 
 	currentIndices.insert(currentIndices.end(), { numVertices, numVertices + 1, numVertices + 2,
 		numVertices + 2, numVertices + 3, numVertices });
