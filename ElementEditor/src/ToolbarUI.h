@@ -27,4 +27,6 @@ private:
 	UISlider* rSlider;
 	UISlider* gSlider;
 	UISlider* bSlider;
+
+	UIElement* colorPreviewBox;
 };

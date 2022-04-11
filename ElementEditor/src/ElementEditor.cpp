@@ -49,6 +49,7 @@ void ElementEditor::run() {
 
 	ToolbarUI toolbarUI(&appController);
 	window->setRootUIElement(&toolbarUI);
+	appController.setActiveColor(defaultColor);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);

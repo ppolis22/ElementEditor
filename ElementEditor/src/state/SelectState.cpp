@@ -22,6 +22,7 @@ void SelectState::processMouseUp(MouseButtonUpEvent& event) {
 			} else {
 				addToSelection(blockLocation);
 			}
+			window->updateUI();		// so move and extrude buttons enable/disable
 			break;
 		}
 	}

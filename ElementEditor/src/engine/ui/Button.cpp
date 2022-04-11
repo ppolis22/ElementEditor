@@ -13,7 +13,7 @@ Button::Button(float x, float y, float width, float height, glm::vec3 color)
 }
 
 void Button::processMouseMovement(MouseMoveEvent& event) {
-	isHovered = withinBounds(event.rawX, event.rawY);
+	isHovered = withinBounds(event.rawX, event.rawY) && enabled;
 }
 
 void Button::processMouseDown(MouseButtonDownEvent& event) {

@@ -23,6 +23,7 @@ public:
 	void setApplicationEventListener(EventListener* listener);
 	void setRootUIElement(UIElement* element);
 	UIElement* getRootUIElement();
+	void updateUI();	// TODO add filter to specify which elements to update
 
 private:
 	GLFWwindow* glfwWindow;

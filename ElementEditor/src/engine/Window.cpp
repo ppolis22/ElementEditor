@@ -63,7 +63,23 @@ UIElement* Window::getRootUIElement() {
 	return rootUIElement;
 }
 
+static void updateUIElement(UIElement* element) {
+	if (element == nullptr) {
+		return;
+	}
+
+	element->update();
+	for (UIElement* child : element->getChildren()) {
+		updateUIElement(child);
+	}
+}
+
+void Window::updateUI() {
+	updateUIElement(rootUIElement);
+}
+
 void Window::registerEventListener(UIElement* listener) {
+	// register children as event listeners first, so event response is in reverse draw order
 	if (listener != nullptr) {
 		for (UIElement* child : listener->getChildren()) {
 			registerEventListener(child);

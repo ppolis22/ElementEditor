@@ -99,7 +99,7 @@ void Chunk::rebuildMesh() {
 
 void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	Point3di location {x, y, z};
-	glm::vec3 renderColor((float)color.r / 255.0f, (float)color.g / 255.0f, (float)color.b / 255.0f);
+	glm::vec3 renderColor(color.getNormalizedR(), color.getNormalizedG(), color.getNormalizedB());
 
 	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) != selectedBlocks.end()) {	
 		renderColor = { 1.0f, 0.55f, 0.16f };		// TODO refernce constant System colors for "selected" color

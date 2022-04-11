@@ -97,5 +97,5 @@ void UIElement::renderElement(UIRenderer* renderer) {
 }
 
 void UIElement::update() {
-	// nothing by default, might not need this method
+	// nothing by default
 }

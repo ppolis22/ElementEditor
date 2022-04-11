@@ -111,6 +111,7 @@ void AppController::changeActiveTool(BaseEditorState* newState) {
 	}
 	state = newState;
 	state->init();
+	window->updateUI();
 }
 
 BlockColor AppController::getActiveColor() {
@@ -119,5 +120,5 @@ BlockColor AppController::getActiveColor() {
 
 void AppController::setActiveColor(BlockColor newColor) {
 	this->activeColor = newColor;
-	// update sliders on ToolbarUI, via some sort of updateListeners() call to ui elements?
+	window->updateUI();
 }

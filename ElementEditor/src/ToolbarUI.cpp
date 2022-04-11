@@ -25,17 +25,21 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	extrudeButton->addListener(this);
 	addChild(extrudeButton);
 
-	rSlider = new UISlider(20.0f, 295.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	colorPreviewBox = new UIElement(20.0f, 315.0f, 100.0f, 25.0f);
+	colorPreviewBox->setAlpha(1.0f);
+	addChild(colorPreviewBox);
+
+	rSlider = new UISlider(20.0f, 350.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	rSlider->addListener(this);
 	rSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
 	addChild(rSlider);
 
-	gSlider = new UISlider(20.0f, 330.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	gSlider = new UISlider(20.0f, 385.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	gSlider->addListener(this);
 	gSlider->setMarkerColor(glm::vec3(0.20f, 0.49f, 0.22f));
 	addChild(gSlider);
 
-	bSlider = new UISlider(20.0f, 365.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	bSlider = new UISlider(20.0f, 420.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	bSlider->addListener(this);
 	bSlider->setMarkerColor(glm::vec3(0.22f, 0.55f, 0.96f));
 	addChild(bSlider);
@@ -72,4 +76,11 @@ void ToolbarUI::actionPerformed(const ActionEvent& e) {
 void ToolbarUI::update() {
 	moveButton->setEnabled(controller->canSetMoveTool());
 	extrudeButton->setEnabled(controller->canSetExtrudeTool());
+
+	BlockColor activeColor = controller->getActiveColor();
+	rSlider->setValue(activeColor.r);
+	gSlider->setValue(activeColor.g);
+	bSlider->setValue(activeColor.b);
+
+	colorPreviewBox->setColor(glm::vec3(activeColor.getNormalizedR(), activeColor.getNormalizedG(), activeColor.getNormalizedB()));
 }
