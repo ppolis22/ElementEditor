@@ -24,25 +24,26 @@ public:
 
 	void rebuildMesh();
 	void unloadMesh();
-	void setBlock(BlockType type, Point3di location);
+	void setBlockColor(BlockColor color, Point3di location);
+	void removeBlock(Point3di location);
 	void addSelection(Point3di location);
 	void removeSelection(Point3di location);
 	void selectAll();
 	void deselectAll();
 	std::vector<Point3di> getSelection();
-	BlockType getBlock(Point3di location);
+	BlockColor getBlockColor(Point3di location);
 	Shader& getShader() override;
 	Mesh& getMesh() override;
 	glm::mat4 getTransformation() override;
 
 private:
-	std::vector<std::vector<std::vector<BlockType>>> data;
+	std::vector<std::vector<std::vector<BlockColor>>> data;
 	std::vector <Point3di> selectedBlocks;
 	MeshBuilder3d meshBuilder;
 	Mesh mesh;
 	Shader chunkShader;
 	int xPosition, yPosition, zPosition;
 
-	void buildBlockMesh(int x, int y, int z, BlockType type);
+	void buildBlockMesh(int x, int y, int z, BlockColor color);
 	bool checkNeighborChunk(int x, int y, int z);	// placeholder for method, likely in ChunkManager
 };

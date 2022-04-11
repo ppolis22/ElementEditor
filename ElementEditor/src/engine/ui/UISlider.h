@@ -12,6 +12,7 @@ public:
 	virtual void processMouseUp(MouseButtonUpEvent& event) override;
 
 	virtual void renderElement(UIRenderer* renderer) override;
+	virtual bool withinBounds(float x, float y) override;
 	virtual float getValue();
 	virtual void setValue(float value);
 	virtual void setMarkerColor(glm::vec3 color);

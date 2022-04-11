@@ -1,18 +1,14 @@
 #pragma once
 
-enum BlockType : unsigned char {
-	Empty = 0,
-	Grass,
-	Stone,
-	Selected
+struct BlockColor {
+	unsigned char r, g, b;
+	bool empty = true;		// replace with alpha
 };
 
 class Block {
 public:
-	Block();
-	~Block();
+	BlockColor getColor();
 
-	BlockType getType();
 private:
-	BlockType type;
+	BlockColor color;
 };

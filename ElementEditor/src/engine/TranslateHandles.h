@@ -36,8 +36,8 @@ private:
 	float xHandleLeft, xHandleRight, xHandleTop, xHandleBottom, xHandleNear, xHandleFar;
 	float yHandleLeft, yHandleRight, yHandleTop, yHandleBottom, yHandleNear, yHandleFar;
 	float zHandleLeft, zHandleRight, zHandleTop, zHandleBottom, zHandleNear, zHandleFar;
-	BlockType xColor, yColor, zColor;
+	glm::vec3 xColor, yColor, zColor;
 
 	Mesh buildMesh();
-	void buildHandleMesh(MeshBuilder3d& meshBuilder, BlockType color, float left, float right, float top, float bottom, float near, float far);
+	void buildHandleMesh(MeshBuilder3d& meshBuilder, glm::vec3 color, float left, float right, float top, float bottom, float near, float far);
 };

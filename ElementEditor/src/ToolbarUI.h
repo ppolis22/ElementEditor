@@ -13,6 +13,7 @@ public:
 	~ToolbarUI();
 
 	void actionPerformed(const ActionEvent& e) override;
+	void update() override;
 
 private:
 	AppController* controller;

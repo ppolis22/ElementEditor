@@ -27,6 +27,10 @@ UISlider::~UISlider() {
 	delete line;
 }
 
+bool UISlider::withinBounds(float x, float y) {
+	return marker->withinBounds(x, y);
+}
+
 float UISlider::getValue() {
 	return value;
 }

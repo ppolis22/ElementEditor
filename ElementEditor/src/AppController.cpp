@@ -9,7 +9,7 @@
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
 	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	uiRenderer(uiRenderer), window(window) {
+	uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0, false}) {
 	this->state = new AddState(this);
 }
 
@@ -26,17 +26,23 @@ void AppController::setSelectTool() {
 }
 
 void AppController::setMoveTool() {
-	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection = modelChunkManager->getSelected();
-	if (selection.size() > 0) {
-		changeActiveTool(new MoveState(this, selection));
+	if (canSetMoveTool()) {
+		changeActiveTool(new MoveState(this, modelChunkManager->getSelected()));
 	}
 }
 
 void AppController::setExtrudeTool() {
-	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection = modelChunkManager->getSelected();
-	if (selection.size() > 0) {
-		changeActiveTool(new ExtrudeState(this, selection));
+	if (canSetExtrudeTool()) {
+		changeActiveTool(new ExtrudeState(this, modelChunkManager->getSelected()));
 	}
+}
+
+bool AppController::canSetMoveTool() {
+	return !modelChunkManager->getSelected().empty();
+}
+
+bool AppController::canSetExtrudeTool() {
+	return !modelChunkManager->getSelected().empty();
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -105,4 +111,13 @@ void AppController::changeActiveTool(BaseEditorState* newState) {
 	}
 	state = newState;
 	state->init();
+}
+
+BlockColor AppController::getActiveColor() {
+	return activeColor;
+}
+
+void AppController::setActiveColor(BlockColor newColor) {
+	this->activeColor = newColor;
+	// update sliders on ToolbarUI, via some sort of updateListeners() call to ui elements?
 }

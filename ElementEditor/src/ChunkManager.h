@@ -15,13 +15,13 @@ public:
 
 	static const int CHUNK_SIZE = 4;
 
-	void setBlock(BlockType type, Point3di location);
+	void setBlockColor(BlockColor color, Point3di location);
 	void setSelected(bool isSelected, Point3di location);
-	BlockType getBlock(Point3di location);
+	BlockColor getBlockColor(Point3di location);
 	std::vector<Chunk> getAllChunks();
 	void rebuildChunkMeshes();
 	void clear();
-	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> getSelected();
+	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> getSelected();
 	void selectAll();
 	void deselectAll();
 

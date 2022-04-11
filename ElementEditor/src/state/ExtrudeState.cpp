@@ -6,12 +6,12 @@
 
 #include <algorithm>
 
-ExtrudeState::ExtrudeState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection)
+ExtrudeState::ExtrudeState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection)
 	: MoveableSelectionState(context, selection),
 	moveVector{ 0, 0, 0 }
 {
 	for (const auto& entry : selection) {
-		coveredModelCopy.emplace(entry.first, Empty);
+		coveredModelCopy.emplace(entry.first, BlockColor{ 0, 0, 0, true });
 		extrusion.emplace(entry.first, entry.second);
 	}
 }
@@ -68,7 +68,7 @@ void ExtrudeState::setExtrusion() {
 	// replace blocks extrusion was covering from copy
 	ChunkManager* chunkManager = context->getModelChunkManager();
 	for (const auto& entry : coveredModelCopy) {
-		chunkManager->setBlock(entry.second, entry.first);
+		chunkManager->setBlockColor(entry.second, entry.first);
 		chunkManager->setSelected(false, entry.first);
 	}
 
@@ -78,9 +78,9 @@ void ExtrudeState::setExtrusion() {
 	coveredModelCopy.clear();
 	for (auto& entry : extrusion) {
 		Point3di extrusionPoint = entry.first;
-		coveredModelCopy.emplace(extrusionPoint, chunkManager->getBlock(extrusionPoint));
+		coveredModelCopy.emplace(extrusionPoint, chunkManager->getBlockColor(extrusionPoint));
 		// set extrusion
-		chunkManager->setBlock(entry.second, extrusionPoint);
+		chunkManager->setBlockColor(entry.second, extrusionPoint);
 		chunkManager->setSelected(true, extrusionPoint);
 	}
 	chunkManager->rebuildChunkMeshes();

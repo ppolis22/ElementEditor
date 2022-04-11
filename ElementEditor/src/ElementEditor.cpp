@@ -37,10 +37,11 @@ void ElementEditor::run() {
 	ChunkManager* previewChunkManager = new ChunkManager();
 
 	// TODO replace with some sort of Loader class
-	modelChunkManager->setBlock(Stone, { 0, 0, 0 });
-	modelChunkManager->setBlock(Stone, { 1, 0, 0 });
-	modelChunkManager->setBlock(Stone, { 0, 1, 0 });
-	modelChunkManager->setBlock(Stone, { 0, 0, 1 });
+	BlockColor defaultColor{ 0, 0, 255, false };
+	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
 	modelChunkManager->rebuildChunkMeshes();
 
 	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);

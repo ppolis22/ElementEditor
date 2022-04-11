@@ -24,12 +24,18 @@ public:
 	void setMoveTool();
 	void setExtrudeTool();
 
+	bool canSetMoveTool();
+	bool canSetExtrudeTool();
+
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void processScroll(MouseScrollEvent& event) override;
 	void processKeyPress(KeyPressEvent& event) override;
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseDown(MouseButtonDownEvent& event) override;
+	
 	void render();
+	BlockColor getActiveColor();
+	void setActiveColor(BlockColor newColor);
 
 	Camera* getCamera();
 	ModelRenderer* getModelRenderer();
@@ -45,6 +51,7 @@ private:
 	ChunkManager* previewChunkManager;
 	Window* window;
 	UIRenderer* uiRenderer;
+	BlockColor activeColor;
 
 	void changeActiveTool(BaseEditorState* newState);
 };

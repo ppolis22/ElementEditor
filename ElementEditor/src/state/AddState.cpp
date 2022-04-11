@@ -19,7 +19,7 @@ void AddState::processMouseUp(MouseButtonUpEvent& event) {
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 
 	if (readyToAdd) {
-		modelChunkManager->setBlock(Grass, toAddCoords);
+		modelChunkManager->setBlockColor(context->getActiveColor(), toAddCoords);
 		modelChunkManager->rebuildChunkMeshes();
 	}
 }
@@ -31,14 +31,14 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 
 	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.rawX, event.rawY);
 	for (int i = 1; i < intersectedBlocks.size(); i++) {
-		if (modelChunkManager->getBlock(intersectedBlocks[i]) != Empty) {
+		if (!modelChunkManager->getBlockColor(intersectedBlocks[i]).empty) {
 			Point3di targetToAdd = intersectedBlocks[i - 1];
 			if (readyToAdd && targetToAdd != toAddCoords) {
-				previewChunkManager->setBlock(Empty, toAddCoords);
+				previewChunkManager->setBlockColor({ 0, 0, 0, true }, toAddCoords);
 			}
 			if (!readyToAdd || targetToAdd != toAddCoords) {
 				toAddCoords = targetToAdd;
-				previewChunkManager->setBlock(Grass, toAddCoords);
+				previewChunkManager->setBlockColor(context->getActiveColor(), toAddCoords);
 				previewChunkManager->rebuildChunkMeshes();
 			}
 			readyToAdd = true;
@@ -47,7 +47,7 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	}
 
 	if (readyToAdd) {
-		previewChunkManager->setBlock(Empty, toAddCoords);
+		previewChunkManager->setBlockColor({ 0, 0, 0, true }, toAddCoords);
 		previewChunkManager->rebuildChunkMeshes();
 	}
 	readyToAdd = false;

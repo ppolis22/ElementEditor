@@ -63,5 +63,13 @@ void ToolbarUI::actionPerformed(const ActionEvent& e) {
 		controller->setMoveTool();
 	} else if (e.source == extrudeButton) {
 		controller->setExtrudeTool();
+	} else if (e.source == rSlider || e.source == gSlider || e.source == bSlider) {
+		BlockColor newColor{ rSlider->getValue(), gSlider->getValue(), bSlider->getValue(), false };
+		controller->setActiveColor(newColor);
 	}
+}
+
+void ToolbarUI::update() {
+	moveButton->setEnabled(controller->canSetMoveTool());
+	extrudeButton->setEnabled(controller->canSetExtrudeTool());
 }

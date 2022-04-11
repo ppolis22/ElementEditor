@@ -1,9 +1,5 @@
 #include "Block.h"
 
-Block::Block() {}
-
-Block::~Block() {}
-
-BlockType Block::getType() {
-	return type;
+BlockColor Block::getColor() {
+	return color;
 }

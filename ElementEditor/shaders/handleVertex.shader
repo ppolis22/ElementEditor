@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
-layout(location = 2) in float type;
+layout(location = 2) in vec3 inputColor;
 
 out vec3 vertexColor;
 out vec3 vertexNormal;
@@ -23,16 +23,17 @@ void main() {
 	//vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
 
 	toLightVector = normalize(lightPosition - worldPosition.xyz);
+	vertexColor = inputColor;
 
-	if (type == 0) {
-		vertexColor = vec3(1.0, 0.0, 0.0);
-	} else if (type == 1) {
-		vertexColor = vec3(0.0, 1.0, 0.0);
-	} else if (type == 2) {
-		vertexColor = vec3(0.0, 0.0, 1.0);
-	} else if (type == 3) {
-		vertexColor = vec3(1.0, 0.55, 0.16);
-	} else {
-		vertexColor = vec3(0.5, 0.5, 0.5);
-	}
+	//if (type == 0) {
+	//	vertexColor = vec3(1.0, 0.0, 0.0);
+	//} else if (type == 1) {
+	//	vertexColor = vec3(0.0, 1.0, 0.0);
+	//} else if (type == 2) {
+	//	vertexColor = vec3(0.0, 0.0, 1.0);
+	//} else if (type == 3) {
+	//	vertexColor = vec3(1.0, 0.55, 0.16);
+	//} else {
+	//	vertexColor = vec3(0.5, 0.5, 0.5);
+	//}
 };
