@@ -23,6 +23,7 @@ private:
 	Button* selectButton;
 	Button* moveButton;
 	Button* extrudeButton;
+	Button* colorPickerButton;
 
 	UISlider* rSlider;
 	UISlider* gSlider;

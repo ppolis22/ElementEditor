@@ -23,6 +23,7 @@ public:
 	void setSelectTool();
 	void setMoveTool();
 	void setExtrudeTool();
+	void setColorPickTool();
 
 	bool canSetMoveTool();
 	bool canSetExtrudeTool();

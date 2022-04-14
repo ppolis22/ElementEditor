@@ -154,6 +154,7 @@
     <ClCompile Include="src\engine\Shader.cpp" />
     <ClCompile Include="src\engine\TranslateHandles.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
+    <ClCompile Include="src\state\ColorPickState.cpp" />
     <ClCompile Include="src\ToolbarUI.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\engine\TranslateHandles.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
+    <ClInclude Include="src\state\ColorPickState.h" />
     <ClInclude Include="src\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />

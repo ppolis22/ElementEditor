@@ -5,6 +5,7 @@
 #include "state/SelectState.h"
 #include "state/MoveState.h"
 #include "state/ExtrudeState.h"
+#include "state/ColorPickState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	UIRenderer* uiRenderer, Window* window)
@@ -35,6 +36,10 @@ void AppController::setExtrudeTool() {
 	if (canSetExtrudeTool()) {
 		changeActiveTool(new ExtrudeState(this, modelChunkManager->getSelected()));
 	}
+}
+
+void AppController::setColorPickTool() {
+	changeActiveTool(new ColorPickState(this));
 }
 
 bool AppController::canSetMoveTool() {
