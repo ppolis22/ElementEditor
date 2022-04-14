@@ -81,6 +81,7 @@ glm::mat4 BasicUIRenderer::buildTransformationMatrix(float x, float y, float wid
 int BasicUIRenderer::getTextureSlot(const std::string& texturePath) {
 	for (int slot = 0; slot < textures.size(); slot++) {
 		if (textures[slot]->getPath() == texturePath) {
+			textures[slot]->bind(slot);		// TODO investigate why this call is necessary
 			return slot;
 		}
 	}
@@ -95,5 +96,8 @@ int BasicUIRenderer::getTextureSlot(const std::string& texturePath) {
 		textures[nextSlot] = newTexture;
 	}
 
+	int storedSlot = nextSlot;
 	nextSlot = (nextSlot + 1) % TEX_SLOT_COUNT;
+
+	return storedSlot;
 }
