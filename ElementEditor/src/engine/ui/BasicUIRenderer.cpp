@@ -5,32 +5,66 @@
 
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
+#include "../Texture.h"
 
-BasicUIRenderer::BasicUIRenderer(MeshBuilder2d& meshBuilder, int windowWidth, int windowHeight)
-	: shader("shaders/uiVertex.shader", "shaders/uiFragment.shader"), windowWidth(windowWidth), windowHeight(windowHeight) {
-	meshBuilder.addQuad({ -1.0f, -1.0f }, { 1.0f, -1.0f }, { 1.0f, 1.0f }, { -1.0f, 1.0f });
-	quad = meshBuilder.commitMesh();
+BasicUIRenderer::BasicUIRenderer(MeshBuilder2d& meshBuilder, MeshBuilderTextured2d& texturedMeshBuidler, int windowWidth, int windowHeight)
+	: coloredShader("shaders/uiVertex.shader", "shaders/uiFragment.shader"), 
+	texturedShader("shaders/uiTexturedVertex.shader", "shaders/uiTexturedFragment.shader"),
+	windowWidth(windowWidth), windowHeight(windowHeight) 
+{
+	meshBuilder.addQuad({ -1.0f, -1.0f }, { 1.0f, -1.0f }, { 1.0f, 1.0f }, { -1.0f, 1.0f });	// x, y, u, v
+	coloredQuad = meshBuilder.commitMesh();
+
+	texturedMeshBuidler.addQuad(
+		{ -1.0f, -1.0f }, {0.0f, 0.0f},  // x, y, u, v
+		{ 1.0f, -1.0f }, { 1.0f, 0.0f },
+		{ 1.0f, 1.0f }, { 1.0f, 1.0f },
+		{ -1.0f, 1.0f }, { 0.0f, 1.0f } 
+	);
+	texturedQuad = texturedMeshBuidler.commitMesh();
 }
 
 BasicUIRenderer::~BasicUIRenderer() {
 	MeshBuilder2d meshBuilder;		// TODO do this differently
-	meshBuilder.deleteMesh(quad);
+	meshBuilder.deleteMesh(coloredQuad);
+	meshBuilder.deleteMesh(texturedQuad);
 }
 
-void BasicUIRenderer::renderQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {
-	shader.bind();
+void BasicUIRenderer::renderColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {
+	coloredShader.bind();
 	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
-	shader.setUniformMat4f("transformationMatrix", transformationMatrix);
-	shader.setUniformVec4f("uiColor", glm::vec4(color, alpha));
 
-	glBindVertexArray(quad.vertexArrayId);
+	coloredShader.setUniformMat4f("transformationMatrix", transformationMatrix);
+	coloredShader.setUniformVec4f("uiColor", glm::vec4(color, alpha));
+
+	glBindVertexArray(coloredQuad.vertexArrayId);
 	glEnableVertexAttribArray(0);
 	glDisable(GL_DEPTH_TEST);
-	glDrawElements(GL_TRIANGLES, quad.indexBufferCount, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, coloredQuad.indexBufferCount, GL_UNSIGNED_INT, nullptr);
 
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-	shader.unbind();
+	coloredShader.unbind();
+}
+
+void BasicUIRenderer::renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath) {
+	texturedShader.bind();
+	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
+	int textureSlot = getTextureSlot(texturePath);
+
+	texturedShader.setUniformMat4f("transformationMatrix", transformationMatrix);
+	texturedShader.setUniform1i("u_Texture", textureSlot);	// sets up sampler2D object called u_Texture, sampling from set texture slot
+
+	glBindVertexArray(texturedQuad.vertexArrayId);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glDisable(GL_DEPTH_TEST);
+	glDrawElements(GL_TRIANGLES, texturedQuad.indexBufferCount, GL_UNSIGNED_INT, nullptr);
+
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(0);
+	glBindVertexArray(0);
+	texturedShader.unbind();
 }
 
 glm::mat4 BasicUIRenderer::buildTransformationMatrix(float x, float y, float width, float height) {
@@ -42,4 +76,24 @@ glm::mat4 BasicUIRenderer::buildTransformationMatrix(float x, float y, float wid
 	float heightRatio = height / (float)windowHeight;
 	transform = glm::scale(transform, glm::vec3(widthRatio, heightRatio, 1.0f));
 	return transform;
+}
+
+int BasicUIRenderer::getTextureSlot(const std::string& texturePath) {
+	for (int slot = 0; slot < textures.size(); slot++) {
+		if (textures[slot]->getPath() == texturePath) {
+			return slot;
+		}
+	}
+
+	Texture* newTexture = new Texture(texturePath);
+	newTexture->bind(nextSlot);
+
+	if (textures.size() == nextSlot) {
+		textures.push_back(newTexture);
+	} else if (textures[nextSlot] != nullptr) {
+		delete textures[nextSlot];
+		textures[nextSlot] = newTexture;
+	}
+
+	nextSlot = (nextSlot + 1) % TEX_SLOT_COUNT;
 }

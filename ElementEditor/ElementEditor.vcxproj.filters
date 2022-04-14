@@ -105,6 +105,18 @@
     <ClCompile Include="src\ToolbarUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\stb_image\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\UITexturedElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\MeshBuilderTextured2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1076,6 +1088,18 @@
     <ClInclude Include="src\ToolbarUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\stb_image\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\UITexturedElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\MeshBuilderTextured2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1492,5 +1516,27 @@
     <None Include="shaders\uiVertex.shader" />
     <None Include="shaders\handleVertex.shader" />
     <None Include="shaders\handleFragment.shader" />
+    <None Include="shaders\uiTexturedVertex.shader" />
+    <None Include="shaders\uiTexturedFragment.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\add-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\add-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\select-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\select-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\subtract-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\subtract-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

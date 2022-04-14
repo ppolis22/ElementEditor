@@ -3,6 +3,7 @@
 #include "../EventListener.h"
 #include "../event/ActionListener.h"
 #include "UIRenderer.h"
+#include "../Texture.h"
 #include <vector>
 
 class UIElement : public EventListener {

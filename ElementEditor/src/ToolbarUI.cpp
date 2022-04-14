@@ -5,23 +5,23 @@
 ToolbarUI::ToolbarUI(AppController* controller)
 	: UIElement(10.0f, 10.0f, 65.0f, 500.0f), controller(controller)
 {
-	addButton = new Button(20.0f, 20.0f, 45.0f, 45.0f);
+	addButton = new Button(20.0f, 20.0f, 45.0f, 45.0f, "textures/add-button-black.png");
 	addButton->addListener(this);
 	addChild(addButton);
 
-	subtractButton = new Button(20.0f, 75.0f, 45.0f, 45.0f);
+	subtractButton = new Button(20.0f, 75.0f, 45.0f, 45.0f, "textures/subtract-button-black.png");
 	subtractButton->addListener(this);
 	addChild(subtractButton);
 
-	selectButton = new Button(20.0f, 130.0f, 45.0f, 45.0f);
+	selectButton = new Button(20.0f, 130.0f, 45.0f, 45.0f, "textures/select-button-black.png");
 	selectButton->addListener(this);
 	addChild(selectButton);
 
-	moveButton = new Button(20.0f, 185.0f, 45.0f, 45.0f);
+	moveButton = new Button(20.0f, 185.0f, 45.0f, 45.0f, "textures/add-button-white.png");
 	moveButton->addListener(this);
 	addChild(moveButton);
 
-	extrudeButton = new Button(20.0f, 240.0f, 45.0f, 45.0f);
+	extrudeButton = new Button(20.0f, 240.0f, 45.0f, 45.0f, "textures/select-button-white.png");
 	extrudeButton->addListener(this);
 	addChild(extrudeButton);
 
@@ -51,6 +51,7 @@ ToolbarUI::~ToolbarUI() {
 	delete selectButton;
 	delete moveButton;
 	delete extrudeButton;
+	delete colorPreviewBox;
 	delete rSlider;
 	delete gSlider;
 	delete bSlider;

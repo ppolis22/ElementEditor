@@ -30,7 +30,8 @@ void ElementEditor::run() {
 	glEnable(GL_CULL_FACE);
 
 	MeshBuilder2d meshBuilder2d;
-	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
+	MeshBuilderTextured2d meshBuilderTextured2d;
+	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer();
 	ChunkManager* modelChunkManager = new ChunkManager();

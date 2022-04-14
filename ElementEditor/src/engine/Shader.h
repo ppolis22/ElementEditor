@@ -21,6 +21,7 @@ public:
 	void setUniformVec3f(const std::string& name, const glm::vec3& vector);
 	void setUniformVec4f(const std::string& name, const glm::vec4& vector);
 	void setUniformFloat(const std::string& name, const float value);
+	void setUniform1i(const std::string& name, int value);
 
 private:
 	unsigned int id;

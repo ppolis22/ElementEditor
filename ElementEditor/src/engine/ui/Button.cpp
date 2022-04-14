@@ -2,7 +2,7 @@
 
 #include "Button.h"
 
-Button::Button(float x, float y, float width, float height, glm::vec3 color)
+Button::Button(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 color)
 	: UIElement(x, y, width, height), isHovered(false), isClicked(false)
 {
 	setColor(color);
@@ -10,6 +10,13 @@ Button::Button(float x, float y, float width, float height, glm::vec3 color)
 	baseColor = color;
 	hoverColor = baseColor + 0.25f;
 	clickColor = baseColor - 0.25f;
+
+	icon = new UITexturedElement(x, y, width, height, texturePath);
+	addChild(icon);
+}
+
+Button::~Button() {
+	delete icon;
 }
 
 void Button::processMouseMovement(MouseMoveEvent& event) {
