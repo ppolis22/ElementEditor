@@ -51,9 +51,6 @@
     <ClCompile Include="src\engine\ui\UIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ui\UIRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\MeshBuilder3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,22 +66,7 @@
     <ClCompile Include="src\engine\ui\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ui\Command.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\RenderRegion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\ToolbarController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\AppController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\UIController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\ui\RenderRegionController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\TranslateHandles.cpp">
@@ -112,6 +94,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\state\ExtrudeState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\UISlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolbarUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\stb_image\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\UITexturedElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\MeshBuilderTextured2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1022,9 +1025,6 @@
     <ClInclude Include="src\engine\ui\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ui\Command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\event\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1037,19 +1037,7 @@
     <ClInclude Include="src\engine\EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ui\UIController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\ui\RenderRegion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\ui\ToolbarController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\AppController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\ui\RenderRegionController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\TranslateHandles.h">
@@ -1080,6 +1068,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\state\MoveableSelectionState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\Slider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\UISlider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\BasicUIRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\event\ActionEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\event\ActionListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ToolbarUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\stb_image\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\UITexturedElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\MeshBuilderTextured2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1498,5 +1516,27 @@
     <None Include="shaders\uiVertex.shader" />
     <None Include="shaders\handleVertex.shader" />
     <None Include="shaders\handleFragment.shader" />
+    <None Include="shaders\uiTexturedVertex.shader" />
+    <None Include="shaders\uiTexturedFragment.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\add-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\add-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\select-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\select-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\subtract-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\subtract-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

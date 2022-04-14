@@ -1,22 +1,12 @@
 #pragma once
 
-#include "UIElement.h"
-#include "../Mesh.h"
-#include "../MeshBuilder2d.h"
-#include "../Shader.h"
+#include "../vendor/glm/glm.hpp"
+#include <string>
 
 class UIRenderer {
 public:
-	UIRenderer() = delete;
-	UIRenderer(MeshBuilder2d& meshBuilder, int windowWidth, int windowHeight);
-	~UIRenderer();
+	virtual ~UIRenderer() {};
 
-	void render(UIElement& element);
-
-private:
-	Mesh quad;
-	Shader shader;
-	int windowWidth, windowHeight;
-
-	glm::mat4 buildTransformationMatrix(UIElement& element);
+	virtual void renderColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) = 0;
+	virtual void renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath) = 0;
 };

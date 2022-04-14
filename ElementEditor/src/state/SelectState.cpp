@@ -16,12 +16,13 @@ void SelectState::processMouseUp(MouseButtonUpEvent& event) {
 
 	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
 	for (Point3di blockLocation : intersectedBlocks) {
-		if (modelChunkManager->getBlock(blockLocation) != Empty) {
+		if (!modelChunkManager->getBlockColor(blockLocation).isEmpty()) {
 			if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
 				removeFromSelection(blockLocation);
 			} else {
 				addToSelection(blockLocation);
 			}
+			window->updateUI();		// so move and extrude buttons enable/disable
 			break;
 		}
 	}

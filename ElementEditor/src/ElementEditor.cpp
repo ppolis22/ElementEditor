@@ -5,10 +5,9 @@
 #include "engine/Point3d.h"
 #include "engine/ui/UIRenderer.h"
 #include "engine/ui/Button.h"
-#include "engine/ui/Command.h"
+#include "engine/ui/BasicUIRenderer.h"
 #include "engine/event/Event.h"
-#include "engine/ui/ToolbarController.h"
-#include "engine/ui/RenderRegionController.h"
+#include "ToolbarUI.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -31,26 +30,27 @@ void ElementEditor::run() {
 	glEnable(GL_CULL_FACE);
 
 	MeshBuilder2d meshBuilder2d;
-	UIRenderer* uiRenderer = new UIRenderer(meshBuilder2d, window->getWidth(), window->getHeight());
+	MeshBuilderTextured2d meshBuilderTextured2d;
+	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer();
 	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
 
 	// TODO replace with some sort of Loader class
-	modelChunkManager->setBlock(Stone, { 0, 0, 0 });
-	modelChunkManager->setBlock(Stone, { 1, 0, 0 });
-	modelChunkManager->setBlock(Stone, { 0, 1, 0 });
-	modelChunkManager->setBlock(Stone, { 0, 0, 1 });
+	BlockColor defaultColor{ 0, 0, 255 };
+	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
+	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
 	modelChunkManager->rebuildChunkMeshes();
 
 	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);
+	window->setApplicationEventListener(&appController);
 
-	ToolbarController toolbarController(window);
-	appController.addUIController(&toolbarController);
-
-	RenderRegionController renderRegionController(window);
-	appController.addUIController(&renderRegionController);
+	ToolbarUI toolbarUI(&appController);
+	window->setRootUIElement(&toolbarUI);
+	appController.setActiveColor(defaultColor);
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);

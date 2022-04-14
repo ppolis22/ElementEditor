@@ -4,7 +4,7 @@ ChunkManager::ChunkManager() {}
 
 ChunkManager::~ChunkManager() {}
 
-void ChunkManager::setBlock(BlockType type, Point3di location) {
+void ChunkManager::setBlockColor(BlockColor color, Point3di location) {
 	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkZ = location.z - ((CHUNK_SIZE + (location.z % CHUNK_SIZE)) % CHUNK_SIZE);
@@ -14,7 +14,7 @@ void ChunkManager::setBlock(BlockType type, Point3di location) {
 		allChunks.emplace(targetChunkOrigin, Chunk(chunkX, chunkY, chunkZ));
 	}
 	Chunk& targetChunk = allChunks.find(targetChunkOrigin)->second;
-	targetChunk.setBlock(type, { location.x - chunkX, location.y - chunkY, location.z - chunkZ });
+	targetChunk.setBlockColor(color, { location.x - chunkX, location.y - chunkY, location.z - chunkZ });
 	chunksToRebuild.insert(&targetChunk);	// TODO add neighboring chunks too if applicable!
 }
 
@@ -32,13 +32,13 @@ void ChunkManager::setSelected(bool selected, Point3di location) {
 	chunksToRebuild.insert(&targetChunk);
 }
 
-std::unordered_map<Point3di, BlockType, Point3di::HashFunction> ChunkManager::getSelected() {
-	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> totalSelection;
+std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> ChunkManager::getSelected() {
+	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> totalSelection;
 	for (const auto& entry : allChunks) {
 		Chunk chunk = entry.second;
 		std::vector<Point3di> selectionInChunk = chunk.getSelection();
 		for (Point3di& selectedPoint : selectionInChunk) {
-			totalSelection.emplace(selectedPoint, this->getBlock(selectedPoint));
+			totalSelection.emplace(selectedPoint, this->getBlockColor(selectedPoint));
 		}
 	}
 	return totalSelection;
@@ -60,16 +60,16 @@ void ChunkManager::deselectAll() {
 	this->rebuildChunkMeshes();
 }
 
-BlockType ChunkManager::getBlock(Point3di location) {
+BlockColor ChunkManager::getBlockColor(Point3di location) {
 	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
 	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);	
 	int chunkZ = location.z - ((CHUNK_SIZE + (location.z % CHUNK_SIZE)) % CHUNK_SIZE);
 
 	auto it = allChunks.find({ chunkX, chunkY, chunkZ });
 	if (it == allChunks.end()) {
-		return Empty;
+		return BlockColor::EMPTY();
 	}
-	return it->second.getBlock({ location.x - chunkX, location.y - chunkY, location.z - chunkZ });
+	return it->second.getBlockColor({ location.x - chunkX, location.y - chunkY, location.z - chunkZ });
 }
 
 std::vector<Chunk> ChunkManager::getAllChunks() {

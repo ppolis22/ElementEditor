@@ -11,7 +11,7 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	zPosition(zPos),
 	mesh({0, 0, 0, 0}),
 	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
-	data(CHUNK_SIZE, std::vector<std::vector<BlockType>>(CHUNK_SIZE, std::vector<BlockType>(CHUNK_SIZE, Empty)))
+	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor::EMPTY())))
 	{}
 
 Chunk::~Chunk() {}
@@ -20,8 +20,12 @@ void Chunk::unloadMesh() {
 	meshBuilder.deleteMesh(mesh);
 }
 
-void Chunk::setBlock(BlockType type, Point3di location) {
-	data[location.x][location.y][location.z] = type;		// should we check if indices are in bounds?
+void Chunk::setBlockColor(BlockColor color, Point3di location) {
+	data[location.x][location.y][location.z] = color;		// should we check if indices are in bounds?
+}
+
+void Chunk::removeBlock(Point3di location) {
+	data[location.x][location.y][location.z] = BlockColor::EMPTY();
 }
 
 void Chunk::addSelection(Point3di location) {
@@ -39,7 +43,7 @@ void Chunk::selectAll() {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
-				if (data[x][y][z] != Empty) {
+				if (!data[x][y][z].isEmpty()) {
 					selectedBlocks.push_back({x, y, z});
 				}
 			}
@@ -60,7 +64,7 @@ std::vector<Point3di> Chunk::getSelection() {
 	return worldCoordsSelection;
 }
 
-BlockType Chunk::getBlock(Point3di location) {
+BlockColor Chunk::getBlockColor(Point3di location) {
 	return data[location.x][location.y][location.z];
 }
 
@@ -83,7 +87,7 @@ void Chunk::rebuildMesh() {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			for (int z = 0; z < CHUNK_SIZE; z++) {
-				if (data[x][y][z] != Empty) {
+				if (!data[x][y][z].isEmpty()) {
 					buildBlockMesh(x, y, z, data[x][y][z]);
 				}
 			}
@@ -93,10 +97,12 @@ void Chunk::rebuildMesh() {
 	mesh = meshBuilder.commitMesh();
 }
 
-void Chunk::buildBlockMesh(int x, int y, int z, BlockType type) {
+void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	Point3di location {x, y, z};
-	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) != selectedBlocks.end()) {
-		type = Selected;
+	glm::vec3 renderColor(color.getNormalizedR(), color.getNormalizedG(), color.getNormalizedB());
+
+	if (std::find(selectedBlocks.begin(), selectedBlocks.end(), location) != selectedBlocks.end()) {	
+		renderColor = { 1.0f, 0.55f, 0.16f };		// TODO refernce constant System colors for "selected" color
 	}
 
 	float xCoord = x * BLOCK_RENDER_SIZE + xPosition;
@@ -119,34 +125,34 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockType type) {
 	Point3df leftTopFar{ leftX, upY, farZ };
 	Point3df rightTopFar{ rightX, upY, farZ };
 
-	if ((x == 0 && !checkNeighborChunk(x - 1, y, z)) || (x != 0 && data[x - 1][y][z] == Empty)) {
+	if ((x == 0 && !checkNeighborChunk(x - 1, y, z)) || (x != 0 && data[x - 1][y][z].isEmpty())) {
 		Point3df leftNormal{ -1.0f, 0.0f, 0.0f };
-		meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, leftNormal, type);
+		meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, leftNormal, renderColor);
 	}
 
-	if ((x == CHUNK_SIZE - 1 && !checkNeighborChunk(x + 1, y, z)) || (x != CHUNK_SIZE - 1 && data[x + 1][y][z] == Empty)) {
+	if ((x == CHUNK_SIZE - 1 && !checkNeighborChunk(x + 1, y, z)) || (x != CHUNK_SIZE - 1 && data[x + 1][y][z].isEmpty())) {
 		Point3df rightNormal{ 1.0f, 0.0f, 0.0f };
-		meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, rightNormal, type);
+		meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, rightNormal, renderColor);
 	}
 
-	if ((z == 0 && !checkNeighborChunk(x, y, z - 1)) || (z != 0 && data[x][y][z - 1] == Empty)) {
+	if ((z == 0 && !checkNeighborChunk(x, y, z - 1)) || (z != 0 && data[x][y][z - 1].isEmpty())) {
 		Point3df backNormal{ 0.0f, 0.0f, -1.0f };
-		meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, backNormal, type);
+		meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, backNormal, renderColor);
 	}
 
-	if ((z == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y, z + 1)) || (z != CHUNK_SIZE - 1 && data[x][y][z + 1] == Empty)) {
+	if ((z == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y, z + 1)) || (z != CHUNK_SIZE - 1 && data[x][y][z + 1].isEmpty())) {
 		Point3df frontNormal{ 0.0f, 0.0f, 1.0f };
-		meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, frontNormal, type);
+		meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, frontNormal, renderColor);
 	}
 
-	if ((y == 0 && !checkNeighborChunk(x, y - 1, z)) || (y != 0 && data[x][y - 1][z] == Empty)) {
+	if ((y == 0 && !checkNeighborChunk(x, y - 1, z)) || (y != 0 && data[x][y - 1][z].isEmpty())) {
 		Point3df bottomNormal{ 0.0f, -1.0f, 0.0f };
-		meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, type);
+		meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, renderColor);
 	}
 
-	if ((y == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y + 1, z)) || (y != CHUNK_SIZE - 1 && data[x][y + 1][z] == Empty)) {
+	if ((y == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y + 1, z)) || (y != CHUNK_SIZE - 1 && data[x][y + 1][z].isEmpty())) {
 		Point3df topNormal{ 0.0f, 1.0f, 0.0f };
-		meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, topNormal, type);
+		meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, topNormal, renderColor);
 	}
 }
 

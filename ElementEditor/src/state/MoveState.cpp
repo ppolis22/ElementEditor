@@ -8,12 +8,12 @@
 #include <vector>
 #include <algorithm>
 
-MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection)
+MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection)
 	: MoveableSelectionState(context, selection),
 	moveVector{0, 0, 0}
 {
 	for (const auto& entry : selection) {
-		coveredModelCopy.emplace(entry.first, Empty);
+		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
 	}
 }
 
@@ -73,7 +73,7 @@ void MoveState::moveSelection() {
 	// replace blocks selection was covering from copy
 	ChunkManager* chunkManager = context->getModelChunkManager();
 	for (const auto& entry : coveredModelCopy) {
-		chunkManager->setBlock(entry.second, entry.first);
+		chunkManager->setBlockColor(entry.second, entry.first);
 		chunkManager->setSelected(false, entry.first);
 	}
 
@@ -81,9 +81,9 @@ void MoveState::moveSelection() {
 	coveredModelCopy.clear();
 	for (auto& entry : selection) {
 		Point3di offsetPoint = moveVector + entry.first;
-		coveredModelCopy.emplace(offsetPoint, chunkManager->getBlock(offsetPoint));
+		coveredModelCopy.emplace(offsetPoint, chunkManager->getBlockColor(offsetPoint));
 		// set selection at offsetPoint
-		chunkManager->setBlock(entry.second, offsetPoint);
+		chunkManager->setBlockColor(entry.second, offsetPoint);
 		chunkManager->setSelected(true, offsetPoint);
 	}
 	chunkManager->rebuildChunkMeshes();

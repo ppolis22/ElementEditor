@@ -40,6 +40,10 @@ void Shader::setUniformFloat(const std::string& name, const float value) {
 	glUniform1f(getUniformLocation(name), value);
 }
 
+void Shader::setUniform1i(const std::string& name, int value) {
+	glUniform1i(getUniformLocation(name), value);
+}
+
 std::string Shader::parseFile(const std::string& path) {
 	std::ifstream shaderFile(path);
 	std::stringstream shaderStream;

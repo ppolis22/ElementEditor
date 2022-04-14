@@ -12,14 +12,14 @@ public:
 	~MoveableSelectionState();
 
 protected:
-	MoveableSelectionState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection);
+	MoveableSelectionState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection);
 
-	std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection;
+	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection;
 	Direction moveDirection = NONE;
 	TranslateHandles handles;
 
 	Direction getHandleAtPoint(float x, float y);
-	glm::vec3 averagePoints(const std::unordered_map<Point3di, BlockType, Point3di::HashFunction>& points);
+	glm::vec3 averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points);
 	glm::vec3 getClosestPointOnAxisToMouse(float mouseX, float mouseY);
 	glm::vec3 closestPointOnLineToOtherLine(const glm::vec3& line1Pt1, const glm::vec3& line1Dir,
 		const glm::vec3& line2Pt1, const glm::vec3& line2Dir);

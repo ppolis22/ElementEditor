@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-MoveableSelectionState::MoveableSelectionState(AppController* context, std::unordered_map<Point3di, BlockType, Point3di::HashFunction> selection)
+MoveableSelectionState::MoveableSelectionState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection)
 	: SelectableState(context),
 	selection(selection)
 {
@@ -35,7 +35,7 @@ Direction MoveableSelectionState::getHandleAtPoint(float x, float y) {
 	}
 }
 
-glm::vec3 MoveableSelectionState::averagePoints(const std::unordered_map<Point3di, BlockType, Point3di::HashFunction>& points) {
+glm::vec3 MoveableSelectionState::averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points) {
 	glm::vec3 average(0.0f, 0.0f, 0.0f);
 	for (const auto& entry : points) {
 		Point3di point = entry.first;

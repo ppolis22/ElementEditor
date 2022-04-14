@@ -95,14 +95,18 @@ Mesh TranslateHandles::buildMesh() {
 	MeshBuilder3d meshBuilder;
 	meshBuilder.createNewMesh();
 	
-	buildHandleMesh(meshBuilder, Grass, xHandleLeft, xHandleRight, xHandleTop, xHandleBottom, xHandleNear, xHandleFar);
-	buildHandleMesh(meshBuilder, Stone, yHandleLeft, yHandleRight, yHandleTop, yHandleBottom, yHandleNear, yHandleFar);
-	buildHandleMesh(meshBuilder, Selected, zHandleLeft, zHandleRight, zHandleTop, zHandleBottom, zHandleNear, zHandleFar);
+	glm::vec3 xHandleColor = glm::vec3(0.0, 1.0, 0.0);
+	glm::vec3 yHandleColor = glm::vec3(0.0, 0.0, 1.0);
+	glm::vec3 zHandleColor = glm::vec3(1.0, 0.0, 0.0);
+
+	buildHandleMesh(meshBuilder, xHandleColor, xHandleLeft, xHandleRight, xHandleTop, xHandleBottom, xHandleNear, xHandleFar);
+	buildHandleMesh(meshBuilder, yHandleColor, yHandleLeft, yHandleRight, yHandleTop, yHandleBottom, yHandleNear, yHandleFar);
+	buildHandleMesh(meshBuilder, zHandleColor, zHandleLeft, zHandleRight, zHandleTop, zHandleBottom, zHandleNear, zHandleFar);
 
 	return meshBuilder.commitMesh();
 }
 
-void TranslateHandles::buildHandleMesh(MeshBuilder3d& meshBuilder, BlockType color, 
+void TranslateHandles::buildHandleMesh(MeshBuilder3d& meshBuilder, glm::vec3 color,
 	float left, float right, float top, float bottom, float near, float far) {
 	Point3df leftBottomNear{ left, bottom, near };
 	Point3df rightBottomNear{ right, bottom, near };

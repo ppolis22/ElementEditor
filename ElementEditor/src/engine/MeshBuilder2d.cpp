@@ -3,18 +3,14 @@
 
 #include "MeshBuilder2d.h"
 
-MeshBuilder2d::MeshBuilder2d() {}
-
-MeshBuilder2d::~MeshBuilder2d() {}
-
 void MeshBuilder2d::addQuad(const Point2df& p0, const Point2df& p1, const Point2df& p2, const Point2df& p3) {
-	currentVertexData.insert(currentVertexData.end(), { p0.x, p0.y });
+	currentVertexData.insert(currentVertexData.end(), { p0.x, p0.y });		// x, y
 	currentVertexData.insert(currentVertexData.end(), { p1.x, p1.y });
 	currentVertexData.insert(currentVertexData.end(), { p2.x, p2.y });
 	currentVertexData.insert(currentVertexData.end(), { p3.x, p3.y });
 
 	currentIndices.insert(currentIndices.end(), { numVertices, numVertices + 1, numVertices + 2,
-		numVertices + 2, numVertices + 3, numVertices });
+			numVertices + 2, numVertices + 3, numVertices });
 
 	numVertices += 4;
 }

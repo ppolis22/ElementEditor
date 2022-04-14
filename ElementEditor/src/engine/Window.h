@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "EventListener.h"
+#include "ui/UIElement.h"
 #include <vector>
 
 class Window {
@@ -18,21 +19,28 @@ public:
 	void makeCurrentContext();
 	bool isKeyPressed(int keyCode);
 	bool isClicked(int mouseButtonCode);
-	void registerEventListener(EventListener* listener);
 	void update();
+	void setApplicationEventListener(EventListener* listener);
+	void setRootUIElement(UIElement* element);
+	UIElement* getRootUIElement();
+	void updateUI();	// TODO add filter to specify which elements to update
 
 private:
 	GLFWwindow* glfwWindow;
 	int width;
 	int height;
+	UIElement* rootUIElement;
 
 	struct WindowData {
 		float lastCursorXPos;
 		float lastCursorYPos;
-		std::vector<EventListener*> listeners;
+		std::vector<EventListener*> uiListeners;
+		EventListener* applicationListener;
 	};
 
 	WindowData data;
+
+	void registerEventListener(UIElement* listener);
 
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

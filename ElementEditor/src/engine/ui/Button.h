@@ -1,21 +1,21 @@
 #pragma once
 
-#include "UIElement.h"
-#include "Command.h"
+#include "UITexturedElement.h"
+#include <string>
 
 class Button : public UIElement {
 public:
-	Button(float x, float y, float width, float height, glm::vec3 color, float alpha, bool isEnabled, Command* onClick);
+	Button(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f));
 	virtual ~Button();
 
-	virtual glm::vec3 getColor();
 	virtual void processMouseMovement(MouseMoveEvent& event) override;
 	virtual void processMouseDown(MouseButtonDownEvent& event) override;
 	virtual void processMouseUp(MouseButtonUpEvent& event) override;
 
-private:
-	bool isClickable;
-	Command* onClick;
+	virtual void renderElement(UIRenderer* renderer) override;
 
-	bool withinBounds(float x, float y);
+private:
+	bool isHovered, isClicked;
+	glm::vec3 baseColor, hoverColor, clickColor;
+	UITexturedElement* icon;
 };
