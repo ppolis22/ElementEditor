@@ -14,7 +14,7 @@ public:
 	virtual ~BasicUIRenderer();
 
 	virtual void renderColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) override;
-	virtual void renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath) override;
+	virtual void renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 blendColor) override;
 	
 protected:
 	static const int TEX_SLOT_COUNT = 16;

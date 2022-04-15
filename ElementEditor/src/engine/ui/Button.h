@@ -15,6 +15,7 @@ public:
 	virtual void renderElement(UIRenderer* renderer) override;
 
 	void setIsActive(bool isActive);
+	void setEnabled(bool enabled) override;
 
 private:
 	bool isHovered, isClicked, isActive;

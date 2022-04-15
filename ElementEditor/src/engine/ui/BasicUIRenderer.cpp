@@ -47,12 +47,13 @@ void BasicUIRenderer::renderColoredQuad(float x, float y, float width, float hei
 	coloredShader.unbind();
 }
 
-void BasicUIRenderer::renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath) {
+void BasicUIRenderer::renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 blendColor) {
 	texturedShader.bind();
 	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
 	int textureSlot = getTextureSlot(texturePath);
 
 	texturedShader.setUniformMat4f("transformationMatrix", transformationMatrix);
+	texturedShader.setUniformVec4f("blendColor", glm::vec4(blendColor, 1.0f));
 	texturedShader.setUniform1i("u_Texture", textureSlot);	// sets up sampler2D object called u_Texture, sampling from set texture slot
 
 	glBindVertexArray(texturedQuad.vertexArrayId);
