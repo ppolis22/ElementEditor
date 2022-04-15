@@ -7,6 +7,10 @@
 SubtractState::SubtractState(AppController* context)
 	: SelectableState(context) {}
 
+State SubtractState::getType() {
+	return State::SUBTRACT;
+}
+
 void SubtractState::init() {
 	context->getModelChunkManager()->deselectAll();
 }

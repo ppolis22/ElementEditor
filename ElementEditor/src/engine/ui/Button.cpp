@@ -3,7 +3,7 @@
 #include "Button.h"
 
 Button::Button(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 color)
-	: UIElement(x, y, width, height), isHovered(false), isClicked(false)
+	: UIElement(x, y, width, height), isHovered(false), isClicked(false), isActive(false)
 {
 	setColor(color);
 	setAlpha(1.0f);
@@ -40,10 +40,14 @@ void Button::processMouseUp(MouseButtonUpEvent& event) {
 void Button::renderElement(UIRenderer* renderer) {
 	if (isClicked) {
 		setColor(clickColor);
-	} else if (isHovered) {
+	} else if (isHovered || isActive) {
 		setColor(hoverColor);
 	} else {
 		setColor(baseColor);
 	}
 	UIElement::renderElement(renderer);
+}
+
+void Button::setIsActive(bool isActive) {
+	this->isActive = isActive;
 }

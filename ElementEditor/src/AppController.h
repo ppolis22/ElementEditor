@@ -18,12 +18,8 @@ public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
 		UIRenderer* uiRenderer, Window* window);
 
-	void setAddTool();
-	void setSubtractTool();
-	void setSelectTool();
-	void setMoveTool();
-	void setExtrudeTool();
-	void setColorPickTool();
+	void setState(State stateToSet);
+	State getState();
 
 	bool canSetMoveTool();
 	bool canSetExtrudeTool();

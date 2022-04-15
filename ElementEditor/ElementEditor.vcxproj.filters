@@ -1544,5 +1544,17 @@
     <Image Include="textures\subtract-button-white.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\extrude-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\move-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\move-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\picker-button-black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

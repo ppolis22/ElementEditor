@@ -12,6 +12,7 @@ public:
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void cleanUp() override;
 	void init() override;
+	State getType() override;
 
 private:
 	Point3di toAddCoords;

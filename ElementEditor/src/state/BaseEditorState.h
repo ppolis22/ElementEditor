@@ -6,6 +6,16 @@
 
 class AppController;
 
+	enum State {
+		ADD,
+		SUBTRACT,
+		SELECT,
+		MOVE,
+		EXTRUDE,
+		COLOR_PICK,
+		ERROR
+	};
+
 class BaseEditorState {
 public:
 	BaseEditorState(AppController* context);
@@ -17,6 +27,7 @@ public:
 	virtual void processMouseDown(MouseButtonDownEvent& event);
 	virtual void processMouseUp(MouseButtonUpEvent& event);
 
+	virtual State getType() = 0;
 	virtual void render();
 	virtual void init();
 	virtual void cleanUp();

@@ -16,6 +16,10 @@ ExtrudeState::ExtrudeState(AppController* context, std::unordered_map<Point3di, 
 	}
 }
 
+State ExtrudeState::getType() {
+	return State::EXTRUDE;
+}
+
 void ExtrudeState::processMouseDown(MouseButtonDownEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;

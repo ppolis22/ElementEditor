@@ -14,8 +14,10 @@ public:
 
 	virtual void renderElement(UIRenderer* renderer) override;
 
+	void setIsActive(bool isActive);
+
 private:
-	bool isHovered, isClicked;
+	bool isHovered, isClicked, isActive;
 	glm::vec3 baseColor, hoverColor, clickColor;
 	UITexturedElement* icon;
 };

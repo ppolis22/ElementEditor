@@ -14,32 +14,28 @@ AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, Chunk
 	this->state = new AddState(this);
 }
 
-void AppController::setAddTool() {
-	changeActiveTool(new AddState(this));
-}
-
-void AppController::setSubtractTool() {
-	changeActiveTool(new SubtractState(this));
-}
-
-void AppController::setSelectTool() {
-	changeActiveTool(new SelectState(this));
-}
-
-void AppController::setMoveTool() {
-	if (canSetMoveTool()) {
+void AppController::setState(State stateToSet) {
+	if (stateToSet == State::ADD) {
+		changeActiveTool(new AddState(this));
+	} else if (stateToSet == State::SUBTRACT) {
+		changeActiveTool(new SubtractState(this));
+	} else if (stateToSet == State::SELECT) {
+		changeActiveTool(new SelectState(this));
+	} else if (stateToSet == State::MOVE && canSetMoveTool()) {
 		changeActiveTool(new MoveState(this, modelChunkManager->getSelected()));
-	}
-}
-
-void AppController::setExtrudeTool() {
-	if (canSetExtrudeTool()) {
+	} else if (stateToSet == State::EXTRUDE && canSetExtrudeTool()) {
 		changeActiveTool(new ExtrudeState(this, modelChunkManager->getSelected()));
+	} else if (stateToSet == State::COLOR_PICK) {
+		changeActiveTool(new ColorPickState(this));
 	}
+	window->updateUI();
 }
 
-void AppController::setColorPickTool() {
-	changeActiveTool(new ColorPickState(this));
+State AppController::getState() {
+	if (state == nullptr) {
+		return State::ERROR;
+	}
+	return state->getType();
 }
 
 bool AppController::canSetMoveTool() {

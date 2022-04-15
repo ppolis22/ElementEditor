@@ -8,6 +8,7 @@ public:
 	SelectState(AppController* context);
 
 	void processMouseUp(MouseButtonUpEvent& event) override;
+	State getType() override;
 
 private:
 	void addToSelection(Point3di& block);

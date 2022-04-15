@@ -17,6 +17,10 @@ MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockC
 	}
 }
 
+State MoveState::getType() {
+	return State::MOVE;
+}
+
 void MoveState::processMouseDown(MouseButtonDownEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;

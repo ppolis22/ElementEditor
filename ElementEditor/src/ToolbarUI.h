@@ -4,6 +4,9 @@
 #include "engine/ui/Button.h"
 #include "engine/ui/UISlider.h"
 #include "engine/event/ActionListener.h"
+#include "state/BaseEditorState.h"
+
+#include <map>
 
 class AppController;
 
@@ -30,4 +33,6 @@ private:
 	UISlider* bSlider;
 
 	UIElement* colorPreviewBox;
+
+	std::map<Button*, State> buttonMap;
 };

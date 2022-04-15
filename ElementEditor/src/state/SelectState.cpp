@@ -6,6 +6,10 @@
 SelectState::SelectState(AppController* context)
 	: SelectableState(context) {}
 
+State SelectState::getType() {
+	return State::SELECT;
+}
+
 void SelectState::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;

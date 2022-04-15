@@ -7,6 +7,10 @@
 AddState::AddState(AppController* context)
 	: SelectableState(context) {}
 
+State AddState::getType() {
+	return State::ADD;
+}
+
 void AddState::init() {
 	context->getModelChunkManager()->deselectAll();
 }

@@ -16,6 +16,7 @@ public:
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void render() override;
+	State getType() override;
 
 private:
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> coveredModelCopy;

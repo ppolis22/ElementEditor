@@ -8,26 +8,32 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	addButton = new Button(20.0f, 20.0f, 45.0f, 45.0f, "textures/add-button-black.png");
 	addButton->addListener(this);
 	addChild(addButton);
+	buttonMap[addButton] = State::ADD;
 
 	subtractButton = new Button(20.0f, 75.0f, 45.0f, 45.0f, "textures/subtract-button-black.png");
 	subtractButton->addListener(this);
 	addChild(subtractButton);
+	buttonMap[subtractButton] = State::SUBTRACT;
 
 	selectButton = new Button(20.0f, 130.0f, 45.0f, 45.0f, "textures/select-button-black.png");
 	selectButton->addListener(this);
 	addChild(selectButton);
+	buttonMap[selectButton] = State::SELECT;
 
-	moveButton = new Button(20.0f, 185.0f, 45.0f, 45.0f, "textures/add-button-white.png");
+	moveButton = new Button(20.0f, 185.0f, 45.0f, 45.0f, "textures/move-button-black.png");
 	moveButton->addListener(this);
 	addChild(moveButton);
+	buttonMap[moveButton] = State::MOVE;
 
-	extrudeButton = new Button(20.0f, 240.0f, 45.0f, 45.0f, "textures/select-button-white.png");
+	extrudeButton = new Button(20.0f, 240.0f, 45.0f, 45.0f, "textures/extrude-button-black.png");
 	extrudeButton->addListener(this);
 	addChild(extrudeButton);
+	buttonMap[extrudeButton] = State::EXTRUDE;
 
-	colorPickerButton = new Button(75.0f, 20.0f, 45.0f, 45.0f, "textures/select-button-white.png");
+	colorPickerButton = new Button(75.0f, 20.0f, 45.0f, 45.0f, "textures/picker-button-black.png");
 	colorPickerButton->addListener(this);
 	addChild(colorPickerButton);
+	buttonMap[colorPickerButton] = State::COLOR_PICK;
 
 	colorPreviewBox = new UIElement(20.0f, 315.0f, 100.0f, 25.0f);
 	colorPreviewBox->setAlpha(1.0f);
@@ -63,21 +69,13 @@ ToolbarUI::~ToolbarUI() {
 }
 
 void ToolbarUI::actionPerformed(const ActionEvent& e) {
-	if (e.source == addButton) {
-		controller->setAddTool();
-	} else if (e.source == subtractButton) {
-		controller->setSubtractTool();
-	} else if (e.source == selectButton) {
-		controller->setSelectTool();
-	} else if (e.source == moveButton) {
-		controller->setMoveTool();
-	} else if (e.source == extrudeButton) {
-		controller->setExtrudeTool();
-	} else if (e.source == colorPickerButton) {
-		controller->setColorPickTool();
-	} else if (e.source == rSlider || e.source == gSlider || e.source == bSlider) {
+	if (e.source == rSlider || e.source == gSlider || e.source == bSlider) {
 		BlockColor newColor{ rSlider->getValue(), gSlider->getValue(), bSlider->getValue() };
 		controller->setActiveColor(newColor);
+	} else if (auto* buttonSource = dynamic_cast<Button*>(e.source)) {
+		if (buttonMap.count(buttonSource) != 0) {
+			controller->setState(buttonMap[buttonSource]);
+		}
 	}
 }
 
@@ -91,4 +89,9 @@ void ToolbarUI::update() {
 	bSlider->setValue(activeColor.b);
 
 	colorPreviewBox->setColor(glm::vec3(activeColor.getNormalizedR(), activeColor.getNormalizedG(), activeColor.getNormalizedB()));
+
+	State activeTool = controller->getState();
+	for (std::map<Button*, State>::iterator it = buttonMap.begin(); it != buttonMap.end(); it++) {
+		it->first->setIsActive(it->second == activeTool);
+	}
 }

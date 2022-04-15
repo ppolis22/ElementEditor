@@ -4,6 +4,10 @@
 ColorPickState::ColorPickState(AppController* context)
 	: SelectableState(context) {}
 
+State ColorPickState::getType() {
+	return State::COLOR_PICK;
+}
+
 void ColorPickState::processMouseUp(MouseButtonUpEvent& event) {
 	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
 		return;
