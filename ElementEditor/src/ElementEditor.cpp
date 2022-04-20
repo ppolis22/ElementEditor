@@ -33,7 +33,7 @@ void ElementEditor::run() {
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
-	ModelRenderer* modelRenderer = new ModelRenderer();
+	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
 

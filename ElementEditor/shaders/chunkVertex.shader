@@ -4,36 +4,27 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 inputColor;
 
-out vec3 vertexColor;
-out vec3 vertexNormal;
-out vec3 toLightVector;
+out VS_OUT {
+	vec3 worldPosition;
+	vec3 vertexNormal;
+	vec3 vertexColor;
+	vec4 worldPositionLightSpace;
+	vec3 toLightVector;
+} vs_out;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
+uniform mat4 lightSpaceMatrix;
 uniform vec3 lightPosition;
 
 void main() {
-	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-	gl_Position = projectionMatrix * viewMatrix * worldPosition;
-
-	vertexNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-
+	vs_out.worldPosition = vec3(modelMatrix * vec4(position, 1.0));
+	vs_out.vertexNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
 	// use this instead if scaling needs to be supported, though it's expensive and should be passed in as a uniform
-	//vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
-
-	toLightVector = normalize(lightPosition - worldPosition.xyz);
-
-	vertexColor = inputColor;
-	//if (type == 0) {
-	//	vertexColor = vec3(1.0, 0.0, 0.0);
-	//} else if (type == 1) {
-	//	vertexColor = vec3(0.0, 1.0, 0.0);
-	//} else if (type == 2) {
-	//	vertexColor = vec3(0.0, 0.0, 1.0);
-	//} else if (type == 3) {
-	//	vertexColor = vec3(1.0, 0.55, 0.16);
-	//} else {
-	//	vertexColor = vec3(0.5, 0.5, 0.5);
-	//}
+	//vs_out.vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
+	vs_out.worldPositionLightSpace = lightSpaceMatrix * vec4(vs_out.worldPosition, 1.0);
+	vs_out.vertexColor = inputColor;
+	vs_out.toLightVector = normalize(lightPosition - vs_out.worldPosition);
+	gl_Position = projectionMatrix * viewMatrix * vec4(vs_out.worldPosition, 1.0);
 };
