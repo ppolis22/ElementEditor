@@ -22,7 +22,8 @@ float calculateShadowPercent(vec4 worldPositionLightSpace)
 	projCoords = projCoords * 0.5 + 0.5;	// from NDC to range [0,1] to sample texture
 	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
-	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+	float bias = max(0.05 * (1.0 - dot(fs_in.vertexNormal, fs_in.toLightVector)), 0.005);	// to reduce shadow banding
+	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 	return shadow;
 }
 
