@@ -10,7 +10,6 @@ Chunk::Chunk(int xPos, int yPos, int zPos) :
 	yPosition(yPos),
 	zPosition(zPos),
 	mesh({0, 0, 0, 0}),
-	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
 	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor::EMPTY())))
 	{}
 
@@ -66,10 +65,6 @@ std::vector<Point3di> Chunk::getSelection() {
 
 BlockColor Chunk::getBlockColor(Point3di location) {
 	return data[location.x][location.y][location.z];
-}
-
-Shader& Chunk::getShader() {
-	return chunkShader;
 }
 
 Mesh& Chunk::getMesh() {

@@ -1526,8 +1526,6 @@
     <None Include="shaders\uiTexturedFragment.shader" />
     <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\shadowMapFragment.shader" />
-    <None Include="shaders\debugQuadVertex.shader" />
-    <None Include="shaders\debugQuadFragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">

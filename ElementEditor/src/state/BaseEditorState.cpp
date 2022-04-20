@@ -32,9 +32,17 @@ void BaseEditorState::render() {
 	ChunkManager* previewChunkManager = context->getPreviewChunkManager();
 	Camera* camera = context->getCamera();
 
-	std::vector<Chunk> allChunks = modelChunkManager->getAllChunks();
-	modelRenderer->render(allChunks, *camera);
+	std::vector<Renderable*> chunksToRender;
+	for (Chunk* chunk : modelChunkManager->getAllChunks()) {
+		chunksToRender.push_back(chunk);
+	}
+	Shader& chunkShader = modelChunkManager->getChunkShader();
+	modelRenderer->render(chunksToRender, chunkShader, *camera);
 
-	std::vector<Chunk> previewChunks = previewChunkManager->getAllChunks();
-	modelRenderer->render(previewChunks, *camera);
+	std::vector<Renderable*> previewChunksToRender;
+	for (Chunk* chunk : previewChunkManager->getAllChunks()) {
+		previewChunksToRender.push_back(chunk);
+	}
+	Shader& previewChunkShader = previewChunkManager->getChunkShader();
+	modelRenderer->renderPreview(previewChunksToRender, previewChunkShader, *camera);
 }

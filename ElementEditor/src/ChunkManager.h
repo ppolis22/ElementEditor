@@ -7,6 +7,7 @@
 #include "Chunk.h"
 #include "engine/Point3d.h"
 #include "Block.h"
+#include "engine/Shader.h"
 
 class ChunkManager {
 public:
@@ -18,7 +19,8 @@ public:
 	void setBlockColor(BlockColor color, Point3di location);
 	void setSelected(bool isSelected, Point3di location);
 	BlockColor getBlockColor(Point3di location);
-	std::vector<Chunk> getAllChunks();
+	Shader& getChunkShader();
+	std::vector<Chunk*> getAllChunks();
 	void rebuildChunkMeshes();
 	void clear();
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> getSelected();
@@ -26,8 +28,9 @@ public:
 	void deselectAll();
 
 private:
-	std::unordered_map<Point3di, Chunk, Point3di::HashFunction> allChunks;
+	std::unordered_map<Point3di, Chunk*, Point3di::HashFunction> allChunks;
 	std::set<Chunk*> chunksToRebuild;
+	Shader chunkShader;
 
 	Point3di getChunkOrigin(Point3di location);
 };

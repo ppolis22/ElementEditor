@@ -11,6 +11,8 @@ class MoveableSelectionState : public SelectableState {
 public:
 	~MoveableSelectionState();
 
+	void render() override;
+
 protected:
 	MoveableSelectionState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection);
 

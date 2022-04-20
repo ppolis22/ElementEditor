@@ -55,19 +55,6 @@ void ExtrudeState::processMouseUp(MouseButtonUpEvent& event) {
 	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH + glm::vec3(moveVector.x, moveVector.y, moveVector.z));
 }
 
-void ExtrudeState::render() {
-	ModelRenderer* modelRenderer = context->getModelRenderer();
-	ChunkManager* modelChunkManager = context->getModelChunkManager();
-	Camera* camera = context->getCamera();
-
-	std::vector<Chunk> allChunks = modelChunkManager->getAllChunks();
-	modelRenderer->render(allChunks, *camera);
-
-	// clear depth buffer to ensure handles are rendered on top of the model
-	glClear(GL_DEPTH_BUFFER_BIT);
-	//modelRenderer->render(handles, *camera);
-}
-
 void ExtrudeState::setExtrusion() {
 	// replace blocks extrusion was covering from copy
 	ChunkManager* chunkManager = context->getModelChunkManager();

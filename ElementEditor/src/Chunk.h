@@ -4,7 +4,6 @@
 #include "engine/Point3d.h"
 #include "engine/MeshBuilder3d.h"
 #include "engine/Mesh.h"
-#include "engine/Shader.h"
 #include "engine/Renderable.h"
 
 #include <vector>
@@ -32,7 +31,6 @@ public:
 	void deselectAll();
 	std::vector<Point3di> getSelection();
 	BlockColor getBlockColor(Point3di location);
-	Shader& getShader() override;
 	Mesh& getMesh() override;
 	glm::mat4 getTransformation() override;
 
@@ -41,7 +39,6 @@ private:
 	std::vector <Point3di> selectedBlocks;
 	MeshBuilder3d meshBuilder;
 	Mesh mesh;
-	Shader chunkShader;
 	int xPosition, yPosition, zPosition;
 
 	void buildBlockMesh(int x, int y, int z, BlockColor color);

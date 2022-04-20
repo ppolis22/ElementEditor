@@ -8,7 +8,6 @@
 
 ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight)
 	: shadowMapShader("shaders/shadowMapVertex.shader", "shaders/shadowMapFragment.shader"),
-	debugQuadShader("shaders/debugQuadVertex.shader", "shaders/debugQuadFragment.shader"),
 	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight)
 {
 	glGenFramebuffers(1, &shadowMapFBO);
@@ -31,38 +30,12 @@ ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int render
 
 ModelRenderer::~ModelRenderer() {}
 
-void ModelRenderer::render(std::vector<Chunk>& chunks, Camera& camera) {
-	renderWithTransparency(chunks, camera, 1.0f);
+void ModelRenderer::render(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera) {
+	renderWithAlpha(renderables, meshShader, camera, 1.0f);
 }
 
-void ModelRenderer::renderPreview(std::vector<Chunk>& previewChunks, Camera& camera) {
-	renderWithTransparency(previewChunks, camera, 0.5f);
-}
-
-void ModelRenderer::renderQuad() {
-	if (quadVAO == 0)
-	{
-		float quadVertices[] = {
-			// positions        // texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		};
-		// setup plane VAO
-		glGenVertexArrays(1, &quadVAO);
-		glGenBuffers(1, &quadVBO);
-		glBindVertexArray(quadVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	}
-	glBindVertexArray(quadVAO);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
+void ModelRenderer::renderPreview(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera) {
+	renderWithAlpha(renderables, meshShader, camera, 0.5f);
 }
 
 static void renderMesh(Mesh& mesh) {
@@ -79,9 +52,9 @@ static void renderMesh(Mesh& mesh) {
 	glBindVertexArray(0);
 }
 
-void ModelRenderer::renderWithTransparency(std::vector<Chunk>& chunks, Camera& camera, float alpha) {
+void ModelRenderer::renderWithAlpha(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
 
-	if (chunks.empty()) {
+	if (renderables.empty()) {
 		return;
 	}
 
@@ -105,9 +78,9 @@ void ModelRenderer::renderWithTransparency(std::vector<Chunk>& chunks, Camera& c
 	glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 	shadowMapShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
 
-	for (Chunk& chunk : chunks) {
-		Mesh& mesh = chunk.getMesh();
-		glm::mat4 modelMatrix = chunk.getTransformation();
+	for (Renderable* renderable : renderables) {
+		Mesh& mesh = renderable->getMesh();
+		glm::mat4 modelMatrix = renderable->getTransformation();
 		shadowMapShader.setUniformMat4f("modelMatrix", modelMatrix);
 
 		renderMesh(mesh);
@@ -116,39 +89,29 @@ void ModelRenderer::renderWithTransparency(std::vector<Chunk>& chunks, Camera& c
 	shadowMapShader.unbind();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// render chunk geometry
+	// render geometry
 	glViewport(0, 0, renderRegionWidth, renderRegionHeight);
 
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 
-	Shader& chunkShader = chunks[0].getShader();		// TODO check size
-	chunkShader.bind();
-	chunkShader.setUniformMat4f("projectionMatrix", projectionMatrix);
-	chunkShader.setUniformMat4f("viewMatrix", viewMatrix);
-	chunkShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
-	chunkShader.setUniformVec3f("lightPosition", lightPosition);
-	chunkShader.setUniformVec3f("lightColor", lightColor);
-	chunkShader.setUniformFloat("alpha", alpha);
+	meshShader.bind();
+	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
+	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
+	meshShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
+	meshShader.setUniformVec3f("lightPosition", lightPosition);
+	meshShader.setUniformVec3f("lightColor", lightColor);
+	meshShader.setUniformFloat("alpha", alpha);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
-	chunkShader.setUniform1i("shadowMap", 0);
+	meshShader.setUniform1i("shadowMap", 0);
 
-	for (Chunk& chunk : chunks) {
-		Mesh& mesh = chunk.getMesh();
-		glm::mat4 modelMatrix = chunk.getTransformation();
-		chunkShader.setUniformMat4f("modelMatrix", modelMatrix);
+	for (Renderable* renderable : renderables) {
+		Mesh& mesh = renderable->getMesh();
+		glm::mat4 modelMatrix = renderable->getTransformation();
+		meshShader.setUniformMat4f("modelMatrix", modelMatrix);
 		renderMesh(mesh);
 	}
-	chunkShader.unbind();
-
-	// render debug quad
-	/*debugQuadShader.bind();
-	debugQuadShader.setUniformFloat("near_plane", near_plane);
-	debugQuadShader.setUniformFloat("far_plane", far_plane);
-	debugQuadShader.setUniform1i("depthMap", 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
-	renderQuad();*/
+	meshShader.unbind();
 }

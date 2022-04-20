@@ -15,6 +15,26 @@ MoveableSelectionState::MoveableSelectionState(AppController* context, std::unor
 
 MoveableSelectionState::~MoveableSelectionState() {}
 
+void MoveableSelectionState::render() {
+	ModelRenderer* modelRenderer = context->getModelRenderer();
+	ChunkManager* modelChunkManager = context->getModelChunkManager();
+	Camera* camera = context->getCamera();
+
+	std::vector<Renderable*> chunksToRender;
+	for (Chunk* chunk : modelChunkManager->getAllChunks()) {
+		chunksToRender.push_back(chunk);
+	}
+	Shader& chunkShader = modelChunkManager->getChunkShader();
+	modelRenderer->render(chunksToRender, chunkShader, *camera);
+
+	// clear depth buffer to ensure handles are rendered on top of the model
+	glClear(GL_DEPTH_BUFFER_BIT);
+	Shader& handlesShader = handles.getShader();
+	std::vector<Renderable*> toRender;
+	toRender.push_back(&handles);
+	modelRenderer->render(toRender, handlesShader, *camera);
+}
+
 Direction MoveableSelectionState::getHandleAtPoint(float x, float y) {
 	Camera* camera = context->getCamera();
 	glm::vec3 mouseDirVector = rayTracer.getRayFromScreenCoords(camera->getViewMatrix(), x, y);
