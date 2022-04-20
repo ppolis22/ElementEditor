@@ -500,8 +500,12 @@
   <ItemGroup>
     <None Include="shaders\chunkFragment.shader" />
     <None Include="shaders\chunkVertex.shader" />
+    <None Include="shaders\debugQuadFragment.shader" />
+    <None Include="shaders\debugQuadVertex.shader" />
     <None Include="shaders\handleFragment.shader" />
     <None Include="shaders\handleVertex.shader" />
+    <None Include="shaders\shadowMapFragment.shader" />
+    <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\uiFragment.shader" />
     <None Include="shaders\uiTexturedFragment.shader" />
     <None Include="shaders\uiTexturedVertex.shader" />

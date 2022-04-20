@@ -60,12 +60,12 @@ void ExtrudeState::render() {
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 	Camera* camera = context->getCamera();
 
-	for (Chunk& chunk : modelChunkManager->getAllChunks()) {
-		modelRenderer->render(chunk, *camera);
-	}
+	std::vector<Chunk> allChunks = modelChunkManager->getAllChunks();
+	modelRenderer->render(allChunks, *camera);
+
 	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);
-	modelRenderer->render(handles, *camera);
+	//modelRenderer->render(handles, *camera);
 }
 
 void ExtrudeState::setExtrusion() {
