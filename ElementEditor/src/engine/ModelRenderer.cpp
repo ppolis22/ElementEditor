@@ -28,16 +28,6 @@ ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int render
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-ModelRenderer::~ModelRenderer() {}
-
-void ModelRenderer::render(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera) {
-	renderWithAlpha(renderables, meshShader, camera, 1.0f);
-}
-
-void ModelRenderer::renderPreview(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera) {
-	renderWithAlpha(renderables, meshShader, camera, 0.5f);
-}
-
 static void renderMesh(Mesh& mesh) {
 	glBindVertexArray(mesh.vertexArrayId);
 	glEnableVertexAttribArray(0);
@@ -52,8 +42,34 @@ static void renderMesh(Mesh& mesh) {
 	glBindVertexArray(0);
 }
 
-void ModelRenderer::renderWithAlpha(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
+void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
+	if (renderables.empty()) {
+		return;
+	}
 
+	glEnable(GL_DEPTH_TEST);
+	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+	glm::mat4 viewMatrix = camera.getViewMatrix();
+	glm::vec3 lightPosition(-3.0f, 5.0f, 0.0f);		//TODO move to Light class
+	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+
+	meshShader.bind();
+	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
+	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
+	meshShader.setUniformVec3f("lightPosition", lightPosition);
+	meshShader.setUniformVec3f("lightColor", lightColor);
+	meshShader.setUniformFloat("alpha", alpha);
+
+	for (Renderable* renderable : renderables) {
+		Mesh& mesh = renderable->getMesh();
+		glm::mat4 modelMatrix = renderable->getTransformation();
+		meshShader.setUniformMat4f("modelMatrix", modelMatrix);
+		renderMesh(mesh);
+	}
+	meshShader.unbind();
+}
+
+void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
 	if (renderables.empty()) {
 		return;
 	}

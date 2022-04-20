@@ -25,14 +25,14 @@ void MoveableSelectionState::render() {
 		chunksToRender.push_back(chunk);
 	}
 	Shader& chunkShader = modelChunkManager->getChunkShader();
-	modelRenderer->render(chunksToRender, chunkShader, *camera);
+	modelRenderer->renderWithShadows(chunksToRender, chunkShader, *camera, 1.0f);
 
 	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);
 	Shader& handlesShader = handles.getShader();
 	std::vector<Renderable*> toRender;
 	toRender.push_back(&handles);
-	modelRenderer->render(toRender, handlesShader, *camera);
+	modelRenderer->renderNoShadows(toRender, handlesShader, *camera, 1.0f);
 }
 
 Direction MoveableSelectionState::getHandleAtPoint(float x, float y) {
