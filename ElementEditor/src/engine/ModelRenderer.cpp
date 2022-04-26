@@ -33,12 +33,14 @@ static void renderMesh(Mesh& mesh) {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
 
 	glDrawElements(GL_TRIANGLES, mesh.indexBufferCount, GL_UNSIGNED_INT, nullptr);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
 	glBindVertexArray(0);
 }
 
@@ -50,7 +52,7 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
-	glm::vec3 lightPosition(-3.0f, 5.0f, 0.0f);		//TODO move to Light class
+	glm::vec3 lightPosition(-3.0f, 5.0f, 2.0f);		//TODO move to Light class
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	meshShader.bind();
@@ -75,7 +77,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glm::vec3 lightPosition(-3.0f, 5.0f, 0.0f);		//TODO move to Light class
+	glm::vec3 lightPosition(-3.0f, 5.0f, 2.0f);		//TODO move to Light class
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 	glm::mat4 lightViewMatrix = glm::lookAt(
 		lightPosition,

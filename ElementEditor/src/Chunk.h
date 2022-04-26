@@ -42,5 +42,8 @@ private:
 	int xPosition, yPosition, zPosition;
 
 	void buildBlockMesh(int x, int y, int z, BlockColor color);
-	bool checkNeighborChunk(int x, int y, int z);	// placeholder for method, likely in ChunkManager
+	bool neighborChunkHasBlock(int x, int y, int z);	// placeholder for method, likely in ChunkManager
+	bool blockIsEmpty(int x, int y, int z);
+	bool blockIsEmpty(const Point3di& point);
+	float calculateOcclusion(const Point3di& vertex, const Point3di& corner, const Point3df& normal);
 };

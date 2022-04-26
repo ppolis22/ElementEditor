@@ -3,6 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 inputColor;
+layout(location = 3) in float occlusion;	// TODO remove need for this
 
 out vec3 vertexColor;
 out vec3 vertexNormal;

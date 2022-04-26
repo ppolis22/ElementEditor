@@ -3,6 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 inputColor;
+layout(location = 3) in float occlusion;
 
 out VS_OUT {
 	vec3 worldPosition;
@@ -10,6 +11,7 @@ out VS_OUT {
 	vec3 vertexColor;
 	vec4 worldPositionLightSpace;
 	vec3 toLightVector;
+	float occlusion;
 } vs_out;
 
 uniform mat4 projectionMatrix;
@@ -26,5 +28,6 @@ void main() {
 	vs_out.worldPositionLightSpace = lightSpaceMatrix * vec4(vs_out.worldPosition, 1.0);
 	vs_out.vertexColor = inputColor;
 	vs_out.toLightVector = normalize(lightPosition - vs_out.worldPosition);
+	vs_out.occlusion = occlusion;
 	gl_Position = projectionMatrix * viewMatrix * vec4(vs_out.worldPosition, 1.0);
 };

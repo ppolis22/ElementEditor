@@ -8,6 +8,7 @@ in VS_OUT {
 	vec3 vertexColor;
 	vec4 worldPositionLightSpace;
 	vec3 toLightVector;
+	float occlusion;
 } fs_in;
 
 uniform sampler2D shadowMap;
@@ -28,7 +29,7 @@ float calculateShadowPercent(vec4 worldPositionLightSpace)
 }
 
 void main() {
-	float ambientPercent = 0.25;
+	float ambientPercent = 0.5 * (1.0 - fs_in.occlusion);
 	vec3 ambientLight = ambientPercent * lightColor;
 	float diffusePercent = max(dot(fs_in.vertexNormal, fs_in.toLightVector), 0.0);
 	vec3 diffuseLight = diffusePercent * lightColor;

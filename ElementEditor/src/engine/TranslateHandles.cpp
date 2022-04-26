@@ -116,22 +116,23 @@ void TranslateHandles::buildHandleMesh(MeshBuilder3d& meshBuilder, glm::vec3 col
 	Point3df rightBottomFar{ right, bottom, far };
 	Point3df leftTopFar{ left, top, far };
 	Point3df rightTopFar{ right, top, far };
-
+	
+	// TODO fix this so 0 occlusion doesn't need to be explicitly stated
 	Point3df leftNormal{ -1.0f, 0.0f, 0.0f };
-	meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, leftNormal, color);
+	meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, 0.0f, 0.0f, 0.0f, 0.0f, leftNormal, color);
 
 	Point3df rightNormal{ 1.0f, 0.0f, 0.0f };
-	meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, rightNormal, color);
+	meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, 0.0f, 0.0f, 0.0f, 0.0f, rightNormal, color);
 
 	Point3df backNormal{ 0.0f, 0.0f, -1.0f };
-	meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, backNormal, color);
+	meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, 0.0f, 0.0f, 0.0f, 0.0f, backNormal, color);
 
 	Point3df frontNormal{ 0.0f, 0.0f, 1.0f };
-	meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, frontNormal, color);
+	meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, 0.0f, 0.0f, 0.0f, 0.0f, frontNormal, color);
 
 	Point3df bottomNormal{ 0.0f, -1.0f, 0.0f };
-	meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, color);
+	meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, 0.0f, 0.0f, 0.0f, 0.0f, bottomNormal, color);
 
 	Point3df topNormal{ 0.0f, 1.0f, 0.0f };
-	meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, topNormal, color);
+	meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, 0.0f, 0.0f, 0.0f, 0.0f, topNormal, color);
 }
