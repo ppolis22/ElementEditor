@@ -33,4 +33,7 @@ private:
 	Shader chunkShader;
 
 	Point3di getChunkOrigin(Point3di location);
+	Point3di getChunkLocationFromBlockLocation(Point3di blockLocation);
+	void flagNeighborChunksToRebuild(Point3di globalLocation, Point3di localLocation);
+	void flagChunkToRebuild(Point3di globalLocation);
 };

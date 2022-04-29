@@ -1,14 +1,16 @@
 #include "Chunk.h"
 
+#include "ChunkManager.h"
 #include <algorithm>
 
 const float Chunk::BLOCK_RENDER_SIZE = 1.0f;
 const float Chunk::HALF_BLOCK_WIDTH = Chunk::BLOCK_RENDER_SIZE / 2.0f;
 
-Chunk::Chunk(int xPos, int yPos, int zPos) :
+Chunk::Chunk(int xPos, int yPos, int zPos, ChunkManager* manager) :
 	xPosition(xPos),
 	yPosition(yPos),
-	zPosition(zPos),
+	zPosition(zPos), 
+	manager(manager),
 	mesh({0, 0, 0, 0}),
 	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor::EMPTY())))
 	{}
@@ -119,7 +121,7 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 
 	// only build faces that could be visible, i.e. border empty blocks
 	if (blockIsEmpty(x - 1, y, z)) {
-		Point3df leftNormal{ -1, 0, 0 };
+		Point3df leftNormal{ -1.0f, 0.0f, 0.0f };
 		float lbfOcc = calculateOcclusion(location, location + Point3di{-1, -1, -1}, leftNormal);
 		float lbnOcc = calculateOcclusion(location, location + Point3di{ -1, -1, 1 }, leftNormal);
 		float ltnOcc = calculateOcclusion(location, location + Point3di{ -1, 1, 1 }, leftNormal);
@@ -185,13 +187,9 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	}
 }
 
-bool Chunk::neighborChunkHasBlock(int x, int y, int z) {
-	return false;		// TODO consult owning ChunkManager
-}
-
 bool Chunk::blockIsEmpty(int x, int y, int z) {
 	if (x < 0 || y < 0 || z < 0 || x >= CHUNK_SIZE || y >= CHUNK_SIZE || z >= CHUNK_SIZE) {
-		return !neighborChunkHasBlock(x + xPosition, y + yPosition, z + zPosition);
+		return manager->getBlockColor({ x + xPosition, y + yPosition, z + zPosition }).isEmpty();
 	}
 
 	return data[x][y][z].isEmpty();

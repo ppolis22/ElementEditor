@@ -95,7 +95,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	shadowMapShader.bind();
 	glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 	shadowMapShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
-	glCullFace(GL_FRONT);
+	//glCullFace(GL_FRONT);
 
 	for (Renderable* renderable : renderables) {
 		Mesh& mesh = renderable->getMesh();
@@ -105,7 +105,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 		renderMesh(mesh);
 	}
 
-	glCullFace(GL_BACK);
+	//glCullFace(GL_BACK);
 	shadowMapShader.unbind();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

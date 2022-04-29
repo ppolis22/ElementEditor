@@ -11,6 +11,8 @@
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
+class ChunkManager;
+
 class Chunk : public Renderable {
 public:
 	static const int CHUNK_SIZE = 4;
@@ -18,7 +20,7 @@ public:
 	static const float HALF_BLOCK_WIDTH;
 
 	Chunk() = delete;
-	Chunk(int xPos, int yPos, int zPos);
+	Chunk(int xPos, int yPos, int zPos, ChunkManager* manager);
 	~Chunk();
 
 	void rebuildMesh();
@@ -41,8 +43,11 @@ private:
 	Mesh mesh;
 	int xPosition, yPosition, zPosition;
 
+	// It may make more sense to have a static ChunkManager for the entire session, or a static/singleton
+	// session object with a static/singleton ChunkManager. For now, this will do.
+	ChunkManager* manager;
+
 	void buildBlockMesh(int x, int y, int z, BlockColor color);
-	bool neighborChunkHasBlock(int x, int y, int z);	// placeholder for method, likely in ChunkManager
 	bool blockIsEmpty(int x, int y, int z);
 	bool blockIsEmpty(const Point3di& point);
 	float calculateOcclusion(const Point3di& vertex, const Point3di& corner, const Point3df& normal);

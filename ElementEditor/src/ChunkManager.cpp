@@ -14,19 +14,58 @@ Shader& ChunkManager::getChunkShader() {
 	return chunkShader;
 }
 
-void ChunkManager::setBlockColor(BlockColor color, Point3di location) {
-	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
-	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);
-	int chunkZ = location.z - ((CHUNK_SIZE + (location.z % CHUNK_SIZE)) % CHUNK_SIZE);
-	Point3di targetChunkOrigin = { chunkX, chunkY, chunkZ };
+Point3di ChunkManager::getChunkLocationFromBlockLocation(Point3di blockLocation) {
+	int chunkX = blockLocation.x - ((CHUNK_SIZE + (blockLocation.x % CHUNK_SIZE)) % CHUNK_SIZE);
+	int chunkY = blockLocation.y - ((CHUNK_SIZE + (blockLocation.y % CHUNK_SIZE)) % CHUNK_SIZE);
+	int chunkZ = blockLocation.z - ((CHUNK_SIZE + (blockLocation.z % CHUNK_SIZE)) % CHUNK_SIZE);
 
-	if (allChunks.find(targetChunkOrigin) == allChunks.end()) {
-		Chunk* chunkToBuild = new Chunk(chunkX, chunkY, chunkZ);
-		allChunks.emplace(targetChunkOrigin, chunkToBuild);
+	return { chunkX, chunkY, chunkZ };
+}
+
+void ChunkManager::setBlockColor(BlockColor color, Point3di globalLocation) {
+	Point3di chunkOrigin = getChunkLocationFromBlockLocation(globalLocation);
+
+	if (allChunks.find(chunkOrigin) == allChunks.end()) {
+		Chunk* chunkToBuild = new Chunk(chunkOrigin.x, chunkOrigin.y, chunkOrigin.z, this);
+		allChunks.emplace(chunkOrigin, chunkToBuild);
 	}
-	Chunk* targetChunk = allChunks.find(targetChunkOrigin)->second;
-	targetChunk->setBlockColor(color, { location.x - chunkX, location.y - chunkY, location.z - chunkZ });
-	chunksToRebuild.insert(targetChunk);	// TODO add neighboring chunks too if applicable!
+	Chunk* targetChunk = allChunks.find(chunkOrigin)->second;
+	Point3di localLocation = globalLocation - chunkOrigin;
+	targetChunk->setBlockColor(color, localLocation);
+	chunksToRebuild.insert(targetChunk);
+
+	flagNeighborChunksToRebuild(globalLocation, localLocation);
+}
+
+// Here neighbor chunks are flagged for rebuild if the added block is within 2 units of the edge.
+// This number comes from the current maximum AO effect distance, thus this method should change if
+// that algorithm changes.
+void ChunkManager::flagNeighborChunksToRebuild(Point3di globalLocation, Point3di localLocation) {
+	if (localLocation.x <= 1)
+		flagChunkToRebuild({ globalLocation.x - CHUNK_SIZE, globalLocation.y, globalLocation.z });
+
+	if (localLocation.x >= CHUNK_SIZE - 2)
+		flagChunkToRebuild({ globalLocation.x + CHUNK_SIZE, globalLocation.y, globalLocation.z });
+
+	if (localLocation.y <= 1)
+		flagChunkToRebuild({ globalLocation.x, globalLocation.y - CHUNK_SIZE, globalLocation.z });
+
+	if (localLocation.y >= CHUNK_SIZE - 2)
+		flagChunkToRebuild({ globalLocation.x, globalLocation.y + CHUNK_SIZE, globalLocation.z });
+
+	if (localLocation.z <= 1)
+		flagChunkToRebuild({ globalLocation.x, globalLocation.y, globalLocation.z - CHUNK_SIZE });
+
+	if (localLocation.z >= CHUNK_SIZE - 2)
+		flagChunkToRebuild({ globalLocation.x, globalLocation.y, globalLocation.z + CHUNK_SIZE });
+}
+
+void ChunkManager::flagChunkToRebuild(Point3di globalLocation) {
+	Point3di chunkOrigin = getChunkLocationFromBlockLocation(globalLocation);
+	auto targetChunkMapping = allChunks.find(chunkOrigin);
+	if (targetChunkMapping != allChunks.end()) {
+		chunksToRebuild.insert(targetChunkMapping->second);
+	}
 }
 
 void ChunkManager::setSelected(bool selected, Point3di location) {
@@ -72,15 +111,13 @@ void ChunkManager::deselectAll() {
 }
 
 BlockColor ChunkManager::getBlockColor(Point3di location) {
-	int chunkX = location.x - ((CHUNK_SIZE + (location.x % CHUNK_SIZE)) % CHUNK_SIZE);
-	int chunkY = location.y - ((CHUNK_SIZE + (location.y % CHUNK_SIZE)) % CHUNK_SIZE);	
-	int chunkZ = location.z - ((CHUNK_SIZE + (location.z % CHUNK_SIZE)) % CHUNK_SIZE);
+	Point3di chunkOrigin = getChunkLocationFromBlockLocation(location);
 
-	auto it = allChunks.find({ chunkX, chunkY, chunkZ });
+	auto it = allChunks.find(chunkOrigin);
 	if (it == allChunks.end()) {
 		return BlockColor::EMPTY();
 	}
-	return it->second->getBlockColor({ location.x - chunkX, location.y - chunkY, location.z - chunkZ });
+	return it->second->getBlockColor(location - chunkOrigin);
 }
 
 std::vector<Chunk*> ChunkManager::getAllChunks() {
