@@ -52,7 +52,7 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
-	glm::vec3 lightPosition(-3.0f, 5.0f, 2.0f);		//TODO move to Light class
+	glm::vec3 lightPosition(-10.0f, -10.0f, -10.0f);		//TODO move to Light class
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	meshShader.bind();
@@ -77,7 +77,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glm::vec3 lightPosition(-3.0f, 5.0f, 2.0f);		//TODO move to Light class
+	glm::vec3 lightPosition(-20.0f, 2.5f, 2.5f);		//TODO move to Light class
 	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 	glm::mat4 lightViewMatrix = glm::lookAt(
 		lightPosition,
@@ -95,6 +95,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	shadowMapShader.bind();
 	glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 	shadowMapShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
+	glCullFace(GL_FRONT);
 
 	for (Renderable* renderable : renderables) {
 		Mesh& mesh = renderable->getMesh();
@@ -104,6 +105,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 		renderMesh(mesh);
 	}
 
+	glCullFace(GL_BACK);
 	shadowMapShader.unbind();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

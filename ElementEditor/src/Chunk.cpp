@@ -203,7 +203,7 @@ bool Chunk::blockIsEmpty(const Point3di& point) {
 
 // TODO come up with more robust/flexible way to do this
 //
-// Currently this method serves as an approximation of ambient occlusion that is calculated for each vertex when the
+// This method serves as an approximation of ambient occlusion that is calculated for each vertex when the
 // mesh is rebuilt. Currently only accounts for 3 blocks surrounding vertex, and 4 blocks above it.
 float Chunk::calculateOcclusion(const Point3di& vertex, const Point3di& corner, const Point3df& normalFloat) {
 	Point3di normal{ static_cast<int>(normalFloat.x), static_cast<int>(normalFloat.y), static_cast<int>(normalFloat.z) };
@@ -232,12 +232,3 @@ float Chunk::calculateOcclusion(const Point3di& vertex, const Point3di& corner, 
 
 	return occlusion;
 }
-
-/*
-vertex 0, 0, 0
-corner -1, -1, -1
-normal -1, 0, 0
-
-delta = 1, 1, 1
-toCheck = 0, 1, 1
-*/

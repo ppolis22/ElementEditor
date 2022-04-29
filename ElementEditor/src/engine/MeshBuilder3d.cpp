@@ -14,8 +14,13 @@ void MeshBuilder3d::addFace(Point3df& p0, Point3df& p1, Point3df& p2, Point3df& 
 	currentVertexData.insert(currentVertexData.end(), { p2.x, p2.y, p2.z, normal.x, normal.y, normal.z, color.r, color.g, color.b, p2Occ });
 	currentVertexData.insert(currentVertexData.end(), { p3.x, p3.y, p3.z, normal.x, normal.y, normal.z, color.r, color.g, color.b, p3Occ });
 
-	currentIndices.insert(currentIndices.end(), { numVertices, numVertices + 1, numVertices + 2,
+	if (p0Occ + p2Occ > p1Occ + p3Occ) {
+		currentIndices.insert(currentIndices.end(), { numVertices + 1, numVertices + 2, numVertices + 3,
+		numVertices + 3, numVertices + 0, numVertices + 1});
+	} else {
+		currentIndices.insert(currentIndices.end(), { numVertices, numVertices + 1, numVertices + 2,
 		numVertices + 2, numVertices + 3, numVertices });
+	}
 
 	numVertices += 4;
 }
