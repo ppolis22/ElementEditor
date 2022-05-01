@@ -8,6 +8,7 @@
 #include "engine/ui/BasicUIRenderer.h"
 #include "engine/event/Event.h"
 #include "ToolbarUI.h"
+#include "LightManager.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -36,6 +37,7 @@ void ElementEditor::run() {
 	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
+	LightManager* lightManager = new LightManager();
 
 	// TODO replace with some sort of Loader class
 	BlockColor defaultColor{ 0, 0, 255 };
@@ -45,7 +47,12 @@ void ElementEditor::run() {
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
 	modelChunkManager->rebuildChunkMeshes();
 
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);
+	lightManager->setDirectionalLightColor({ 1.0f, 1.0f, 1.0f });
+	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
+	Light light{ glm::vec3(1.0f, 0.8f, 0.3f), glm::vec3(2.5f, 3.5f, 5.5f), 10.0f };	// color, position, strength
+	lightManager->addLight(&light);
+
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);

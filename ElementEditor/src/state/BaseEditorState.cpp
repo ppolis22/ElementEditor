@@ -37,12 +37,16 @@ void BaseEditorState::render() {
 		chunksToRender.push_back(chunk);
 	}
 	Shader& chunkShader = modelChunkManager->getChunkShader();
-	modelRenderer->renderWithShadows(chunksToRender, chunkShader, *camera, 1.0f);
+	LightManager* lightManager = context->getLightManager();
+
+	modelRenderer->renderWithShadows(chunksToRender, lightManager->getLights(),
+		lightManager->getDirectionalLightColor(), lightManager->getDirectionalLightPosition(), chunkShader, *camera, 1.0f);
 
 	std::vector<Renderable*> previewChunksToRender;
 	for (Chunk* chunk : previewChunkManager->getAllChunks()) {
 		previewChunksToRender.push_back(chunk);
 	}
 	Shader& previewChunkShader = previewChunkManager->getChunkShader();
-	modelRenderer->renderNoShadows(previewChunksToRender, previewChunkShader, *camera, 0.5f);
+	modelRenderer->renderNoShadows(previewChunksToRender, context->getLightManager()->getLights(), 
+		lightManager->getDirectionalLightColor(), lightManager->getDirectionalLightPosition(), previewChunkShader, *camera, 0.5f);
 }

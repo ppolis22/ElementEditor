@@ -6,6 +6,8 @@
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
 
+#include <sstream>
+
 ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight)
 	: shadowMapShader("shaders/shadowMapVertex.shader", "shaders/shadowMapFragment.shader"),
 	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight)
@@ -44,7 +46,14 @@ static void renderMesh(Mesh& mesh) {
 	glBindVertexArray(0);
 }
 
-void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
+static const std::string buildArrayUniformName(const char* arrayName, int index, const char* propertyName) {
+	std::stringstream ss;
+	ss << arrayName << "[" << index << "]." << propertyName;
+	return ss.str();
+}
+
+void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, std::vector<Light*> pointLights, 
+	glm::vec3 directionalLightColor, glm::vec3 directionalLightPosition, Shader& meshShader, Camera& camera, float alpha) {
 	if (renderables.empty()) {
 		return;
 	}
@@ -52,15 +61,20 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
-	glm::vec3 lightPosition(-10.0f, -10.0f, -10.0f);		//TODO move to Light class
-	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
 	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
-	meshShader.setUniformVec3f("lightPosition", lightPosition);
-	meshShader.setUniformVec3f("lightColor", lightColor);
+	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
+	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
+
+	meshShader.setUniform1i("numPointLights", pointLights.size());
+	for (int i = 0; i < pointLights.size(); i++) {
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->color);
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->position);
+		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->strength);
+	}
 
 	for (Renderable* renderable : renderables) {
 		Mesh& mesh = renderable->getMesh();
@@ -71,16 +85,17 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, Shader
 	meshShader.unbind();
 }
 
-void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha) {
+void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, std::vector<Light*> pointLights,
+	glm::vec3 directionalLightColor, glm::vec3 directionalLightPosition, Shader& meshShader, Camera& camera, float alpha) {
 	if (renderables.empty()) {
 		return;
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glm::vec3 lightPosition(-20.0f, 2.5f, 2.5f);		//TODO move to Light class
-	glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+	//glm::vec3 directionalLightPosition(-20.0f, 2.5f, 2.5f);		//TODO move to Light class
+	//glm::vec3 directionalLightColor(1.0f, 1.0f, 1.0f);
 	glm::mat4 lightViewMatrix = glm::lookAt(
-		lightPosition,
+		directionalLightPosition,
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -93,9 +108,8 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
 
 	shadowMapShader.bind();
-	glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
-	shadowMapShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
-	//glCullFace(GL_FRONT);
+	glm::mat4 directionalLightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+	shadowMapShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
 
 	for (Renderable* renderable : renderables) {
 		Mesh& mesh = renderable->getMesh();
@@ -105,7 +119,6 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 		renderMesh(mesh);
 	}
 
-	//glCullFace(GL_BACK);
 	shadowMapShader.unbind();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -118,10 +131,17 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, Shad
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
 	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
-	meshShader.setUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
-	meshShader.setUniformVec3f("lightPosition", lightPosition);
-	meshShader.setUniformVec3f("lightColor", lightColor);
+	meshShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
+	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
+	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
+
+	meshShader.setUniform1i("numPointLights", pointLights.size());
+	for (int i = 0; i < pointLights.size(); i++) {
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->color);
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->position);
+		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->strength);
+	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);

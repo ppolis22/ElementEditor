@@ -8,9 +8,9 @@
 #include "state/ColorPickState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
-	UIRenderer* uiRenderer, Window* window)
+	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
 	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0 }) {
+	lightManager(lightManager), uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0 }) {
 	this->state = new AddState(this);
 }
 
@@ -95,6 +95,10 @@ ChunkManager* AppController::getModelChunkManager() {
 
 ChunkManager* AppController::getPreviewChunkManager() {
 	return previewChunkManager;
+}
+
+LightManager* AppController::getLightManager() {
+	return lightManager;
 }
 
 ModelRenderer* AppController::getModelRenderer() {

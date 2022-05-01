@@ -3,13 +3,31 @@
 #include "Renderable.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Light.h"
 
 class ModelRenderer {
 public:
 	ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight);
 
-	void renderNoShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha);
-	void renderWithShadows(std::vector<Renderable*> renderables, Shader& meshShader, Camera& camera, float alpha);
+	void renderWithShadows(
+		std::vector<Renderable*> renderables,
+		std::vector<Light*> pointLights,
+		glm::vec3 directionalLightColor,
+		glm::vec3 directionalLightPosition,
+		Shader& meshShader, 
+		Camera& camera, 
+		float alpha
+	);
+
+	void renderNoShadows(
+		std::vector<Renderable*> renderables, 
+		std::vector<Light*> pointLights,
+		glm::vec3 directionalLightColor, 
+		glm::vec3 directionalLightPosition,
+		Shader& meshShader, 
+		Camera& camera, 
+		float alpha
+	);
 
 private:
 	unsigned int SHADOWMAP_WIDTH = 1024;

@@ -10,13 +10,14 @@
 #include "engine/event/KeyEvent.h"
 #include "engine/Window.h"
 #include "engine/Point3d.h"
+#include "LightManager.h"
 
 #include <vector>
 
 class AppController : public EventListener {
 public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
-		UIRenderer* uiRenderer, Window* window);
+		LightManager* lightManager, UIRenderer* uiRenderer, Window* window);
 
 	void setState(State stateToSet);
 	State getState();
@@ -38,6 +39,7 @@ public:
 	ModelRenderer* getModelRenderer();
 	ChunkManager* getModelChunkManager();
 	ChunkManager* getPreviewChunkManager();
+	LightManager* getLightManager();
 	Window* getWindow();
 
 private:
@@ -46,6 +48,7 @@ private:
 	ModelRenderer* modelRenderer;
 	ChunkManager* modelChunkManager;
 	ChunkManager* previewChunkManager;
+	LightManager* lightManager;
 	Window* window;
 	UIRenderer* uiRenderer;
 	BlockColor activeColor;
