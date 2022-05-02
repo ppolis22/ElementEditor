@@ -38,8 +38,9 @@ void BaseEditorState::render() {
 	}
 	Shader& chunkShader = modelChunkManager->getChunkShader();
 	LightManager* lightManager = context->getLightManager();
+	std::vector<Light*> lights = lightManager->getLights();
 
-	modelRenderer->renderWithShadows(chunksToRender, lightManager->getLights(), lightManager->getDirectionalLightColor(), 
+	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(),
 		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
 
 	std::vector<Renderable*> previewChunksToRender;
@@ -47,6 +48,13 @@ void BaseEditorState::render() {
 		previewChunksToRender.push_back(chunk);
 	}
 	Shader& previewChunkShader = previewChunkManager->getChunkShader();
-	modelRenderer->renderNoShadows(previewChunksToRender, context->getLightManager()->getLights(), lightManager->getDirectionalLightColor(), 
+	modelRenderer->renderNoShadows(previewChunksToRender, lights, lightManager->getDirectionalLightColor(),
 		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
+
+	UIRenderer* uiRenderer = context->getUIRenderer();
+	for (Light* light : lights) {
+		glm::vec3 lightPos = light->position;
+		uiRenderer->renderTexturedQuadInScene(lightPos.x, lightPos.y, lightPos.z, 50.0, 50.0, *camera, 
+			"textures/add-button-white.png", light->color);
+	}
 }

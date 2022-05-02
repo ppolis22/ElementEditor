@@ -30,7 +30,7 @@ BasicUIRenderer::~BasicUIRenderer() {
 	meshBuilder.deleteMesh(texturedQuad);
 }
 
-void BasicUIRenderer::renderColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {
+void BasicUIRenderer::renderStaticColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {
 	coloredShader.bind();
 	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
 
@@ -47,9 +47,8 @@ void BasicUIRenderer::renderColoredQuad(float x, float y, float width, float hei
 	coloredShader.unbind();
 }
 
-void BasicUIRenderer::renderTexturedQuad(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 blendColor) {
+void BasicUIRenderer::renderTexturedQuad(const std::string& texturePath, glm::vec3 blendColor, glm::mat4 transformationMatrix) {
 	texturedShader.bind();
-	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
 	int textureSlot = getTextureSlot(texturePath);
 
 	texturedShader.setUniformMat4f("transformationMatrix", transformationMatrix);
@@ -66,6 +65,31 @@ void BasicUIRenderer::renderTexturedQuad(float x, float y, float width, float he
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 	texturedShader.unbind();
+}
+
+void BasicUIRenderer::renderStaticTexturedQuad(float x, float y, float width, float height, const std::string& texturePath, glm::vec3 blendColor) {
+	glm::mat4 transformationMatrix = buildTransformationMatrix(x, y, width, height);
+	renderTexturedQuad(texturePath, blendColor, transformationMatrix);
+}
+
+void BasicUIRenderer::renderTexturedQuadInScene(float x, float y, float z, float width, float height, Camera& camera,
+	const std::string& texturePath, glm::vec3 blendColor) {
+	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+	glm::mat4 viewMatrix = camera.getViewMatrix();
+
+	glm::mat4 modelMatrix(1.0f);
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
+	glm::vec4 screenSpacePosition = projectionMatrix * viewMatrix * modelMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	screenSpacePosition /= screenSpacePosition.w;
+
+	glm::mat4 transformationMatrix(1.0f);
+	// currently, z is hardcoded to 0 in the shader, should fix this
+	transformationMatrix = glm::translate(transformationMatrix, glm::vec3(screenSpacePosition.x, screenSpacePosition.y, screenSpacePosition.z));
+	float widthRatio = width / (float)windowWidth;
+	float heightRatio = height / (float)windowHeight;
+	transformationMatrix = glm::scale(transformationMatrix, glm::vec3(widthRatio, heightRatio, 1.0f));
+
+	renderTexturedQuad(texturePath, blendColor, transformationMatrix);
 }
 
 glm::mat4 BasicUIRenderer::buildTransformationMatrix(float x, float y, float width, float height) {

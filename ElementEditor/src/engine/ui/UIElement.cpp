@@ -92,7 +92,7 @@ void UIElement::render(UIRenderer* renderer) {
 
 void UIElement::renderElement(UIRenderer* renderer) { 
 	if (alpha != 0.0f) {
-		renderer->renderColoredQuad(x, y, width, height, color, alpha);
+		renderer->renderStaticColoredQuad(x, y, width, height, color, alpha);
 	}
 }
 

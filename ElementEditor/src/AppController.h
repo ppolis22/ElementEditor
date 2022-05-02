@@ -39,6 +39,7 @@ public:
 	ModelRenderer* getModelRenderer();
 	ChunkManager* getModelChunkManager();
 	ChunkManager* getPreviewChunkManager();
+	UIRenderer* getUIRenderer();
 	LightManager* getLightManager();
 	Window* getWindow();
 

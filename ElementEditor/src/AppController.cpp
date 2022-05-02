@@ -105,6 +105,10 @@ ModelRenderer* AppController::getModelRenderer() {
 	return modelRenderer;
 }
 
+UIRenderer* AppController::getUIRenderer() {
+	return uiRenderer;
+}
+
 Window* AppController::getWindow() {
 	return window;
 }

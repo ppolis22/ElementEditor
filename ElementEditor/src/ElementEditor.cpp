@@ -50,8 +50,12 @@ void ElementEditor::run() {
 	lightManager->setDirectionalLightColor({ 0.5f, 0.5f, 0.5f });
 	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
 	lightManager->setAmbientLightColor({0.5f, 0.5f, 0.5f});
-	Light light{ glm::vec3(1.0f, 0.8f, 0.3f), glm::vec3(2.5f, 3.5f, 5.5f), 10.0f };	// color, position, strength
-	lightManager->addLight(&light);
+
+	Light yellowLight{ glm::vec3(1.0f, 0.8f, 0.3f), glm::vec3(2.5f, 3.5f, 5.5f), 10.0f };	// color, position, strength
+	lightManager->addLight(&yellowLight);
+
+	Light blueLight{ glm::vec3(0.1f, 0.3f, 1.0f), glm::vec3(-2.5f, -3.5f, -5.5f), 10.0f };	// color, position, strength
+	lightManager->addLight(&blueLight);
 
 	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window);
 	window->setApplicationEventListener(&appController);
