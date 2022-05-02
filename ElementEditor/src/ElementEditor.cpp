@@ -40,15 +40,16 @@ void ElementEditor::run() {
 	LightManager* lightManager = new LightManager();
 
 	// TODO replace with some sort of Loader class
-	BlockColor defaultColor{ 0, 0, 255 };
+	BlockColor defaultColor{ 255, 255, 255 };
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
 	modelChunkManager->rebuildChunkMeshes();
 
-	lightManager->setDirectionalLightColor({ 1.0f, 1.0f, 1.0f });
+	lightManager->setDirectionalLightColor({ 0.5f, 0.5f, 0.5f });
 	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
+	lightManager->setAmbientLightColor({0.5f, 0.5f, 0.5f});
 	Light light{ glm::vec3(1.0f, 0.8f, 0.3f), glm::vec3(2.5f, 3.5f, 5.5f), 10.0f };	// color, position, strength
 	lightManager->addLight(&light);
 

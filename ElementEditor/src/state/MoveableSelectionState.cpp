@@ -27,16 +27,16 @@ void MoveableSelectionState::render() {
 	Shader& chunkShader = modelChunkManager->getChunkShader();
 	LightManager* lightManager = context->getLightManager();
 
-	modelRenderer->renderWithShadows(chunksToRender, context->getLightManager()->getLights(), 
-		lightManager->getDirectionalLightColor(), lightManager->getDirectionalLightPosition(), chunkShader, *camera, 1.0f);
+	modelRenderer->renderWithShadows(chunksToRender, context->getLightManager()->getLights(), lightManager->getDirectionalLightColor(), 
+		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
 
 	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);
 	Shader& handlesShader = handles.getShader();
 	std::vector<Renderable*> toRender;
 	toRender.push_back(&handles);
-	modelRenderer->renderNoShadows(toRender, context->getLightManager()->getLights(), 
-		lightManager->getDirectionalLightColor(), lightManager->getDirectionalLightPosition(), handlesShader, *camera, 1.0f);
+	modelRenderer->renderNoShadows(toRender, context->getLightManager()->getLights(), lightManager->getDirectionalLightColor(), 
+		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), handlesShader, *camera, 1.0f);
 }
 
 Direction MoveableSelectionState::getHandleAtPoint(float x, float y) {

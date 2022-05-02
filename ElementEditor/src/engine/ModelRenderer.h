@@ -14,6 +14,7 @@ public:
 		std::vector<Light*> pointLights,
 		glm::vec3 directionalLightColor,
 		glm::vec3 directionalLightPosition,
+		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 
 		float alpha
@@ -24,6 +25,7 @@ public:
 		std::vector<Light*> pointLights,
 		glm::vec3 directionalLightColor, 
 		glm::vec3 directionalLightPosition,
+		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 
 		float alpha

@@ -15,8 +15,9 @@ in VS_OUT {
 } fs_in;
 
 uniform sampler2D shadowMap;
-
+uniform int numPointLights;
 uniform vec3 directionalLightColor;
+uniform vec3 ambientLightColor;
 uniform float alpha;
 
 float calculateShadowPercent(vec4 worldPositionLightSpace)
@@ -32,9 +33,7 @@ float calculateShadowPercent(vec4 worldPositionLightSpace)
 }
 
 void main() {
-	float baseAmbientLight = 0.5;		// TODO make uniform?
-	float ambientPercent = baseAmbientLight * (1.0 - fs_in.occlusion);
-	vec3 ambientLight = ambientPercent * directionalLightColor;
+	vec3 ambientLight = (1.0 - fs_in.occlusion) * ambientLightColor;
 	float directionalDiffusePercent = max(dot(fs_in.vertexNormal, fs_in.toDirectionalLightVector), 0.0);
 	vec3 directionalDiffuseLight = directionalDiffusePercent * directionalLightColor;
 
@@ -42,6 +41,10 @@ void main() {
 
 	vec3 pointDiffuseLight;
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++) {
+		if (i == numPointLights) {
+			break;	// workaround for GLSL looping constraint
+		}
+
 		pointDiffuseLight += fs_in.pointLightContrib[i];
 	}
 

@@ -52,8 +52,16 @@ static const std::string buildArrayUniformName(const char* arrayName, int index,
 	return ss.str();
 }
 
-void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, std::vector<Light*> pointLights, 
-	glm::vec3 directionalLightColor, glm::vec3 directionalLightPosition, Shader& meshShader, Camera& camera, float alpha) {
+void ModelRenderer::renderNoShadows(
+	std::vector<Renderable*> renderables, 
+	std::vector<Light*> pointLights, 
+	glm::vec3 directionalLightColor, 
+	glm::vec3 directionalLightPosition,
+	glm::vec3 ambientLightColor,
+	Shader& meshShader, 
+	Camera& camera, 
+	float alpha
+) {
 	if (renderables.empty()) {
 		return;
 	}
@@ -67,6 +75,7 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, std::v
 	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
 	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
 	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
+	meshShader.setUniformVec3f("ambientLightColor", ambientLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
 
 	meshShader.setUniform1i("numPointLights", pointLights.size());
@@ -85,15 +94,21 @@ void ModelRenderer::renderNoShadows(std::vector<Renderable*> renderables, std::v
 	meshShader.unbind();
 }
 
-void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, std::vector<Light*> pointLights,
-	glm::vec3 directionalLightColor, glm::vec3 directionalLightPosition, Shader& meshShader, Camera& camera, float alpha) {
+void ModelRenderer::renderWithShadows(
+	std::vector<Renderable*> renderables, 
+	std::vector<Light*> pointLights,
+	glm::vec3 directionalLightColor, 
+	glm::vec3 directionalLightPosition, 
+	glm::vec3 ambientLightColor, 
+	Shader& meshShader, 
+	Camera& camera, 
+	float alpha
+) {
 	if (renderables.empty()) {
 		return;
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	//glm::vec3 directionalLightPosition(-20.0f, 2.5f, 2.5f);		//TODO move to Light class
-	//glm::vec3 directionalLightColor(1.0f, 1.0f, 1.0f);
 	glm::mat4 lightViewMatrix = glm::lookAt(
 		directionalLightPosition,
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -134,6 +149,7 @@ void ModelRenderer::renderWithShadows(std::vector<Renderable*> renderables, std:
 	meshShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
 	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
 	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
+	meshShader.setUniformVec3f("ambientLightColor", ambientLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
 
 	meshShader.setUniform1i("numPointLights", pointLights.size());

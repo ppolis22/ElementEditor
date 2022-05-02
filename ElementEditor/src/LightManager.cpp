@@ -1,5 +1,11 @@
 #include "LightManager.h"
 
+LightManager::LightManager()
+	: directionalLightPosition(1.0f, 1.0f, 1.0f),
+	directionalLightColor(0.5f, 0.5f, 0.5f),
+	ambientLightColor(0.5f, 0.5f, 0.5f)
+{}
+
 void LightManager::addLight(Light* lightToAdd) {
 	if (lightCount < MAX_NUM_LIGHTS) {
 		lights.push_back(lightToAdd);
@@ -60,6 +66,14 @@ bool LightManager::directionalLightIsEnabled() {
 
 void LightManager::setDirectionalLightIsEnabled(bool enabled) {
 	directionalLightEnabled = enabled;
+}
+
+glm::vec3 LightManager::getAmbientLightColor() {
+	return ambientLightColor;
+
+}
+void LightManager::setAmbientLightColor(glm::vec3 color) {
+	ambientLightColor = color;
 }
 
 int LightManager::getLightCount() {
