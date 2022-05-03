@@ -9,8 +9,8 @@
 #include <algorithm>
 
 MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection)
-	: MoveableSelectionState(context, selection),
-	moveVector{0, 0, 0}
+	: MoveableSelectionState(context),
+	selection(selection)
 {
 	for (const auto& entry : selection) {
 		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
@@ -21,43 +21,12 @@ State MoveState::getType() {
 	return State::MOVE;
 }
 
-void MoveState::processMouseDown(MouseButtonDownEvent& event) {
-	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
-		return;
-	}
-	moveDirection = getHandleAtPoint(event.posX, event.posY);
-	if (moveDirection != NONE) {
-		handles.setSelectedDirection(moveDirection);
-		// store closest point from mouse ray to corresponding handle ray
-		movementReferencePoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
-		handleGrabPointOffset = movementReferencePoint - handles.getPosition();
-	}
+glm::vec3 MoveState::getHandlePositionForSelection() {
+	return averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH;
 }
 
-void MoveState::processMouseMovement(MouseMoveEvent& event) {
-	if (moveDirection != NONE) {
-		glm::vec3 pointOnAxis = getClosestPointOnAxisToMouse(event.rawX, event.rawY);
-		handles.setPosition(pointOnAxis - handleGrabPointOffset);
-		float deltaX = std::floor(pointOnAxis.x + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.x);
-		float deltaY = std::floor(pointOnAxis.y + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.y);
-		float deltaZ = std::floor(pointOnAxis.z + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.z);
-
-		if (std::max({ std::abs(deltaX), std::abs(deltaY), std::abs(deltaZ) }) > 0.0f) {
-			moveVector += Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
-			movementReferencePoint += glm::vec3(deltaX, deltaY, deltaZ);
-			moveSelection();
-		}
-	} 
-	//else {
-	//	Direction hoveredDirection = getHandleAtPoint(event.rawX, event.rawY);
-	//	// highlight axis handle for hoveredDirection?
-	//}
-}
-
-void MoveState::processMouseUp(MouseButtonUpEvent& event) {
-	moveDirection = NONE;
-	handles.setSelectedDirection(NONE);
-	handles.setPosition(averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH + glm::vec3(moveVector.x, moveVector.y, moveVector.z));
+void MoveState::onMovement() {
+	moveSelection();
 }
 
 void MoveState::moveSelection() {
@@ -78,4 +47,13 @@ void MoveState::moveSelection() {
 		chunkManager->setSelected(true, offsetPoint);
 	}
 	chunkManager->rebuildChunkMeshes();
+}
+
+glm::vec3 MoveState::averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points) {
+	glm::vec3 average(0.0f, 0.0f, 0.0f);
+	for (const auto& entry : points) {
+		Point3di point = entry.first;
+		average += glm::vec3((float)point.x, (float)point.y, (float)point.z);
+	}
+	return average / (float)points.size();
 }

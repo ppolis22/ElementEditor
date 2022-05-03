@@ -207,6 +207,7 @@
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
     <ClInclude Include="src\state\ColorPickState.h" />
+    <ClInclude Include="src\state\LightSelectionState.h" />
     <ClInclude Include="src\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />

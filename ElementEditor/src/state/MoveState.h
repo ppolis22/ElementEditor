@@ -11,16 +11,15 @@ class MoveState : public MoveableSelectionState {
 public:
 	MoveState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection);
 
-	void processMouseDown(MouseButtonDownEvent& event) override;
-	void processMouseUp(MouseButtonUpEvent& event) override;
-	void processMouseMovement(MouseMoveEvent& event) override;
 	State getType() override;
 
 private:
+	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection;
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> coveredModelCopy;
-	Point3di moveVector;
-	glm::vec3 movementReferencePoint;
-	glm::vec3 handleGrabPointOffset;
+
+	virtual glm::vec3 getHandlePositionForSelection() override;
+	virtual void onMovement() override;
 
 	void moveSelection();
+	glm::vec3 averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points);
 };
