@@ -10,22 +10,6 @@
 BaseEditorState::BaseEditorState(AppController* context)
 	: context(context) {}
 
-BaseEditorState::~BaseEditorState() {}
-
-void BaseEditorState::processMouseMovement(MouseMoveEvent& event) {}
-
-void BaseEditorState::processKeyPress(KeyPressEvent& event) {}
-
-void BaseEditorState::processScroll(MouseScrollEvent& event) {}
-
-void BaseEditorState::processMouseDown(MouseButtonDownEvent& event) {}
-
-void BaseEditorState::processMouseUp(MouseButtonUpEvent& event) {}
-
-void BaseEditorState::init() {}
-
-void BaseEditorState::cleanUp() {}
-
 void BaseEditorState::render() {
 	ModelRenderer* modelRenderer = context->getModelRenderer();
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
@@ -53,8 +37,8 @@ void BaseEditorState::render() {
 
 	UIRenderer* uiRenderer = context->getUIRenderer();
 	for (Light* light : lights) {
-		glm::vec3 lightPos = light->position;
+		glm::vec3 lightPos = light->getRenderPosition();
 		uiRenderer->renderTexturedQuadInScene(lightPos.x, lightPos.y, lightPos.z, 50.0, 50.0, *camera, 
-			"textures/add-button-white.png", light->color);
+			"textures/add-button-white.png", light->getColor());
 	}
 }

@@ -19,8 +19,8 @@ private:
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> coveredModelCopy;
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> extrusion;
 
-	virtual glm::vec3 getHandlePositionForSelection() override;
-	virtual void onMovement() override;
+	glm::vec3 getHandlePositionForSelection() override;
+	void onMovement() override;
 
 	void setExtrusion();
 	void calculateExtrusion();

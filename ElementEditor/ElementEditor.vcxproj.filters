@@ -123,6 +123,12 @@
     <ClCompile Include="src\LightManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\state\MoveLightState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1115,7 +1121,7 @@
     <ClInclude Include="src\LightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\state\LightSelectionState.h">
+    <ClInclude Include="src\state\MoveLightState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

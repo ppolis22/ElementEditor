@@ -73,9 +73,9 @@ void MoveableSelectionState::render() {
 
 	UIRenderer* uiRenderer = context->getUIRenderer();
 	for (Light* light : lights) {
-		glm::vec3 lightPos = light->position;
+		glm::vec3 lightPos = light->getRenderPosition();
 		uiRenderer->renderTexturedQuadInScene(lightPos.x, lightPos.y, lightPos.z, 50.0, 50.0, *camera,
-			"textures/add-button-white.png", light->color);
+			"textures/add-button-white.png", light->getColor());
 	}
 
 	// clear depth buffer to ensure handles are rendered on top of the model

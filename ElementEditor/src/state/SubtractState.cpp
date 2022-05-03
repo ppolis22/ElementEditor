@@ -13,6 +13,7 @@ State SubtractState::getType() {
 
 void SubtractState::init() {
 	context->getModelChunkManager()->deselectAll();
+	context->getLightManager()->setSelectedLight(nullptr);
 }
 
 void SubtractState::processMouseUp(MouseButtonUpEvent& event) {

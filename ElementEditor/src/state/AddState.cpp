@@ -13,6 +13,7 @@ State AddState::getType() {
 
 void AddState::init() {
 	context->getModelChunkManager()->deselectAll();
+	context->getLightManager()->setSelectedLight(nullptr);
 }
 
 void AddState::processMouseUp(MouseButtonUpEvent& event) {

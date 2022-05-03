@@ -6,6 +6,7 @@
 #include "state/MoveState.h"
 #include "state/ExtrudeState.h"
 #include "state/ColorPickState.h"
+#include "state/MoveLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
@@ -23,6 +24,8 @@ void AppController::setState(State stateToSet) {
 		changeActiveTool(new SelectState(this));
 	} else if (stateToSet == State::MOVE && canSetMoveTool()) {
 		changeActiveTool(new MoveState(this, modelChunkManager->getSelected()));
+	} else if (stateToSet == State::MOVE_LIGHT && canSetMoveLightTool()) {
+		changeActiveTool(new MoveLightState(this, lightManager->getSelectedLight()));
 	} else if (stateToSet == State::EXTRUDE && canSetExtrudeTool()) {
 		changeActiveTool(new ExtrudeState(this, modelChunkManager->getSelected()));
 	} else if (stateToSet == State::COLOR_PICK) {
@@ -44,6 +47,10 @@ bool AppController::canSetMoveTool() {
 
 bool AppController::canSetExtrudeTool() {
 	return !modelChunkManager->getSelected().empty();
+}
+
+bool AppController::canSetMoveLightTool() {
+	return lightManager->getSelectedLight() != nullptr;
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {

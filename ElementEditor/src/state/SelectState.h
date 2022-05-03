@@ -11,6 +11,7 @@ public:
 	State getType() override;
 
 private:
-	void addToSelection(Point3di& block);
-	void removeFromSelection(Point3di& block);
+	void searchBlocksOnRay(const std::vector<Point3di>& intersectedBlocks);
+	void addBlockToSelection(Point3di& block);
+	void removeBlockFromSelection(Point3di& block);
 };

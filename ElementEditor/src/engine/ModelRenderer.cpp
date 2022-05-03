@@ -80,9 +80,9 @@ void ModelRenderer::renderNoShadows(
 
 	meshShader.setUniform1i("numPointLights", pointLights.size());
 	for (int i = 0; i < pointLights.size(); i++) {
-		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->color);
-		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->position);
-		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->strength);
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->getColor());
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->getRenderPosition());
+		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->getStrength());
 	}
 
 	for (Renderable* renderable : renderables) {
@@ -154,9 +154,9 @@ void ModelRenderer::renderWithShadows(
 
 	meshShader.setUniform1i("numPointLights", pointLights.size());
 	for (int i = 0; i < pointLights.size(); i++) {
-		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->color);
-		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->position);
-		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->strength);
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "color"), pointLights[i]->getColor());
+		meshShader.setUniformVec3f(buildArrayUniformName("lights", i, "position"), pointLights[i]->getRenderPosition());
+		meshShader.setUniformFloat(buildArrayUniformName("lights", i, "strength"), pointLights[i]->getStrength());
 	}
 
 	glActiveTexture(GL_TEXTURE0);

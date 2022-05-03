@@ -23,6 +23,7 @@ public:
 	State getState();
 
 	bool canSetMoveTool();
+	bool canSetMoveLightTool();
 	bool canSetExtrudeTool();
 
 	void processMouseMovement(MouseMoveEvent& event) override;

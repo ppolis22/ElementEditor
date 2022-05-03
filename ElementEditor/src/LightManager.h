@@ -9,14 +9,17 @@ class LightManager {
 
 public:
 	LightManager();
+	~LightManager();
 
 	// These methods operate specifically on a collection of point lights
-	void addLight(Light* light);
+	void addLight(const glm::vec3& color, Point3di& position, float strength);
 	void removeLight(Light* light);
 	void removeLight(const Point3di& position);
 	Light* getLight(const Point3di& position);
 	std::vector<Light*> getLights();
 	int getLightCount();
+	Light* getSelectedLight();
+	void setSelectedLight(Light* light);
 
 	// Currently only one directional, shadow-casting light is supported, intended
 	// to be the main light source in the scene.
@@ -45,10 +48,9 @@ public:
 
 private:
 	std::vector<Light*> lights;
-	int lightCount = 0;
 	glm::vec3 directionalLightPosition;
 	glm::vec3 directionalLightColor;
 	bool directionalLightEnabled = true;
 	glm::vec3 ambientLightColor;
-
+	Light* selectedLight;
 };
