@@ -4,7 +4,8 @@
 
 MoveLightState::MoveLightState(AppController* context, Light* lightToMove)
 	: MoveableSelectionState(context),
-	lightToMove(lightToMove)
+	lightToMove(lightToMove),
+	initialLightPosition(lightToMove->getBlockPosition())
 {}
 
 State MoveLightState::getType() {
@@ -16,6 +17,5 @@ glm::vec3 MoveLightState::getHandlePositionForSelection() {
 }
 
 void MoveLightState::onMovement() {
-	Point3di oldPos = lightToMove->getBlockPosition();
-	lightToMove->setBlockPosition(oldPos + moveVector);
+	lightToMove->setBlockPosition(initialLightPosition + moveVector);
 }

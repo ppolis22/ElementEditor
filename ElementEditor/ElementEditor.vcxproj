@@ -656,6 +656,7 @@
     <Image Include="textures\add-button-white.png" />
     <Image Include="textures\extrude-button-black.png" />
     <Image Include="textures\extrude-button-white.png" />
+    <Image Include="textures\light-icon-white.png" />
     <Image Include="textures\move-button-black.png" />
     <Image Include="textures\move-button-white.png" />
     <Image Include="textures\picker-button-black.png" />

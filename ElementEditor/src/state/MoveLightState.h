@@ -14,4 +14,5 @@ private:
 	void onMovement() override;
 
 	Light* lightToMove;
+	Point3di initialLightPosition;
 };

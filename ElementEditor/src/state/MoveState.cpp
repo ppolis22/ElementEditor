@@ -10,7 +10,8 @@
 
 MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection)
 	: MoveableSelectionState(context),
-	selection(selection)
+	selection(selection),
+	averageSelectionPoint(averagePoints(selection))
 {
 	for (const auto& entry : selection) {
 		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
@@ -22,7 +23,7 @@ State MoveState::getType() {
 }
 
 glm::vec3 MoveState::getHandlePositionForSelection() {
-	return averagePoints(selection) + Chunk::HALF_BLOCK_WIDTH;
+	return averageSelectionPoint + glm::vec3(moveVector.x, moveVector.y, moveVector.z) + Chunk::HALF_BLOCK_WIDTH;
 }
 
 void MoveState::onMovement() {

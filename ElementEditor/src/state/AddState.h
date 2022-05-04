@@ -12,6 +12,7 @@ public:
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void cleanUp() override;
 	void init() override;
+	void render() override;
 	State getType() override;
 
 private:

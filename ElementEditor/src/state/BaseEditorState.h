@@ -29,9 +29,13 @@ public:
 	virtual void processMouseUp(MouseButtonUpEvent& event) {};
 
 	virtual State getType() = 0;
-	virtual void render();
 	virtual void init() {};
 	virtual void cleanUp() {};
+	virtual void render();
+
+	void renderModelChunks();
+	void renderPreviewChunks();
+	void renderLightIcons();
 
 protected:
 	AppController* context;

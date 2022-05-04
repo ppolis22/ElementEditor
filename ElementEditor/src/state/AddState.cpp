@@ -58,6 +58,12 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	readyToAdd = false;
 }
 
+void AddState::render() {
+	renderModelChunks();
+	renderPreviewChunks();
+	renderLightIcons();
+}
+
 void AddState::cleanUp() {
 	context->getPreviewChunkManager()->clear();
 }

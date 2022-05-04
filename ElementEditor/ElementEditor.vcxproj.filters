@@ -1582,5 +1582,8 @@
     <Image Include="textures\picker-button-white.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\light-icon-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ public:
 private:
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection;
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> coveredModelCopy;
+	glm::vec3 averageSelectionPoint;
 
 	glm::vec3 getHandlePositionForSelection() override;
 	void onMovement() override;

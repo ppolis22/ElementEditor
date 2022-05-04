@@ -32,7 +32,7 @@ void MoveableSelectionState::processMouseDown(MouseButtonDownEvent& event) {
 void MoveableSelectionState::processMouseUp(MouseButtonUpEvent& event) {
 	moveDirection = NONE;
 	handles.setSelectedDirection(NONE);
-	handles.setPosition(getHandlePositionForSelection() + glm::vec3(moveVector.x, moveVector.y, moveVector.z));
+	handles.setPosition(getHandlePositionForSelection());
 }
 
 void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {
@@ -56,27 +56,13 @@ void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {
 }
 
 void MoveableSelectionState::render() {
-	ModelRenderer* modelRenderer = context->getModelRenderer();
-	ChunkManager* modelChunkManager = context->getModelChunkManager();
-	Camera* camera = context->getCamera();
+	renderModelChunks();
+	renderLightIcons();
 
-	std::vector<Renderable*> chunksToRender;
-	for (Chunk* chunk : modelChunkManager->getAllChunks()) {
-		chunksToRender.push_back(chunk);
-	}
-	Shader& chunkShader = modelChunkManager->getChunkShader();
+	ModelRenderer* modelRenderer = context->getModelRenderer();
+	Camera* camera = context->getCamera();
 	LightManager* lightManager = context->getLightManager();
 	std::vector<Light*> lights = lightManager->getLights();
-
-	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
-
-	UIRenderer* uiRenderer = context->getUIRenderer();
-	for (Light* light : lights) {
-		glm::vec3 lightPos = light->getRenderPosition();
-		uiRenderer->renderTexturedQuadInScene(lightPos.x, lightPos.y, lightPos.z, 50.0, 50.0, *camera,
-			"textures/add-button-white.png", light->getColor());
-	}
 
 	// clear depth buffer to ensure handles are rendered on top of the model
 	glClear(GL_DEPTH_BUFFER_BIT);

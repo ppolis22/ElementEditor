@@ -35,6 +35,11 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	addChild(colorPickerButton);
 	buttonMap[colorPickerButton] = State::COLOR_PICK;
 
+	lightMoveButton = new Button(75.0f, 75.0f, 45.0f, 45.0f, "textures/light-icon-white.png");
+	lightMoveButton->addListener(this);
+	addChild(lightMoveButton);
+	buttonMap[lightMoveButton] = State::MOVE_LIGHT;
+
 	colorPreviewBox = new UIElement(20.0f, 315.0f, 100.0f, 25.0f);
 	colorPreviewBox->setAlpha(1.0f);
 	addChild(colorPreviewBox);
@@ -82,6 +87,7 @@ void ToolbarUI::actionPerformed(const ActionEvent& e) {
 void ToolbarUI::update() {
 	moveButton->setEnabled(controller->canSetMoveTool());
 	extrudeButton->setEnabled(controller->canSetExtrudeTool());
+	lightMoveButton->setEnabled(controller->canSetMoveLightTool());
 
 	BlockColor activeColor = controller->getActiveColor();
 	rSlider->setValue(activeColor.r);
