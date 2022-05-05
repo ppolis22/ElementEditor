@@ -126,6 +126,9 @@
     <ClCompile Include="src\state\LightEditState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\state\AddLightState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1116,6 +1119,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\state\LightEditState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\state\AddLightState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

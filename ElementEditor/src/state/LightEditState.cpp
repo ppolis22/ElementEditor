@@ -87,3 +87,7 @@ void LightEditState::render() {
 		BaseEditorState::render();
 	}
 }
+
+void LightEditState::cleanUp() {
+	context->getLightManager()->setSelectedLight(nullptr);
+}

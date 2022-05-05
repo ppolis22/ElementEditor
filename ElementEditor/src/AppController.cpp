@@ -7,6 +7,7 @@
 #include "state/ExtrudeState.h"
 #include "state/ColorPickState.h"
 #include "state/LightEditState.h"
+#include "state/AddLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
@@ -24,12 +25,14 @@ void AppController::setState(State stateToSet) {
 		changeActiveTool(new SelectState(this));
 	} else if (stateToSet == State::MOVE && canSetMoveTool()) {
 		changeActiveTool(new MoveState(this, modelChunkManager->getSelected()));
-	} else if (stateToSet == State::EDIT_LIGHT) {
-		changeActiveTool(new LightEditState(this));
 	} else if (stateToSet == State::EXTRUDE && canSetExtrudeTool()) {
 		changeActiveTool(new ExtrudeState(this, modelChunkManager->getSelected()));
 	} else if (stateToSet == State::COLOR_PICK) {
 		changeActiveTool(new ColorPickState(this));
+	} else if (stateToSet == State::ADD_LIGHT && canSetAddLightTool()) {
+		changeActiveTool(new AddLightState(this));
+	} else if (stateToSet == State::EDIT_LIGHT) {
+		changeActiveTool(new LightEditState(this));
 	}
 	window->updateUI();
 }
@@ -47,6 +50,10 @@ bool AppController::canSetMoveTool() {
 
 bool AppController::canSetExtrudeTool() {
 	return !modelChunkManager->getSelected().empty();
+}
+
+bool AppController::canSetAddLightTool() {
+	return lightManager->getLightCount() < LightManager::MAX_NUM_LIGHTS;
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -133,4 +140,13 @@ BlockColor AppController::getActiveColor() {
 void AppController::setActiveColor(BlockColor newColor) {
 	this->activeColor = newColor;
 	window->updateUI();
+}
+
+void AppController::addLight(Point3di position) {
+	lightManager->addLight(glm::vec3(activeColor.getNormalizedR(), activeColor.getNormalizedG(), activeColor.getNormalizedB()), position, 10.0f);
+	window->updateUI();
+
+	if (!canSetAddLightTool()) {
+		changeActiveTool(new LightEditState(this));
+	}
 }

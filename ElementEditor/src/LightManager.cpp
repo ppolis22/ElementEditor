@@ -5,18 +5,25 @@
 LightManager::LightManager()
 	: directionalLightPosition(1.0f, 1.0f, 1.0f),
 	directionalLightColor(0.5f, 0.5f, 0.5f),
-	ambientLightColor(0.5f, 0.5f, 0.5f)
-{}
+	ambientLightColor(0.5f, 0.5f, 0.5f),
+	renderPositionOffset(Chunk::HALF_BLOCK_WIDTH),
+	previewLightEnabled(false)
+{
+	previewLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), Point3di{ 0, 0, 0 }, renderPositionOffset, 1.0f);
+}
 
 LightManager::~LightManager() {
 	for (Light* light : lights) {
-		delete light;
+		if (light != nullptr)
+			delete light;
 	}
+
+	if (previewLight != nullptr)
+		delete previewLight;
 }
 
 void LightManager::addLight(const glm::vec3& color, Point3di& position, float strength) {
 	if (lights.size() < MAX_NUM_LIGHTS) {
-		glm::vec3 renderPositionOffset(Chunk::HALF_BLOCK_WIDTH);
 		Light* lightToAdd = new Light(color, position, renderPositionOffset, strength);
 		lights.push_back(lightToAdd);
 	}
@@ -45,6 +52,11 @@ Light* LightManager::getLight(const Point3di& position) {
 }
 
 std::vector<Light*> LightManager::getLights() {
+	if (previewLightEnabled) {
+		std::vector<Light*> allLights(lights);
+		allLights.push_back(previewLight);
+		return allLights;
+	}
 	return lights;
 }
 
@@ -90,4 +102,15 @@ Light* LightManager::getSelectedLight() {
 
 void LightManager::setSelectedLight(Light* light) {
 	selectedLight = light;
+}
+
+void LightManager::updatePreviewLight(const glm::vec3& color, Point3di& position, float strength) {
+	previewLight->setColor(color);
+	previewLight->setBlockPosition(position);
+	previewLight->setStrength(strength);
+	setPreviewLightEnabled(true);
+}
+
+void LightManager::setPreviewLightEnabled(bool enabled) {
+	previewLightEnabled = enabled;
 }

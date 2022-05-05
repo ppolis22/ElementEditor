@@ -27,7 +27,8 @@ private:
 	Button* moveButton;
 	Button* extrudeButton;
 	Button* colorPickerButton;
-	Button* lightMoveButton;
+	Button* editLightButton;
+	Button* addLightButton;
 
 	UISlider* rSlider;
 	UISlider* gSlider;

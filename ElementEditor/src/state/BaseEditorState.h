@@ -14,6 +14,7 @@ class AppController;
 		MOVE,
 		EXTRUDE,
 		COLOR_PICK,
+		ADD_LIGHT,
 		EDIT_LIGHT,
 		ERROR
 	};

@@ -16,6 +16,8 @@ public:
 	void removeLight(Light* light);
 	void removeLight(const Point3di& position);
 	Light* getLight(const Point3di& position);
+
+	// Returns a vector of all the lights in the scene, plus the preview light, if enabled
 	std::vector<Light*> getLights();
 	int getLightCount();
 	Light* getSelectedLight();
@@ -42,6 +44,11 @@ public:
 	glm::vec3 getAmbientLightColor();
 	void setAmbientLightColor (glm::vec3 color);
 
+	// The preview light is used to show a preview when adding a new light, enabling it
+	// includes it in the render, updating it automatically enables it as well.
+	void updatePreviewLight(const glm::vec3& color, Point3di& position, float strength);
+	void setPreviewLightEnabled(bool enabled);
+
 	// This limit exists because GLSL for loops need to know how many iterations to perform
 	// at compile time, so this can likely be changed somewhat arbitrarily as needed
 	const static int MAX_NUM_LIGHTS = 16;
@@ -52,5 +59,9 @@ private:
 	glm::vec3 directionalLightColor;
 	bool directionalLightEnabled = true;
 	glm::vec3 ambientLightColor;
+	glm::vec3 renderPositionOffset;
 	Light* selectedLight;
+
+	Light* previewLight;
+	bool previewLightEnabled;
 };

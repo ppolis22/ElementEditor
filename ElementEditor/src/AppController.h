@@ -24,6 +24,7 @@ public:
 
 	bool canSetMoveTool();
 	bool canSetExtrudeTool();
+	bool canSetAddLightTool();
 
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void processScroll(MouseScrollEvent& event) override;
@@ -34,6 +35,7 @@ public:
 	void render();
 	BlockColor getActiveColor();
 	void setActiveColor(BlockColor newColor);
+	void addLight(Point3di position);
 
 	Camera* getCamera();
 	ModelRenderer* getModelRenderer();

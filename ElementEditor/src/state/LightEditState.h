@@ -30,6 +30,7 @@ private:
 	void processMouseDown(MouseButtonDownEvent& event) override;
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void processMouseMovement(MouseMoveEvent& event) override;
+	void cleanUp() override;
 	void render() override;
 
 	void searchBlocksOnRay(const std::vector<Point3di>& intersectedBlocks);
