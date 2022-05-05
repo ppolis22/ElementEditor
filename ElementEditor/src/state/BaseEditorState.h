@@ -3,6 +3,7 @@
 #include "../engine/EventListener.h"
 #include "../engine/event/MouseEvent.h"
 #include "../engine/event/KeyEvent.h"
+#include "../engine/RayTracer.h"
 
 class AppController;
 
@@ -11,9 +12,9 @@ class AppController;
 		SUBTRACT,
 		SELECT,
 		MOVE,
-		MOVE_LIGHT,
 		EXTRUDE,
 		COLOR_PICK,
+		EDIT_LIGHT,
 		ERROR
 	};
 
@@ -39,4 +40,5 @@ public:
 
 protected:
 	AppController* context;
+	RayTracer rayTracer;
 };

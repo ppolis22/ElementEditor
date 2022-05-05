@@ -8,7 +8,9 @@
 #include "../AppController.h"
 
 BaseEditorState::BaseEditorState(AppController* context)
-	: context(context) {}
+	: context(context) ,
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) 
+{}
 
 void BaseEditorState::renderModelChunks() {
 	ModelRenderer* modelRenderer = context->getModelRenderer();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SelectableState.h"
+#include "BaseEditorState.h"
 #include "../engine/TranslateHandles.h"
 #include "../engine/RayTracer.h"
 #include "../engine/Point3d.h"
@@ -10,7 +10,7 @@
 //template <class T>
 //using Selection = std::unordered_map<Point3di, T, Point3di::HashFunction>;
 
-class MoveableSelectionState : public SelectableState {
+class MoveableSelectionState : public BaseEditorState {
 public:
 	virtual ~MoveableSelectionState() {};
 
@@ -32,6 +32,7 @@ protected:
 
 	Direction moveDirection = NONE;
 	Point3di moveVector;
+	RayTracer rayTracer;
 
 private:
 	Direction getHandleAtPoint(float x, float y);
@@ -40,5 +41,6 @@ private:
 	TranslateHandles handles;
 	glm::vec3 movementReferencePoint;
 	glm::vec3 handleGrabPointOffset;
+	bool isMoving;
 
 };

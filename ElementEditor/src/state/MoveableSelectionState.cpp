@@ -7,12 +7,14 @@
 #include <algorithm>
 
 MoveableSelectionState::MoveableSelectionState(AppController* context)
-	: SelectableState(context),
-	moveVector{ 0, 0, 0 }
+	: BaseEditorState(context),
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f),
+	moveVector{ 0, 0, 0 },
+	isMoving(false)
 {}
 
 void MoveableSelectionState::init() {
-	SelectableState::init();
+	BaseEditorState::init();
 	handles.setPosition(getHandlePositionForSelection());
 }
 
@@ -26,6 +28,8 @@ void MoveableSelectionState::processMouseDown(MouseButtonDownEvent& event) {
 		// store closest point from mouse ray to corresponding handle ray
 		movementReferencePoint = getClosestPointOnAxisToMouse(event.posX, event.posY);
 		handleGrabPointOffset = movementReferencePoint - handles.getPosition();
+		isMoving = true;
+		event.isHandled = true;
 	}
 }
 
@@ -33,6 +37,11 @@ void MoveableSelectionState::processMouseUp(MouseButtonUpEvent& event) {
 	moveDirection = NONE;
 	handles.setSelectedDirection(NONE);
 	handles.setPosition(getHandlePositionForSelection());
+
+	if (isMoving) {
+		event.isHandled = true;
+		isMoving = false;
+	}
 }
 
 void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {

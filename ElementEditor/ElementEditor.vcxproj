@@ -157,14 +157,13 @@
     <ClCompile Include="src\engine\TranslateHandles.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
     <ClCompile Include="src\state\ColorPickState.cpp" />
-    <ClCompile Include="src\state\MoveLightState.cpp" />
+    <ClCompile Include="src\state\LightEditState.cpp" />
     <ClCompile Include="src\ToolbarUI.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\state\ExtrudeState.cpp" />
     <ClCompile Include="src\state\MoveableSelectionState.cpp" />
     <ClCompile Include="src\state\MoveState.cpp" />
-    <ClCompile Include="src\state\SelectableState.cpp" />
     <ClCompile Include="src\state\SelectState.cpp" />
     <ClCompile Include="src\state\SubtractState.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -209,14 +208,13 @@
     <ClInclude Include="src\engine\ui\Button.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
     <ClInclude Include="src\state\ColorPickState.h" />
-    <ClInclude Include="src\state\MoveLightState.h" />
+    <ClInclude Include="src\state\LightEditState.h" />
     <ClInclude Include="src\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\state\ExtrudeState.h" />
     <ClInclude Include="src\state\MoveableSelectionState.h" />
     <ClInclude Include="src\state\MoveState.h" />
-    <ClInclude Include="src\state\SelectableState.h" />
     <ClInclude Include="src\state\SelectState.h" />
     <ClInclude Include="src\state\SubtractState.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
@@ -654,6 +652,7 @@
   <ItemGroup>
     <Image Include="textures\add-button-black.png" />
     <Image Include="textures\add-button-white.png" />
+    <Image Include="textures\edit-light-button-white.png" />
     <Image Include="textures\extrude-button-black.png" />
     <Image Include="textures\extrude-button-white.png" />
     <Image Include="textures\light-icon-white.png" />

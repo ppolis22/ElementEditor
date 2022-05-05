@@ -1,10 +1,10 @@
 #pragma once
 
-#include "SelectableState.h"
+#include "BaseEditorState.h"
 #include "../engine/RayTracer.h"
 #include "../engine/Point3d.h"
 
-class AddState : public SelectableState {
+class AddState : public BaseEditorState {
 public:
 	AddState(AppController* context);
 

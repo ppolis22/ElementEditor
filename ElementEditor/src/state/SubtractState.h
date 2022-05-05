@@ -1,9 +1,9 @@
 #pragma once
 
-#include "SelectableState.h"
+#include "BaseEditorState.h"
 #include "../engine/RayTracer.h"
 
-class SubtractState : public SelectableState {
+class SubtractState : public BaseEditorState {
 public:
 	SubtractState(AppController* context);
 

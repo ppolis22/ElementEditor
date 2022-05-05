@@ -1,10 +1,8 @@
 #include "SelectState.h"
 #include "../AppController.h"
 
-#include <algorithm>
-
 SelectState::SelectState(AppController* context)
-	: SelectableState(context) {}
+	: BaseEditorState(context) {}
 
 State SelectState::getType() {
 	return State::SELECT;
@@ -15,6 +13,7 @@ void SelectState::processMouseUp(MouseButtonUpEvent& event) {
 		return;
 
 	Camera* camera = context->getCamera();
+	Window* window = context->getWindow();
 
 	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.posX, event.posY);
 	searchBlocksOnRay(intersectedBlocks);
@@ -31,13 +30,6 @@ void SelectState::searchBlocksOnRay(const std::vector<Point3di>& intersectedBloc
 				addBlockToSelection(blockLocation);
 			}
 			window->updateUI();		// so move and extrude buttons enable/disable
-			break;
-		}
-
-		Light* lightAtPosition = context->getLightManager()->getLight(blockLocation);
-		if (lightAtPosition != nullptr) {
-			context->getLightManager()->setSelectedLight(lightAtPosition);
-			window->updateUI();		// so light edit buttons enable/disable
 			break;
 		}
 	}

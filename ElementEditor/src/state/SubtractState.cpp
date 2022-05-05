@@ -5,7 +5,7 @@
 #include "../AppController.h"
 
 SubtractState::SubtractState(AppController* context)
-	: SelectableState(context) {}
+	: BaseEditorState(context) {}
 
 State SubtractState::getType() {
 	return State::SUBTRACT;

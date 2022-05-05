@@ -5,7 +5,7 @@
 #include "../AppController.h"
 
 AddState::AddState(AppController* context)
-	: SelectableState(context) {}
+	: BaseEditorState(context) {}
 
 State AddState::getType() {
 	return State::ADD;
