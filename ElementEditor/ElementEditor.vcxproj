@@ -159,6 +159,7 @@
     <ClCompile Include="src\engine\ui\Button.cpp" />
     <ClCompile Include="src\state\ColorPickState.cpp" />
     <ClCompile Include="src\state\LightEditState.cpp" />
+    <ClCompile Include="src\state\RemoveLightState.cpp" />
     <ClCompile Include="src\ToolbarUI.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
     <ClCompile Include="src\engine\Window.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="src\engine\ui\UIElement.h" />
     <ClInclude Include="src\state\ColorPickState.h" />
     <ClInclude Include="src\state\LightEditState.h" />
+    <ClInclude Include="src\state\RemoveLightState.h" />
     <ClInclude Include="src\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
     <ClInclude Include="src\engine\Window.h" />
@@ -663,6 +665,7 @@
     <Image Include="textures\move-button-white.png" />
     <Image Include="textures\picker-button-black.png" />
     <Image Include="textures\picker-button-white.png" />
+    <Image Include="textures\remove-light-button-white.png" />
     <Image Include="textures\select-button-black.png" />
     <Image Include="textures\select-button-white.png" />
     <Image Include="textures\subtract-button-black.png" />

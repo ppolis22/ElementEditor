@@ -2,9 +2,9 @@
 
 #include "BaseEditorState.h"
 
-class SubtractState : public BaseEditorState {
+class RemoveLightState : public BaseEditorState {
 public:
-	SubtractState(AppController* context);
+	RemoveLightState(AppController* context);
 
 	void processMouseUp(MouseButtonUpEvent& event) override;
 	void init() override;

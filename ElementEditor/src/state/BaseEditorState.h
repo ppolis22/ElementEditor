@@ -16,6 +16,7 @@ class AppController;
 		COLOR_PICK,
 		ADD_LIGHT,
 		EDIT_LIGHT,
+		REMOVE_LIGHT,
 		ERROR
 	};
 

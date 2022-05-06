@@ -35,15 +35,20 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	addChild(colorPickerButton);
 	buttonMap[colorPickerButton] = State::COLOR_PICK;
 
-	editLightButton = new Button(75.0f, 75.0f, 45.0f, 45.0f, "textures/edit-light-button-white.png");
+	addLightButton = new Button(75.0f, 75.0f, 45.0f, 45.0f, "textures/add-light-button-white.png");
+	addLightButton->addListener(this);
+	addChild(addLightButton);
+	buttonMap[addLightButton] = State::ADD_LIGHT;
+
+	editLightButton = new Button(75.0f, 130.0f, 45.0f, 45.0f, "textures/edit-light-button-white.png");
 	editLightButton->addListener(this);
 	addChild(editLightButton);
 	buttonMap[editLightButton] = State::EDIT_LIGHT;
 
-	addLightButton = new Button(75.0f, 130.0f, 45.0f, 45.0f, "textures/add-light-button-white.png");
-	addLightButton->addListener(this);
-	addChild(addLightButton);
-	buttonMap[addLightButton] = State::ADD_LIGHT;
+	removeLightButton = new Button(75.0f, 185.0f, 45.0f, 45.0f, "textures/remove-light-button-white.png");
+	removeLightButton->addListener(this);
+	addChild(removeLightButton);
+	buttonMap[removeLightButton] = State::REMOVE_LIGHT;
 
 	colorPreviewBox = new UIElement(20.0f, 315.0f, 100.0f, 25.0f);
 	colorPreviewBox->setAlpha(1.0f);
@@ -73,8 +78,9 @@ ToolbarUI::~ToolbarUI() {
 	delete extrudeButton;
 	delete colorPickerButton;
 	delete colorPreviewBox;
-	delete editLightButton;
 	delete addLightButton;
+	delete editLightButton;
+	delete removeLightButton;
 	delete rSlider;
 	delete gSlider;
 	delete bSlider;

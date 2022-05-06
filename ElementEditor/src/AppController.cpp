@@ -8,6 +8,7 @@
 #include "state/ColorPickState.h"
 #include "state/LightEditState.h"
 #include "state/AddLightState.h"
+#include "state/RemoveLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
@@ -33,6 +34,8 @@ void AppController::setState(State stateToSet) {
 		changeActiveTool(new AddLightState(this));
 	} else if (stateToSet == State::EDIT_LIGHT) {
 		changeActiveTool(new LightEditState(this));
+	} else if (stateToSet == State::REMOVE_LIGHT) {
+		changeActiveTool(new RemoveLightState(this));
 	}
 	window->updateUI();
 }

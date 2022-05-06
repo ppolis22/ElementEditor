@@ -129,6 +129,9 @@
     <ClCompile Include="src\state\AddLightState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\state\RemoveLightState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1124,6 +1127,9 @@
     <ClInclude Include="src\state\AddLightState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\state\RemoveLightState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1589,6 +1595,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="textures\add-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\remove-light-button-white.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

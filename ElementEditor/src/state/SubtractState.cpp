@@ -16,10 +16,9 @@ void SubtractState::init() {
 }
 
 void SubtractState::processMouseUp(MouseButtonUpEvent& event) {
-	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT) {
+	if (event.buttonCode != GLFW_MOUSE_BUTTON_LEFT)
 		return;
-	}
-	Window* window = context->getWindow();
+
 	Camera* camera = context->getCamera();
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 
