@@ -31,6 +31,13 @@ public:
 		float alpha
 	);
 
+	void renderNoLighting(
+		std::vector<Renderable*> renderables,
+		Shader& meshShader,
+		Camera& camera,
+		float alpha
+	);
+
 private:
 	unsigned int SHADOWMAP_WIDTH = 1024;
 	unsigned int SHADOWMAP_HEIGHT = 1024;	// TODO move to class/project constants

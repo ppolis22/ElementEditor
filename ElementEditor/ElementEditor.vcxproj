@@ -654,6 +654,7 @@
   <ItemGroup>
     <Image Include="textures\add-button-black.png" />
     <Image Include="textures\add-button-white.png" />
+    <Image Include="textures\add-light-button-white.png" />
     <Image Include="textures\edit-light-button-white.png" />
     <Image Include="textures\extrude-button-black.png" />
     <Image Include="textures\extrude-button-white.png" />

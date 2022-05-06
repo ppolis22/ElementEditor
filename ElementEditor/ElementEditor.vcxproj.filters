@@ -1588,5 +1588,8 @@
     <Image Include="textures\edit-light-button-white.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\add-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

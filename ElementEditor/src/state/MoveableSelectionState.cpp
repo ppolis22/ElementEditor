@@ -78,8 +78,7 @@ void MoveableSelectionState::render() {
 	Shader& handlesShader = handles.getShader();
 	std::vector<Renderable*> toRender;
 	toRender.push_back(&handles);
-	modelRenderer->renderNoShadows(toRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), handlesShader, *camera, 1.0f);
+	modelRenderer->renderNoLighting(toRender, handlesShader, *camera, 1.0f);
 }
 
 Direction MoveableSelectionState::getHandleAtPoint(float x, float y) {

@@ -40,7 +40,7 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	addChild(editLightButton);
 	buttonMap[editLightButton] = State::EDIT_LIGHT;
 
-	addLightButton = new Button(75.0f, 130.0f, 45.0f, 45.0f, "textures/edit-light-button-white.png");
+	addLightButton = new Button(75.0f, 130.0f, 45.0f, 45.0f, "textures/add-light-button-white.png");
 	addLightButton->addListener(this);
 	addChild(addLightButton);
 	buttonMap[addLightButton] = State::ADD_LIGHT;

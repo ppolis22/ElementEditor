@@ -52,6 +52,33 @@ static const std::string buildArrayUniformName(const char* arrayName, int index,
 	return ss.str();
 }
 
+void ModelRenderer::renderNoLighting(
+	std::vector<Renderable*> renderables,
+	Shader& meshShader,
+	Camera& camera,
+	float alpha
+) {
+	if (renderables.empty())
+		return;
+
+	glEnable(GL_DEPTH_TEST);
+	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+	glm::mat4 viewMatrix = camera.getViewMatrix();
+
+	meshShader.bind();
+	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
+	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
+	meshShader.setUniformFloat("alpha", alpha);
+
+	for (Renderable* renderable : renderables) {
+		Mesh& mesh = renderable->getMesh();
+		glm::mat4 modelMatrix = renderable->getTransformation();
+		meshShader.setUniformMat4f("modelMatrix", modelMatrix);
+		renderMesh(mesh);
+	}
+	meshShader.unbind();
+}
+
 void ModelRenderer::renderNoShadows(
 	std::vector<Renderable*> renderables, 
 	std::vector<Light*> pointLights, 
@@ -62,9 +89,8 @@ void ModelRenderer::renderNoShadows(
 	Camera& camera, 
 	float alpha
 ) {
-	if (renderables.empty()) {
+	if (renderables.empty())
 		return;
-	}
 
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
@@ -104,9 +130,8 @@ void ModelRenderer::renderWithShadows(
 	Camera& camera, 
 	float alpha
 ) {
-	if (renderables.empty()) {
+	if (renderables.empty())
 		return;
-	}
 
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 lightViewMatrix = glm::lookAt(
