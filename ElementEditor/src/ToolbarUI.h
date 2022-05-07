@@ -1,10 +1,11 @@
 #pragma once
 
 #include "engine/ui/UIElement.h"
-#include "engine/ui/Button.h"
+#include "engine/ui/TabbedUIElement.h"
 #include "engine/ui/UISlider.h"
 #include "engine/event/ActionListener.h"
-#include "state/BaseEditorState.h"
+#include "BlockEditUI.h"
+#include "LightEditUI.h"
 
 #include <map>
 
@@ -21,21 +22,13 @@ public:
 private:
 	AppController* controller;
 
-	Button* addButton;
-	Button* subtractButton;
-	Button* selectButton;
-	Button* moveButton;
-	Button* extrudeButton;
-	Button* colorPickerButton;
-	Button* addLightButton;
-	Button* editLightButton;
-	Button* removeLightButton;
+	TabbedUIElement* controlGroups;
+	BlockEditUI* blockEditControls;
+	LightEditUI* lightEditControls;
 
 	UISlider* rSlider;
 	UISlider* gSlider;
 	UISlider* bSlider;
 
 	UIElement* colorPreviewBox;
-
-	std::map<Button*, State> buttonMap;
 };

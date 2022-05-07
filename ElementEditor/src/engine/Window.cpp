@@ -54,38 +54,36 @@ void Window::setApplicationEventListener(EventListener* listener) {
 }
 
 void Window::setRootUIElement(UIElement* element) {
-	data.uiListeners.clear();
-	registerEventListener(element);
-	this->rootUIElement = element;
+	data.rootUIElement = element;
 }
 
 UIElement* Window::getRootUIElement() {
-	return rootUIElement;
+	return data.rootUIElement;
 }
 
 static void updateUIElement(UIElement* element) {
-	if (element == nullptr) {
+	if (element == nullptr)
 		return;
-	}
 
 	element->update();
-	for (UIElement* child : element->getChildren()) {
+	for (UIElement* child : element->getChildren())
 		updateUIElement(child);
-	}
 }
 
 void Window::updateUI() {
-	updateUIElement(rootUIElement);
+	updateUIElement(data.rootUIElement);
 }
 
-void Window::registerEventListener(UIElement* listener) {
-	// register children as event listeners first, so event response is in reverse draw order
-	if (listener != nullptr) {
-		for (UIElement* child : listener->getChildren()) {
-			registerEventListener(child);
-		}
-		data.uiListeners.push_back(listener);
-	}
+// handle events in children first, so event response is in reverse draw order
+static void handleMouseMoveEvent(UIElement* element, MouseMoveEvent& event) {
+	if (!element->isEnabled() || event.isHandled)
+		return;
+
+	for (UIElement* child : element->getChildren())
+		handleMouseMoveEvent(child, event);
+
+	if (!event.isHandled)
+		element->processMouseMovement(event);
 }
 
 void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -95,57 +93,86 @@ void Window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	data.lastCursorXPos = xpos;
 	data.lastCursorYPos = ypos;
 	MouseMoveEvent event(xpos, ypos, deltaX, deltaY);
-	for (EventListener* listener : data.uiListeners) {
-		listener->processMouseMovement(event);
-		if (event.isHandled) return;
-	}
+	handleMouseMoveEvent(data.rootUIElement, event);
 
 	if (!event.isHandled) {
 		data.applicationListener->processMouseMovement(event);
 	}
 }
 
+static void handleKeyEvent(UIElement* element, KeyPressEvent& event) {
+	if (!element->isEnabled() || event.isHandled)
+		return;
+
+	for (UIElement* child : element->getChildren())
+		handleKeyEvent(child, event);
+
+	if (!event.isHandled)
+		element->processKeyPress(event);
+}
+
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 	if (action == GLFW_PRESS) {
 		KeyPressEvent event(key);
-		for (EventListener* listener : data.uiListeners) {
-			listener->processKeyPress(event);
-			if (event.isHandled) return;
-		}
+		handleKeyEvent(data.rootUIElement, event);
 
-		if (!event.isHandled) {
+		if (!event.isHandled)
 			data.applicationListener->processKeyPress(event);
-		}
 	}
+}
+
+static void handleScrollEvent(UIElement* element, MouseScrollEvent& event) {
+	if (!element->isEnabled() || event.isHandled)
+		return;
+
+	for (UIElement* child : element->getChildren())
+		handleScrollEvent(child, event);
+
+	if (!event.isHandled)
+		element->processScroll(event);
 }
 
 void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 	MouseScrollEvent event(yOffset);
-	for (EventListener* listener : data.uiListeners) {
-		listener->processScroll(event);
-		if (event.isHandled) return;
-	}
+	handleScrollEvent(data.rootUIElement, event);
 
-	data.applicationListener->processScroll(event);
+	if (!event.isHandled)
+		data.applicationListener->processScroll(event);
+}
+
+static void handleMouseDownEvent(UIElement* element, MouseButtonDownEvent& event) {
+	if (!element->isEnabled() || event.isHandled)
+		return;
+
+	for (UIElement* child : element->getChildren())
+		handleMouseDownEvent(child, event);
+
+	if (!event.isHandled)
+		element->processMouseDown(event);
+}
+
+static void handleMouseUpEvent(UIElement* element, MouseButtonUpEvent& event) {
+	if (!element->isEnabled() || event.isHandled)
+		return;
+
+	for (UIElement* child : element->getChildren())
+		handleMouseUpEvent(child, event);
+
+	if (!event.isHandled)
+		element->processMouseUp(event);
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 	if (action == GLFW_PRESS) {
 		MouseButtonDownEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
-		for (EventListener* listener : data.uiListeners) {
-			listener->processMouseDown(event);
-			if (event.isHandled) return;
-		}
+		handleMouseDownEvent(data.rootUIElement, event);
 		data.applicationListener->processMouseDown(event);
 	} else {
 		MouseButtonUpEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
-		for (EventListener* listener : data.uiListeners) {
-			listener->processMouseUp(event);
-			if (event.isHandled) return;
-		}
+		handleMouseUpEvent(data.rootUIElement, event);
 		data.applicationListener->processMouseUp(event);
 	}
 }

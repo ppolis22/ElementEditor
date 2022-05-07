@@ -36,6 +36,7 @@ public:
 	virtual void addListener(ActionListner* listener);
 
 	virtual void addChild(UIElement* child);
+	virtual void removeChild(UIElement* child);
 	virtual std::vector<UIElement*> getChildren();
 
 	virtual bool withinBounds(float x, float y);

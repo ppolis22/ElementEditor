@@ -1,4 +1,5 @@
 #include "UIElement.h"
+#include <algorithm>
 
 UIElement::UIElement(float x, float y, float width, float height)
 	: x(x), y(y), width(width), height(height), color(glm::vec3(0.5f, 0.5f, 0.5f)), alpha(0.0f), enabled(true) {}
@@ -55,6 +56,10 @@ void UIElement::setAlpha(float alpha) {
 
 void UIElement::addChild(UIElement* child) {
 	children.push_back(child);
+}
+
+void UIElement::removeChild(UIElement* child) {
+	children.erase(std::remove(children.begin(), children.end(), child), children.end());
 }
 
 std::vector<UIElement*> UIElement::getChildren() {
