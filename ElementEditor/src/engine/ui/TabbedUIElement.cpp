@@ -3,15 +3,32 @@
 const float TabbedUIElement::BUTTON_WIDTH = 20.0f;
 const float TabbedUIElement::BUTTON_HEIGHT = 20.0f;
 const float TabbedUIElement::BUTTON_SPACING = 5.0f;
+const float TabbedUIElement::BUTTON_OFFSET = 10.0f;
 
 TabbedUIElement::TabbedUIElement(float x, float y, float width, float height)
 	: UIElement(x, y, width, height),
 	activeTab(-1)
-{}
+{
+	tabRootAnchor = new UIElement(0.0f, 20.0f, 0.0f, 0.0f);
+	addChild(tabRootAnchor);
+
+	tabLine = new UIElement(0.0f, BUTTON_HEIGHT, 100.0f, 5.0f);
+	tabLine->setColor(glm::vec3(0.75f, 0.75f, 0.75f));
+	tabLine->setAlpha(1.0f);
+	addChild(tabLine);
+}
+
+TabbedUIElement::~TabbedUIElement() {
+	delete tabRootAnchor;
+	delete tabLine;
+
+	for (Button* button : tabButtons)
+		delete button;
+}
 
 int TabbedUIElement::addTab(UIElement* rootElement, const std::string& buttonImagePath) {
-	float buttonX = x + ((BUTTON_WIDTH + BUTTON_SPACING) * numTabs);
-	Button* tabButton = new Button(buttonX, y, BUTTON_WIDTH, BUTTON_HEIGHT, buttonImagePath);
+	float buttonX = (BUTTON_WIDTH + BUTTON_SPACING) * numTabs + BUTTON_OFFSET;
+	Button* tabButton = new Button(buttonX, getGlobalY(), BUTTON_WIDTH, BUTTON_HEIGHT, buttonImagePath);
 	
 	tabButton->addListener(this);
 	tabButtons.push_back(tabButton);
@@ -28,10 +45,10 @@ void TabbedUIElement::setActiveTab(int index) {
 		return;
 
 	if (activeTab != -1)
-		removeChild(tabRootElements.at(activeTab));
+		tabRootAnchor->removeChild(tabRootElements.at(activeTab));
 	
 	activeTab = index;
-	addChild(tabRootElements.at(activeTab));
+	tabRootAnchor->addChild(tabRootElements.at(activeTab));
 
 	for (int i = 0; i < numTabs; i++) {
 		tabButtons.at(i)->setIsActive(i == activeTab);

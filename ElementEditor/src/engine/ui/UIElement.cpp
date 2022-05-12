@@ -56,6 +56,7 @@ void UIElement::setAlpha(float alpha) {
 
 void UIElement::addChild(UIElement* child) {
 	children.push_back(child);
+	child->setParent(this);
 }
 
 void UIElement::removeChild(UIElement* child) {
@@ -64,6 +65,10 @@ void UIElement::removeChild(UIElement* child) {
 
 std::vector<UIElement*> UIElement::getChildren() {
 	return children;
+}
+
+void UIElement::setParent(UIElement* parent) {
+	this->parent = parent;
 }
 
 bool UIElement::isEnabled() {
@@ -85,7 +90,16 @@ void UIElement::alertListeners() {
 }
 
 bool UIElement::withinBounds(float x, float y) {
-	return x >= this->x && x <= (this->x + width) && y >= this->y && y <= (this->y + height);
+	return x >= this->getGlobalX() && x <= (this->getGlobalX() + width) 
+		&& y >= this->getGlobalY() && y <= (this->getGlobalY() + height);
+}
+
+float UIElement::getGlobalX() {
+	return x + (parent == nullptr ? 0.0f : parent->getGlobalX());
+}
+
+float UIElement::getGlobalY() {
+	return y + (parent == nullptr ? 0.0f : parent->getGlobalY());
 }
 
 void UIElement::render(UIRenderer* renderer) {
@@ -97,7 +111,9 @@ void UIElement::render(UIRenderer* renderer) {
 
 void UIElement::renderElement(UIRenderer* renderer) { 
 	if (alpha != 0.0f) {
-		renderer->renderStaticColoredQuad(x, y, width, height, color, alpha);
+		// TODO create GraphicsContext object with render calls and local origin point, to avoid
+		// having to explicitly calculate global x/y
+		renderer->renderStaticColoredQuad(getGlobalX(), getGlobalY(), width, height, color, alpha);
 	}
 }
 

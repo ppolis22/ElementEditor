@@ -13,7 +13,7 @@ class AppController;
 class BlockEditUI : public UIElement, public ActionListner {
 
 public:
-	BlockEditUI(AppController* controller);
+	BlockEditUI(AppController* controller, float x, float y);
 	~BlockEditUI();
 
 	void actionPerformed(const ActionEvent& e) override;

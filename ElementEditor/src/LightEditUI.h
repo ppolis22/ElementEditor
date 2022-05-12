@@ -13,7 +13,7 @@ class AppController;
 class LightEditUI : public UIElement, public ActionListner {
 
 public:
-	LightEditUI(AppController* controller);
+	LightEditUI(AppController* controller, float x, float y);
 	~LightEditUI();
 
 	void actionPerformed(const ActionEvent& e) override;

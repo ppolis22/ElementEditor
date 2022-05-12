@@ -2,25 +2,25 @@
 
 #include "AppController.h"
 
-LightEditUI::LightEditUI(AppController* controller)
-	: UIElement(10.0f, 10.0f, 65.0f, 500.0f), controller(controller)
+LightEditUI::LightEditUI(AppController* controller, float x, float y)
+	: UIElement(x, y, 65.0f, 500.0f), controller(controller)
 {
-	addLightButton = new Button(75.0f, 75.0f, 45.0f, 45.0f, "textures/add-light-button-white.png");
+	addLightButton = new Button(0.0f, 0.0f, 45.0f, 45.0f, "textures/add-light-button-white.png");
 	addLightButton->addListener(this);
 	addChild(addLightButton);
 	buttonMap[addLightButton] = State::ADD_LIGHT;
 
-	editLightButton = new Button(75.0f, 130.0f, 45.0f, 45.0f, "textures/edit-light-button-white.png");
+	editLightButton = new Button(0.0f, 55.0f, 45.0f, 45.0f, "textures/edit-light-button-white.png");
 	editLightButton->addListener(this);
 	addChild(editLightButton);
 	buttonMap[editLightButton] = State::EDIT_LIGHT;
 
-	removeLightButton = new Button(75.0f, 185.0f, 45.0f, 45.0f, "textures/remove-light-button-white.png");
+	removeLightButton = new Button(55.0f, 0.0f, 45.0f, 45.0f, "textures/remove-light-button-white.png");
 	removeLightButton->addListener(this);
 	addChild(removeLightButton);
 	buttonMap[removeLightButton] = State::REMOVE_LIGHT;
 
-	strengthSlider = new UISlider(20.0f, 240.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	strengthSlider = new UISlider(0.0f, 220.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	strengthSlider->addListener(this);
 	//strengthSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
 	addChild(strengthSlider);

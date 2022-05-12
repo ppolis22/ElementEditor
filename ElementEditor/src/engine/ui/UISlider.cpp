@@ -10,11 +10,11 @@ UISlider::UISlider(float x, float y, float width, float height, float minValue, 
 	isHovered(false), isClicked(false), minValue(minValue), maxValue(maxValue), 
 	markerColor(glm::vec3(0.4, 0.4, 0.4)), lineColor(glm::vec3(0.75, 0.75, 0.75))
 {
-	marker = new UIElement(x, y, MARKER_WIDTH, height);
+	marker = new UIElement(0.0f, 0.0f, MARKER_WIDTH, height);
 	marker->setColor(markerColor);
 	marker->setAlpha(1.0f);
 
-	line = new UIElement(x, y + height / 2.0f, width, LINE_HEIGHT);
+	line = new UIElement(0.0f, height / 2.0f, width, LINE_HEIGHT);
 	line->setColor(lineColor);
 	line->setAlpha(1.0f);
 
@@ -52,9 +52,9 @@ void UISlider::setMarkerColor(glm::vec3 color) {
 void UISlider::processMouseMovement(MouseMoveEvent& event) {
 	isHovered = withinBounds(event.rawX, event.rawY) && enabled;
 	if (isClicked) {
-		float markerXPos = fminf(event.rawX, x + width);
-		markerXPos = fmaxf(markerXPos, x);
-		marker->setX(markerXPos);
+		float markerXPos = fminf(event.rawX, getGlobalX() + width);
+		markerXPos = fmaxf(markerXPos, getGlobalX());
+		marker->setX(markerXPos - getGlobalX());
 
 		value = calculateValueFromPosition(markerXPos);
 		alertListeners();
@@ -83,10 +83,12 @@ void UISlider::renderElement(UIRenderer* renderer) {
 	UIElement::renderElement(renderer);
 }
 
+// NOTE: assumes input position is in GLOBAL coords
 float UISlider::calculateValueFromPosition(float position) {
-	return (((position - x) / width) * (maxValue - minValue)) + minValue;
+	return (((position - getGlobalX()) / width) * (maxValue - minValue)) + minValue;
 }
 
+// NOTE: return value is in LOCAL coords
 float UISlider::calculatePositionFromValue(float value) {
-	return (((value - minValue) / (maxValue - minValue)) * width) + x;
+	return ((value - minValue) / (maxValue - minValue)) * width;
 }

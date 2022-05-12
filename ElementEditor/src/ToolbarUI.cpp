@@ -5,30 +5,30 @@
 ToolbarUI::ToolbarUI(AppController* controller)
 	: UIElement(10.0f, 10.0f, 65.0f, 500.0f), controller(controller)
 {
-	blockEditControls = new BlockEditUI(controller);
-	lightEditControls = new LightEditUI(controller);
+	blockEditControls = new BlockEditUI(controller, 0.0f, 20.0f);
+	lightEditControls = new LightEditUI(controller, 0.0f, 20.0f);
 
-	controlGroups = new TabbedUIElement(10.0f, 10.0f, 120.0f, 500.0f);
+	controlGroups = new TabbedUIElement(10.0f, 0.0f, 120.0f, 500.0f);
 	controlGroups->addTab(blockEditControls, "textures/move-button-white.png");
 	controlGroups->addTab(lightEditControls, "textures/light-icon-white.png");
 	controlGroups->setActiveTab(0);
 	addChild(controlGroups);
 
-	colorPreviewBox = new UIElement(20.0f, 315.0f, 100.0f, 25.0f);
+	colorPreviewBox = new UIElement(10.0f, 305.0f, 100.0f, 25.0f);
 	colorPreviewBox->setAlpha(1.0f);
 	addChild(colorPreviewBox);
 
-	rSlider = new UISlider(20.0f, 350.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	rSlider = new UISlider(10.0f, 340.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	rSlider->addListener(this);
 	rSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
 	addChild(rSlider);
 
-	gSlider = new UISlider(20.0f, 385.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	gSlider = new UISlider(10.0f, 375.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	gSlider->addListener(this);
 	gSlider->setMarkerColor(glm::vec3(0.20f, 0.49f, 0.22f));
 	addChild(gSlider);
 
-	bSlider = new UISlider(20.0f, 420.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	bSlider = new UISlider(10.0f, 410.0f, 100.0f, 25.0f, 0.0f, 255.0f);
 	bSlider->addListener(this);
 	bSlider->setMarkerColor(glm::vec3(0.22f, 0.55f, 0.96f));
 	addChild(bSlider);

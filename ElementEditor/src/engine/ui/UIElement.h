@@ -38,6 +38,7 @@ public:
 	virtual void addChild(UIElement* child);
 	virtual void removeChild(UIElement* child);
 	virtual std::vector<UIElement*> getChildren();
+	virtual void setParent(UIElement* parent);
 
 	virtual bool withinBounds(float x, float y);
 	virtual void render(UIRenderer* renderer);
@@ -51,6 +52,10 @@ protected:
 
 	std::vector<UIElement*> children;
 	std::vector<ActionListner*> listeners;
+	UIElement* parent;
+
+	virtual float getGlobalX();
+	virtual float getGlobalY();
 
 	virtual void alertListeners();
 	virtual void renderElement(UIRenderer* renderer);
