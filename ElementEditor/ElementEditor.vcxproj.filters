@@ -141,6 +141,9 @@
     <ClCompile Include="src\LightEditUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\ui\CheckBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1148,6 +1151,9 @@
     <ClInclude Include="src\LightEditUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\ui\CheckBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1616,6 +1622,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="textures\remove-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\checkbox-frame.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\visible-icon.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

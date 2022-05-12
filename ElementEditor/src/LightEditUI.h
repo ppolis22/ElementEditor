@@ -4,6 +4,7 @@
 #include "engine/event/ActionListener.h"
 #include "engine/ui/Button.h"
 #include "engine/ui/UISlider.h"
+#include "engine/ui/CheckBox.h"
 #include "state/BaseEditorState.h"
 
 #include <map>
@@ -25,6 +26,8 @@ private:
 	Button* addLightButton;
 	Button* editLightButton;
 	Button* removeLightButton;
+
+	CheckBox* enableEditCheckBox;
 
 	UISlider* strengthSlider;
 

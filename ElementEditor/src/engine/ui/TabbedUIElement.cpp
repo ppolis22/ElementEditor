@@ -12,7 +12,7 @@ TabbedUIElement::TabbedUIElement(float x, float y, float width, float height)
 	tabRootAnchor = new UIElement(0.0f, 20.0f, 0.0f, 0.0f);
 	addChild(tabRootAnchor);
 
-	tabLine = new UIElement(0.0f, BUTTON_HEIGHT, 100.0f, 5.0f);
+	tabLine = new UIElement(0.0f, BUTTON_HEIGHT, 100.0f, 3.0f);
 	tabLine->setColor(glm::vec3(0.75f, 0.75f, 0.75f));
 	tabLine->setAlpha(1.0f);
 	addChild(tabLine);
@@ -49,6 +49,9 @@ void TabbedUIElement::setActiveTab(int index) {
 	
 	activeTab = index;
 	tabRootAnchor->addChild(tabRootElements.at(activeTab));
+
+	// force update in case state was changed while tab was inactive
+	tabRootElements.at(activeTab)->update();
 
 	for (int i = 0; i < numTabs; i++) {
 		tabButtons.at(i)->setIsActive(i == activeTab);

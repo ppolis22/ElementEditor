@@ -24,6 +24,11 @@ LightEditUI::LightEditUI(AppController* controller, float x, float y)
 	strengthSlider->addListener(this);
 	//strengthSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
 	addChild(strengthSlider);
+
+	enableEditCheckBox = new CheckBox(0.0f, 110.0f, "textures/visible-icon.png", glm::vec3(0.25, 0.75, 0.75));
+	enableEditCheckBox->setValue(controller->getCanEditLights());
+	enableEditCheckBox->addListener(this);
+	addChild(enableEditCheckBox);
 }
 
 LightEditUI::~LightEditUI() {
@@ -31,11 +36,15 @@ LightEditUI::~LightEditUI() {
 	delete editLightButton;
 	delete removeLightButton;
 	delete strengthSlider;
+	delete enableEditCheckBox;
 }
 
 void LightEditUI::actionPerformed(const ActionEvent& e) {
 	if (e.source == strengthSlider) {
 		//controller->setLightStrength(strengthSlider->getValue());
+	} else if (e.source == enableEditCheckBox) {
+		bool value = dynamic_cast<CheckBox*>(e.source)->getValue();
+		controller->setCanEditLights(value);
 	} else if (auto* buttonSource = dynamic_cast<Button*>(e.source)) {
 		if (buttonMap.count(buttonSource) != 0) {
 			controller->setState(buttonMap[buttonSource]);
@@ -44,7 +53,9 @@ void LightEditUI::actionPerformed(const ActionEvent& e) {
 }
 
 void LightEditUI::update() {
-	addLightButton->setEnabled(controller->canSetAddLightTool());
+	addLightButton->setEnabled(controller->canSetAddLightTool() && controller->getCanEditLights());
+	editLightButton->setEnabled(controller->getCanEditLights());
+	removeLightButton->setEnabled(controller->getCanEditLights());
 
 	//float lightStrength = controller->getLightStrength();
 	//strengthSlider->setValue(lightStrength);	// probably have to normalize it into the range?

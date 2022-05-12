@@ -25,6 +25,8 @@ public:
 	bool canSetMoveTool();
 	bool canSetExtrudeTool();
 	bool canSetAddLightTool();
+	void setCanEditLights(bool canEdit);
+	bool getCanEditLights();
 
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void processScroll(MouseScrollEvent& event) override;
@@ -55,6 +57,7 @@ private:
 	Window* window;
 	UIRenderer* uiRenderer;
 	BlockColor activeColor;
+	bool canEditLights = true;
 
 	void changeActiveTool(BaseEditorState* newState);
 };

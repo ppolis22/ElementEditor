@@ -46,6 +46,10 @@ void BaseEditorState::renderPreviewChunks() {
 }
 
 void BaseEditorState::renderLightIcons() {
+	if (!context->getCanEditLights()) {
+		return;
+	}
+
 	std::vector<Light*> lights = context->getLightManager()->getLights();
 	UIRenderer* uiRenderer = context->getUIRenderer();
 	Camera* camera = context->getCamera();

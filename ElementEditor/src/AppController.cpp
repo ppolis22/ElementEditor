@@ -59,6 +59,15 @@ bool AppController::canSetAddLightTool() {
 	return lightManager->getLightCount() < LightManager::MAX_NUM_LIGHTS;
 }
 
+void AppController::setCanEditLights(bool canEdit) {
+	this->canEditLights = canEdit;
+	window->updateUI();
+}
+
+bool AppController::getCanEditLights() {
+	return canEditLights;
+}
+
 void AppController::processMouseMovement(MouseMoveEvent& event) {
 	if (window->isClicked(GLFW_MOUSE_BUTTON_MIDDLE)) {
 		if (window->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
