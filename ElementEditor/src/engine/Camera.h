@@ -15,6 +15,9 @@ public:
 	glm::mat4 getViewMatrix();
 	glm::vec3 getPosition();
 
+	void setPosition(glm::vec3 position);
+	void setTarget(glm::vec3 target);
+
 private:
 	const float FOV = 45.0f;
 	const float NEAR_PLANE = 0.1f;
@@ -35,4 +38,6 @@ private:
 	float zoomSpeed;
 
 	glm::mat4 projectionMatrix;
+
+	void updateVectors(glm::vec3 position, glm::vec3 target);
 };

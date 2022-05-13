@@ -6,7 +6,7 @@
 Camera::Camera() {
 	projectionMatrix = glm::perspective(glm::radians(FOV), 960.0f / 540.0f, NEAR_PLANE, FAR_PLANE);
 
-	position = glm::vec3(0.0f, 0.0f, 5.0f);
+	position = glm::vec3(0.0f, 0.0f, -5.0f);
 	target = glm::vec3(0.0f, 0.0f, 0.0f);
 	globalUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	localUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -35,6 +35,23 @@ glm::vec3 Camera::getPosition() {
 	return position;
 }
 
+void Camera::updateVectors(glm::vec3 position, glm::vec3 target) {
+	distance = glm::length(position - target);
+	front = glm::normalize(position - target);
+	right = glm::normalize(glm::cross(front, globalUp));
+	localUp = glm::normalize(glm::cross(right, front));
+}
+
+void Camera::setPosition(glm::vec3 position) {
+	this->position = position;
+	updateVectors(position, target);
+}
+
+void Camera::setTarget(glm::vec3 target) {
+	this->target = target;
+	updateVectors(position, target);
+}
+
 void Camera::rotate(float deltaX, float deltaY) {
 	yaw += (deltaX * rotateSpeed);
 	pitch += (deltaY * rotateSpeed);
@@ -50,8 +67,7 @@ void Camera::rotate(float deltaX, float deltaY) {
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
 	position = (front * distance) + target;
-	right = glm::normalize(glm::cross(front, globalUp));
-	localUp = glm::normalize(glm::cross(right, front));
+	updateVectors(position, target);
 }
 
 void Camera::pan(float deltaX, float deltaY) {
@@ -63,6 +79,7 @@ void Camera::pan(float deltaX, float deltaY) {
 }
 
 void Camera::zoom(float deltaY) {
-	distance += deltaY * zoomSpeed * sqrt(distance / 10.0f);	// TODO fix this
+	float distanceChange = deltaY * zoomSpeed;
+	distance = (distanceChange <= -distance ? 0.0001f : distance + distanceChange);
 	position = (front * distance) + target;
 }
