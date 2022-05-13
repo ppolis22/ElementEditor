@@ -8,5 +8,5 @@ void UITexturedElement::setBlendColor(glm::vec3 blendColor) {
 }
 
 void UITexturedElement::renderElement(UIRenderer* renderer) {
-	renderer->renderTexturedQuad(x, y, width, height, texturePath, blendColor);
+	renderer->renderStaticTexturedQuad(getGlobalX(), getGlobalY(), width, height, texturePath, blendColor);
 }

@@ -1,16 +1,17 @@
 #include "Chunk.h"
 
+#include "ChunkManager.h"
 #include <algorithm>
 
 const float Chunk::BLOCK_RENDER_SIZE = 1.0f;
 const float Chunk::HALF_BLOCK_WIDTH = Chunk::BLOCK_RENDER_SIZE / 2.0f;
 
-Chunk::Chunk(int xPos, int yPos, int zPos) :
+Chunk::Chunk(int xPos, int yPos, int zPos, ChunkManager* manager) :
 	xPosition(xPos),
 	yPosition(yPos),
-	zPosition(zPos),
+	zPosition(zPos), 
+	manager(manager),
 	mesh({0, 0, 0, 0}),
-	chunkShader("shaders/chunkVertex.shader", "shaders/chunkFragment.shader"),
 	data(CHUNK_SIZE, std::vector<std::vector<BlockColor>>(CHUNK_SIZE, std::vector<BlockColor>(CHUNK_SIZE, BlockColor::EMPTY())))
 	{}
 
@@ -68,10 +69,6 @@ BlockColor Chunk::getBlockColor(Point3di location) {
 	return data[location.x][location.y][location.z];
 }
 
-Shader& Chunk::getShader() {
-	return chunkShader;
-}
-
 Mesh& Chunk::getMesh() {
 	return mesh;
 }
@@ -105,16 +102,13 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 		renderColor = { 1.0f, 0.55f, 0.16f };		// TODO refernce constant System colors for "selected" color
 	}
 
-	float xCoord = x * BLOCK_RENDER_SIZE + xPosition;
-	float yCoord = y * BLOCK_RENDER_SIZE + yPosition;
-	float zCoord = z * BLOCK_RENDER_SIZE + zPosition;
+	float leftX = x * BLOCK_RENDER_SIZE + xPosition;
+	float downY = y * BLOCK_RENDER_SIZE + yPosition;
+	float farZ = z * BLOCK_RENDER_SIZE + zPosition;
 
-	float leftX = xCoord;
-	float rightX = xCoord + BLOCK_RENDER_SIZE;
-	float downY = yCoord;
-	float upY = yCoord + BLOCK_RENDER_SIZE;
-	float nearZ = zCoord + BLOCK_RENDER_SIZE;	// +z toward camera, traditionally
-	float farZ = zCoord;
+	float rightX = leftX + BLOCK_RENDER_SIZE;
+	float upY = downY + BLOCK_RENDER_SIZE;
+	float nearZ = farZ + BLOCK_RENDER_SIZE;	// +z toward camera, traditionally
 
 	Point3df leftBottomNear{leftX, downY, nearZ};
 	Point3df rightBottomNear{ rightX, downY, nearZ };
@@ -125,37 +119,114 @@ void Chunk::buildBlockMesh(int x, int y, int z, BlockColor color) {
 	Point3df leftTopFar{ leftX, upY, farZ };
 	Point3df rightTopFar{ rightX, upY, farZ };
 
-	if ((x == 0 && !checkNeighborChunk(x - 1, y, z)) || (x != 0 && data[x - 1][y][z].isEmpty())) {
+	// only build faces that could be visible, i.e. border empty blocks
+	if (blockIsEmpty(x - 1, y, z)) {
 		Point3df leftNormal{ -1.0f, 0.0f, 0.0f };
-		meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, leftNormal, renderColor);
+		float lbfOcc = calculateOcclusion(location, location + Point3di{-1, -1, -1}, leftNormal);
+		float lbnOcc = calculateOcclusion(location, location + Point3di{ -1, -1, 1 }, leftNormal);
+		float ltnOcc = calculateOcclusion(location, location + Point3di{ -1, 1, 1 }, leftNormal);
+		float ltfOcc = calculateOcclusion(location, location + Point3di{ -1, 1, -1 }, leftNormal);
+		meshBuilder.addFace(leftBottomFar, leftBottomNear, leftTopNear, leftTopFar, 
+			lbfOcc, lbnOcc, ltnOcc, ltfOcc,
+			leftNormal, renderColor);
 	}
 
-	if ((x == CHUNK_SIZE - 1 && !checkNeighborChunk(x + 1, y, z)) || (x != CHUNK_SIZE - 1 && data[x + 1][y][z].isEmpty())) {
+	if (blockIsEmpty(x + 1, y, z)) {
 		Point3df rightNormal{ 1.0f, 0.0f, 0.0f };
-		meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, rightNormal, renderColor);
+		float rbnOcc = calculateOcclusion(location, location + Point3di{ 1, -1, 1 }, rightNormal);
+		float rbfOcc = calculateOcclusion(location, location + Point3di{ 1, -1, -1 }, rightNormal);
+		float rtfOcc = calculateOcclusion(location, location + Point3di{ 1, 1, -1 }, rightNormal);
+		float rtnOcc = calculateOcclusion(location, location + Point3di{ 1, 1, 1 }, rightNormal);
+		meshBuilder.addFace(rightBottomNear, rightBottomFar, rightTopFar, rightTopNear, 
+			rbnOcc, rbfOcc, rtfOcc, rtnOcc,
+			rightNormal, renderColor);
 	}
 
-	if ((z == 0 && !checkNeighborChunk(x, y, z - 1)) || (z != 0 && data[x][y][z - 1].isEmpty())) {
+	if (blockIsEmpty(x, y, z - 1)) {
 		Point3df backNormal{ 0.0f, 0.0f, -1.0f };
-		meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, backNormal, renderColor);
+		float rbfOcc = calculateOcclusion(location, location + Point3di{ 1, -1, -1 }, backNormal);
+		float lbfOcc = calculateOcclusion(location, location + Point3di{ -1, -1, -1 }, backNormal);
+		float ltfOcc = calculateOcclusion(location, location + Point3di{ -1, 1, -1 }, backNormal);
+		float rtfOcc = calculateOcclusion(location, location + Point3di{ 1, 1, -1 }, backNormal);
+		meshBuilder.addFace(rightBottomFar, leftBottomFar, leftTopFar, rightTopFar, 
+			rbfOcc, lbfOcc, ltfOcc, rtfOcc,
+			backNormal, renderColor);
 	}
 
-	if ((z == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y, z + 1)) || (z != CHUNK_SIZE - 1 && data[x][y][z + 1].isEmpty())) {
+	if (blockIsEmpty(x, y, z + 1)) {
 		Point3df frontNormal{ 0.0f, 0.0f, 1.0f };
-		meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, frontNormal, renderColor);
+		float lbnOcc = calculateOcclusion(location, location + Point3di{ -1, -1, 1 }, frontNormal);
+		float rbnOcc = calculateOcclusion(location, location + Point3di{ 1, -1, 1 }, frontNormal);
+		float rtnOcc = calculateOcclusion(location, location + Point3di{ 1, 1, 1 }, frontNormal);
+		float ltnOcc = calculateOcclusion(location, location + Point3di{ -1, 1, 1 }, frontNormal);
+		meshBuilder.addFace(leftBottomNear, rightBottomNear, rightTopNear, leftTopNear, 
+			lbnOcc, rbnOcc, rtnOcc, ltnOcc,
+			frontNormal, renderColor);
 	}
 
-	if ((y == 0 && !checkNeighborChunk(x, y - 1, z)) || (y != 0 && data[x][y - 1][z].isEmpty())) {
+	if (blockIsEmpty(x, y - 1, z)) {
 		Point3df bottomNormal{ 0.0f, -1.0f, 0.0f };
-		meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, bottomNormal, renderColor);
+		float lbfOcc = calculateOcclusion(location, location + Point3di{ -1, -1, -1 }, bottomNormal);
+		float rbfOcc = calculateOcclusion(location, location + Point3di{ 1, -1, -1 }, bottomNormal);
+		float rbnOcc = calculateOcclusion(location, location + Point3di{ 1, -1, 1 }, bottomNormal);
+		float lbnOcc = calculateOcclusion(location, location + Point3di{ -1, -1, 1 }, bottomNormal);
+		meshBuilder.addFace(leftBottomFar, rightBottomFar, rightBottomNear, leftBottomNear, 
+			lbfOcc, rbfOcc, rbnOcc, lbnOcc,
+			bottomNormal, renderColor);
 	}
 
-	if ((y == CHUNK_SIZE - 1 && !checkNeighborChunk(x, y + 1, z)) || (y != CHUNK_SIZE - 1 && data[x][y + 1][z].isEmpty())) {
+	if (blockIsEmpty(x, y + 1, z)) {
 		Point3df topNormal{ 0.0f, 1.0f, 0.0f };
-		meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, topNormal, renderColor);
+		float ltnOcc = calculateOcclusion(location, location + Point3di{ -1, 1, 1 }, topNormal);
+		float rtnOcc = calculateOcclusion(location, location + Point3di{ 1, 1, 1 }, topNormal);
+		float rtfOcc = calculateOcclusion(location, location + Point3di{ 1, 1, -1 }, topNormal);
+		float ltfOcc = calculateOcclusion(location, location + Point3di{ -1, 1, -1 }, topNormal);
+		meshBuilder.addFace(leftTopNear, rightTopNear, rightTopFar, leftTopFar, 
+			ltnOcc, rtnOcc, rtfOcc, ltfOcc,
+			topNormal, renderColor);
 	}
 }
 
-bool Chunk::checkNeighborChunk(int x, int y, int z) {
-	return false;		// TODO consult owning ChunkManager
+bool Chunk::blockIsEmpty(int x, int y, int z) {
+	if (x < 0 || y < 0 || z < 0 || x >= CHUNK_SIZE || y >= CHUNK_SIZE || z >= CHUNK_SIZE) {
+		return manager->getBlockColor({ x + xPosition, y + yPosition, z + zPosition }).isEmpty();
+	}
+
+	return data[x][y][z].isEmpty();
+}
+
+bool Chunk::blockIsEmpty(const Point3di& point) {
+	return blockIsEmpty(point.x, point.y, point.z);
+}
+
+// TODO come up with more robust/flexible way to do this
+//
+// This method serves as an approximation of ambient occlusion that is calculated for each vertex when the
+// mesh is rebuilt. Currently only accounts for 3 blocks surrounding vertex, and 4 blocks above it.
+float Chunk::calculateOcclusion(const Point3di& vertex, const Point3di& corner, const Point3df& normalFloat) {
+	Point3di normal{ static_cast<int>(normalFloat.x), static_cast<int>(normalFloat.y), static_cast<int>(normalFloat.z) };
+	Point3di toCheck = (vertex - corner) + normal;
+	
+	float occlusion = 0.0f;
+	Point3di ptXShift{ corner.x + toCheck.x, corner.y, corner.z };
+	Point3di ptYShift{ corner.x, corner.y + toCheck.y, corner.z };
+	Point3di ptZShift{ corner.x, corner.y, corner.z + toCheck.z };
+
+	// account for the fact that the corner won't contribute to occlusion if the two side blocks are present
+	if ((ptXShift == corner && !blockIsEmpty(ptYShift) && !blockIsEmpty(ptZShift)) ||
+		(ptYShift == corner && !blockIsEmpty(ptXShift) && !blockIsEmpty(ptZShift)) ||
+		(ptZShift == corner && !blockIsEmpty(ptXShift) && !blockIsEmpty(ptYShift))) 
+	{
+		occlusion += 0.6f;
+	} else {
+		occlusion += ((!blockIsEmpty(ptXShift) ? 0.2f : 0.0f) + (!blockIsEmpty(ptYShift) ? 0.2f : 0.0f) + (!blockIsEmpty(ptZShift) ? 0.2f : 0.0f));
+	}
+
+	occlusion += 
+		  (!blockIsEmpty(ptXShift + normal) ? 0.10f : 0.0f)		// account for 4 above blocks
+		+ (!blockIsEmpty(ptYShift + normal) ? 0.10f : 0.0f)
+		+ (!blockIsEmpty(ptZShift + normal) ? 0.10f : 0.0f)
+		+ (!blockIsEmpty(vertex.x + normal.x * 2, vertex.y + normal.y * 2, vertex.z + normal.z * 2) ? 0.10f : 0.0f);
+
+	return occlusion;
 }

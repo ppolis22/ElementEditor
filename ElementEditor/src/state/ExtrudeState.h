@@ -12,20 +12,20 @@ class ExtrudeState : public MoveableSelectionState {
 public:
 	ExtrudeState(AppController* context, std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection);
 
-	void processMouseDown(MouseButtonDownEvent& event) override;
-	void processMouseUp(MouseButtonUpEvent& event) override;
-	void processMouseMovement(MouseMoveEvent& event) override;
-	void render() override;
 	State getType() override;
 
 private:
+	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> selection;
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> coveredModelCopy;
 	std::unordered_map<Point3di, BlockColor, Point3di::HashFunction> extrusion;
-	Point3di moveVector;
-	glm::vec3 movementReferencePoint;
-	glm::vec3 handleGrabPointOffset;
+	glm::vec3 averageSelectionPoint;
+
+	glm::vec3 getHandlePositionForSelection() override;
+	void onMovement() override;
 
 	void setExtrusion();
 	void calculateExtrusion();
 	void addSelectionAtOffset(int x, int y, int z);
+
+	glm::vec3 averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points);
 };

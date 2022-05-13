@@ -10,19 +10,23 @@
 #include "engine/event/KeyEvent.h"
 #include "engine/Window.h"
 #include "engine/Point3d.h"
+#include "LightManager.h"
 
 #include <vector>
 
 class AppController : public EventListener {
 public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
-		UIRenderer* uiRenderer, Window* window);
+		LightManager* lightManager, UIRenderer* uiRenderer, Window* window);
 
 	void setState(State stateToSet);
 	State getState();
 
 	bool canSetMoveTool();
 	bool canSetExtrudeTool();
+	bool canSetAddLightTool();
+	void setCanEditLights(bool canEdit);
+	bool getCanEditLights();
 
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void processScroll(MouseScrollEvent& event) override;
@@ -33,11 +37,14 @@ public:
 	void render();
 	BlockColor getActiveColor();
 	void setActiveColor(BlockColor newColor);
+	void addLight(Point3di position);
 
 	Camera* getCamera();
 	ModelRenderer* getModelRenderer();
 	ChunkManager* getModelChunkManager();
 	ChunkManager* getPreviewChunkManager();
+	UIRenderer* getUIRenderer();
+	LightManager* getLightManager();
 	Window* getWindow();
 
 private:
@@ -46,9 +53,11 @@ private:
 	ModelRenderer* modelRenderer;
 	ChunkManager* modelChunkManager;
 	ChunkManager* previewChunkManager;
+	LightManager* lightManager;
 	Window* window;
 	UIRenderer* uiRenderer;
 	BlockColor activeColor;
+	bool canEditLights = true;
 
 	void changeActiveTool(BaseEditorState* newState);
 };

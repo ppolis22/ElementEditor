@@ -8,6 +8,7 @@
 #include "engine/ui/BasicUIRenderer.h"
 #include "engine/event/Event.h"
 #include "ToolbarUI.h"
+#include "LightManager.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -33,19 +34,30 @@ void ElementEditor::run() {
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	Camera* camera = new Camera();
-	ModelRenderer* modelRenderer = new ModelRenderer();
+	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
+	LightManager* lightManager = new LightManager();
 
 	// TODO replace with some sort of Loader class
-	BlockColor defaultColor{ 0, 0, 255 };
+	BlockColor defaultColor{ 255, 255, 255 };
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
 	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
 	modelChunkManager->rebuildChunkMeshes();
 
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, uiRenderer, window);
+	lightManager->setDirectionalLightColor({ 0.5f, 0.5f, 0.5f });
+	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
+	lightManager->setAmbientLightColor({0.5f, 0.5f, 0.5f});
+
+	Point3di yellowLightPos{ 2, 3, 5 };
+	lightManager->addLight(glm::vec3(1.0f, 0.8f, 0.3f), yellowLightPos, 10.0f);
+
+	Point3di blueLightPos{ -3, -4, -6 };
+	lightManager->addLight(glm::vec3(0.1f, 0.3f, 1.0f), blueLightPos, 10.0f);
+
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);

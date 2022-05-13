@@ -5,7 +5,7 @@
 #include "../AppController.h"
 
 AddState::AddState(AppController* context)
-	: SelectableState(context) {}
+	: BaseEditorState(context) {}
 
 State AddState::getType() {
 	return State::ADD;
@@ -55,6 +55,12 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 		previewChunkManager->rebuildChunkMeshes();
 	}
 	readyToAdd = false;
+}
+
+void AddState::render() {
+	renderModelChunks();
+	renderPreviewChunks();
+	renderLightIcons();
 }
 
 void AddState::cleanUp() {

@@ -8,35 +8,60 @@
 #include "../AppController.h"
 
 BaseEditorState::BaseEditorState(AppController* context)
-	: context(context) {}
+	: context(context) ,
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) 
+{}
 
-BaseEditorState::~BaseEditorState() {}
-
-void BaseEditorState::processMouseMovement(MouseMoveEvent& event) {}
-
-void BaseEditorState::processKeyPress(KeyPressEvent& event) {}
-
-void BaseEditorState::processScroll(MouseScrollEvent& event) {}
-
-void BaseEditorState::processMouseDown(MouseButtonDownEvent& event) {}
-
-void BaseEditorState::processMouseUp(MouseButtonUpEvent& event) {}
-
-void BaseEditorState::init() {}
-
-void BaseEditorState::cleanUp() {}
-
-void BaseEditorState::render() {
+void BaseEditorState::renderModelChunks() {
 	ModelRenderer* modelRenderer = context->getModelRenderer();
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
+	LightManager* lightManager = context->getLightManager();
+	std::vector<Light*> lights = lightManager->getLights();
+	Camera* camera = context->getCamera();
+	Shader& chunkShader = modelChunkManager->getChunkShader();
+
+	std::vector<Renderable*> chunksToRender;
+	for (Chunk* chunk : modelChunkManager->getAllChunks()) {
+		chunksToRender.push_back(chunk);
+	}
+
+	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(),
+		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
+}
+
+void BaseEditorState::renderPreviewChunks() {
 	ChunkManager* previewChunkManager = context->getPreviewChunkManager();
+	ModelRenderer* modelRenderer = context->getModelRenderer();
+	LightManager* lightManager = context->getLightManager();
+	std::vector<Light*> lights = lightManager->getLights();
 	Camera* camera = context->getCamera();
 
-	for (Chunk& chunk : modelChunkManager->getAllChunks()) {
-		modelRenderer->render(chunk, *camera);
+	std::vector<Renderable*> previewChunksToRender;
+	for (Chunk* chunk : previewChunkManager->getAllChunks()) {
+		previewChunksToRender.push_back(chunk);
+	}
+	Shader& previewChunkShader = previewChunkManager->getChunkShader();
+	modelRenderer->renderNoShadows(previewChunksToRender, lights, lightManager->getDirectionalLightColor(),
+		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
+}
+
+void BaseEditorState::renderLightIcons() {
+	if (!context->getCanEditLights()) {
+		return;
 	}
 
-	for (Chunk& chunk : previewChunkManager->getAllChunks()) {
-		modelRenderer->renderPreview(chunk, *camera);
+	std::vector<Light*> lights = context->getLightManager()->getLights();
+	UIRenderer* uiRenderer = context->getUIRenderer();
+	Camera* camera = context->getCamera();
+
+	for (Light* light : lights) {
+		glm::vec3 lightPos = light->getRenderPosition();
+		uiRenderer->renderTexturedQuadInScene(lightPos.x, lightPos.y, lightPos.z, 50.0, 50.0, *camera,
+			"textures/light-icon-white.png", light->getColor());
 	}
+}
+
+void BaseEditorState::render() {
+	renderModelChunks();
+	renderLightIcons();
 }

@@ -29,18 +29,15 @@ private:
 	GLFWwindow* glfwWindow;
 	int width;
 	int height;
-	UIElement* rootUIElement;
 
 	struct WindowData {
 		float lastCursorXPos;
 		float lastCursorYPos;
-		std::vector<EventListener*> uiListeners;
+		UIElement* rootUIElement;
 		EventListener* applicationListener;
 	};
 
 	WindowData data;
-
-	void registerEventListener(UIElement* listener);
 
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

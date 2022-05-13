@@ -1,10 +1,9 @@
 #pragma once
 
-#include "SelectableState.h"
-#include "../engine/RayTracer.h"
+#include "BaseEditorState.h"
 #include "../engine/Point3d.h"
 
-class AddState : public SelectableState {
+class AddState : public BaseEditorState {
 public:
 	AddState(AppController* context);
 
@@ -12,6 +11,7 @@ public:
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void cleanUp() override;
 	void init() override;
+	void render() override;
 	State getType() override;
 
 private:

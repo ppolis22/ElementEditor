@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SelectableState.h"
+#include "BaseEditorState.h"
 
-class ColorPickState : public SelectableState {
+class ColorPickState : public BaseEditorState {
 public:
 	ColorPickState(AppController* context);
 

@@ -2,7 +2,7 @@
 #include "../AppController.h"
 
 ColorPickState::ColorPickState(AppController* context)
-	: SelectableState(context) {}
+	: BaseEditorState(context) {}
 
 State ColorPickState::getType() {
 	return State::COLOR_PICK;

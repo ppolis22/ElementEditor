@@ -87,9 +87,6 @@
     <ClCompile Include="src\state\SubtractState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\state\SelectableState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\state\MoveableSelectionState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -118,6 +115,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\state\ColorPickState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\state\LightEditState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\state\AddLightState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\state\RemoveLightState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\TabbedUIElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BlockEditUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightEditUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\CheckBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1067,9 +1091,6 @@
     <ClInclude Include="src\state\SubtractState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\state\SelectableState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\state\MoveableSelectionState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1104,6 +1125,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\state\ColorPickState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\state\LightEditState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\state\AddLightState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\state\RemoveLightState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\TabbedUIElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BlockEditUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightEditUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1524,6 +1572,8 @@
     <None Include="shaders\handleFragment.shader" />
     <None Include="shaders\uiTexturedVertex.shader" />
     <None Include="shaders\uiTexturedFragment.shader" />
+    <None Include="shaders\shadowMapVertex.shader" />
+    <None Include="shaders\shadowMapFragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">
@@ -1560,6 +1610,24 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="textures\picker-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\light-icon-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\edit-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\add-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\remove-light-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\checkbox-frame.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\visible-icon.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

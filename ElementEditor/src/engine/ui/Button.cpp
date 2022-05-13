@@ -11,7 +11,7 @@ Button::Button(float x, float y, float width, float height, const std::string& t
 	hoverColor = baseColor + 0.25f;
 	clickColor = baseColor - 0.25f;
 
-	icon = new UITexturedElement(x, y, width, height, texturePath, glm::vec3(0.0f, 0.0f, 0.0f));
+	icon = new UITexturedElement(0.0f, 0.0f, width, height, texturePath, glm::vec3(0.0f, 0.0f, 0.0f));
 	addChild(icon);
 }
 
