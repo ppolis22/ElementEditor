@@ -11,9 +11,10 @@
 #include "state/RemoveLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
-	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
+	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, Project* project)
 	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	lightManager(lightManager), uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0 }) {
+	lightManager(lightManager), uiRenderer(uiRenderer), window(window), project(project), activeColor(BlockColor{ 0, 0, 0 }) 
+{
 	this->state = new AddState(this);
 }
 
@@ -133,6 +134,10 @@ UIRenderer* AppController::getUIRenderer() {
 
 Window* AppController::getWindow() {
 	return window;
+}
+
+Project* AppController::getProject() {
+	return project;
 }
 
 void AppController::changeActiveTool(BaseEditorState* newState) {

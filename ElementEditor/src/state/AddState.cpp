@@ -33,21 +33,24 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	ChunkManager* modelChunkManager = context->getModelChunkManager();
 	ChunkManager* previewChunkManager = context->getPreviewChunkManager();
 
+	lastBlockWasInBoundsAndEmpty = false;
 	std::vector<Point3di> intersectedBlocks = rayTracer.getIntersectingBlocks(camera->getPosition(), camera->getViewMatrix(), event.rawX, event.rawY);
 	for (int i = 1; i < intersectedBlocks.size(); i++) {
-		if (!modelChunkManager->getBlockColor(intersectedBlocks[i]).isEmpty()) {
-			Point3di targetToAdd = intersectedBlocks[i - 1];
-			if (readyToAdd && targetToAdd != toAddCoords) {
-				previewChunkManager->setBlockColor(BlockColor::EMPTY(), toAddCoords);
-			}
-			if (!readyToAdd || targetToAdd != toAddCoords) {
-				toAddCoords = targetToAdd;
-				previewChunkManager->setBlockColor(context->getActiveColor(), toAddCoords);
-				previewChunkManager->rebuildChunkMeshes();
-			}
-			readyToAdd = true;
-			return;
+
+		if (locationIsEmpty(intersectedBlocks[i])) 
+			continue;
+
+		Point3di targetToAdd = intersectedBlocks[i - 1];
+		if (readyToAdd && targetToAdd != toAddCoords) {
+			previewChunkManager->setBlockColor(BlockColor::EMPTY(), toAddCoords);
 		}
+		if (!readyToAdd || targetToAdd != toAddCoords) {
+			toAddCoords = targetToAdd;
+			previewChunkManager->setBlockColor(context->getActiveColor(), toAddCoords);
+			previewChunkManager->rebuildChunkMeshes();
+		}
+		readyToAdd = true;
+		return;
 	}
 
 	if (readyToAdd) {
@@ -55,6 +58,26 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 		previewChunkManager->rebuildChunkMeshes();
 	}
 	readyToAdd = false;
+}
+
+static bool inBounds(Point3di location, Project* project) {
+	return location.x >= 0 && location.y >= 0 && location.z >= 0
+		&& location.x < project->getXDim() && location.y < project->getYDim() && location.z < project->getZDim();
+}
+
+bool AddState::locationIsEmpty(Point3di location) {
+	Project* project = context->getProject();
+	if (project->isBounded()) {
+		if (context->getModelChunkManager()->getBlockColor(location).isEmpty()) {
+			if (inBounds(location, project)) {
+				lastBlockWasInBoundsAndEmpty = true;
+				return true;
+			}
+		}
+		return !lastBlockWasInBoundsAndEmpty;
+	}
+
+	return context->getModelChunkManager()->getBlockColor(location).isEmpty();
 }
 
 void AddState::render() {

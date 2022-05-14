@@ -57,7 +57,9 @@ void ElementEditor::run() {
 	Point3di blueLightPos{ -3, -4, -6 };
 	lightManager->addLight(glm::vec3(0.1f, 0.3f, 1.0f), blueLightPos, 10.0f);
 
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window);
+	Project* project = new Project(10, 10, 10);
+
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, project);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);

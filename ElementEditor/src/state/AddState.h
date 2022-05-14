@@ -17,4 +17,7 @@ public:
 private:
 	Point3di toAddCoords;
 	bool readyToAdd = false;
+	bool lastBlockWasInBoundsAndEmpty = false;
+
+	bool locationIsEmpty(Point3di location);
 };

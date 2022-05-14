@@ -142,6 +142,7 @@
     <ClCompile Include="src\engine\ui\UITexturedElement.cpp" />
     <ClCompile Include="src\LightEditUI.cpp" />
     <ClCompile Include="src\LightManager.cpp" />
+    <ClCompile Include="src\Project.cpp" />
     <ClCompile Include="src\state\AddLightState.cpp" />
     <ClCompile Include="src\state\AddState.cpp" />
     <ClCompile Include="src\AppController.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="src\engine\ui\UITexturedElement.h" />
     <ClInclude Include="src\LightEditUI.h" />
     <ClInclude Include="src\LightManager.h" />
+    <ClInclude Include="src\Project.h" />
     <ClInclude Include="src\state\AddLightState.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
