@@ -15,6 +15,13 @@ MoveState::MoveState(AppController* context, std::unordered_map<Point3di, BlockC
 {
 	for (const auto& entry : selection) {
 		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
+
+		selectionLimits.minX = (entry.first.x < selectionLimits.minX) ? entry.first.x : selectionLimits.minX;
+		selectionLimits.minY = (entry.first.y < selectionLimits.minY) ? entry.first.y : selectionLimits.minY;
+		selectionLimits.minZ = (entry.first.z < selectionLimits.minZ) ? entry.first.z : selectionLimits.minZ;
+		selectionLimits.maxX = (entry.first.x > selectionLimits.maxX) ? entry.first.x : selectionLimits.maxX;
+		selectionLimits.maxY = (entry.first.y > selectionLimits.maxY) ? entry.first.y : selectionLimits.maxY;
+		selectionLimits.maxZ = (entry.first.z > selectionLimits.maxZ) ? entry.first.z : selectionLimits.maxZ;
 	}
 }
 
@@ -24,6 +31,16 @@ State MoveState::getType() {
 
 glm::vec3 MoveState::getHandlePositionForSelection() {
 	return averageSelectionPoint + glm::vec3(moveVector.x, moveVector.y, moveVector.z) + Chunk::HALF_BLOCK_WIDTH;
+}
+
+bool MoveState::movementIsValid(Point3di attemptedVector) {
+	Project* project = context->getProject();
+	if (!project->isBounded())
+		return true;
+
+	return selectionLimits.minX + attemptedVector.x >= 0 && selectionLimits.maxX + attemptedVector.x < project->getXDim() &&
+		selectionLimits.minY + attemptedVector.y >= 0 && selectionLimits.maxY + attemptedVector.y < project->getYDim() &&
+		selectionLimits.minZ + attemptedVector.z >= 0 && selectionLimits.maxZ + attemptedVector.z < project->getZDim();
 }
 
 void MoveState::onMovement() {

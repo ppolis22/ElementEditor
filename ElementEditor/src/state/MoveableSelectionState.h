@@ -30,6 +30,10 @@ protected:
 	// this method should provide desired behavior in response to moveVector changing
 	virtual void onMovement() = 0;
 
+	// this method should check that moving along attemptedVector is valid 
+	// (e.g. selection is in bounds), otherwise onMovement will not be called
+	virtual bool movementIsValid(Point3di attemptedVector) { return true; };
+
 	Direction moveDirection = NONE;
 	Point3di moveVector;
 	RayTracer rayTracer;
