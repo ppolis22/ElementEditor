@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="src\BlockEditUI.cpp" />
     <ClCompile Include="src\engine\Light.cpp" />
+    <ClCompile Include="src\engine\LineMeshBuilder.cpp" />
     <ClCompile Include="src\engine\MeshBuilderTextured2d.cpp" />
     <ClCompile Include="src\engine\Texture.cpp" />
     <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
@@ -142,7 +143,7 @@
     <ClCompile Include="src\engine\ui\UITexturedElement.cpp" />
     <ClCompile Include="src\LightEditUI.cpp" />
     <ClCompile Include="src\LightManager.cpp" />
-    <ClCompile Include="src\Project.cpp" />
+    <ClCompile Include="src\ProjectBounds.cpp" />
     <ClCompile Include="src\state\AddLightState.cpp" />
     <ClCompile Include="src\state\AddState.cpp" />
     <ClCompile Include="src\AppController.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="src\engine\event\ActionEvent.h" />
     <ClInclude Include="src\engine\event\ActionListener.h" />
     <ClInclude Include="src\engine\Light.h" />
+    <ClInclude Include="src\engine\LineMeshBuilder.h" />
     <ClInclude Include="src\engine\MeshBuilderTextured2d.h" />
     <ClInclude Include="src\engine\Texture.h" />
     <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
@@ -191,7 +193,7 @@
     <ClInclude Include="src\engine\ui\UITexturedElement.h" />
     <ClInclude Include="src\LightEditUI.h" />
     <ClInclude Include="src\LightManager.h" />
-    <ClInclude Include="src\Project.h" />
+    <ClInclude Include="src\ProjectBounds.h" />
     <ClInclude Include="src\state\AddLightState.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
@@ -520,6 +522,8 @@
     <None Include="shaders\chunkVertex.shader" />
     <None Include="shaders\handleFragment.shader" />
     <None Include="shaders\handleVertex.shader" />
+    <None Include="shaders\lineFragment.shader" />
+    <None Include="shaders\lineVertex.shader" />
     <None Include="shaders\shadowMapFragment.shader" />
     <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\uiFragment.shader" />

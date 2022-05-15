@@ -14,11 +14,11 @@ Camera::Camera() {
 	front = glm::vec3(0.0f, 0.0f, -1.0f);
 
 	distance = 5.0f;
-	yaw = -90.f;
+	yaw = 0.0f;
 	pitch = 0.0f;
-	panSpeed = 0.01f;
+	panSpeed = 0.0008f;
 	rotateSpeed = 0.25f;
-	zoomSpeed = 0.5f;
+	zoomSpeed = 0.75f;
 }
 
 Camera::~Camera() {}
@@ -35,11 +35,18 @@ glm::vec3 Camera::getPosition() {
 	return position;
 }
 
+glm::vec3 Camera::getViewVector() {
+	return glm::normalize(target - position);
+}
+
 void Camera::updateVectors(glm::vec3 position, glm::vec3 target) {
 	distance = glm::length(position - target);
 	front = glm::normalize(position - target);
 	right = glm::normalize(glm::cross(front, globalUp));
 	localUp = glm::normalize(glm::cross(right, front));
+
+	yaw = glm::degrees(atan2(front.x, front.z));
+	pitch = glm::degrees(asin(front.y));
 }
 
 void Camera::setPosition(glm::vec3 position) {
@@ -67,15 +74,16 @@ void Camera::rotate(float deltaX, float deltaY) {
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
 	position = (front * distance) + target;
-	updateVectors(position, target);
+	right = glm::normalize(glm::cross(front, globalUp));
+	localUp = glm::normalize(glm::cross(right, front));
 }
 
 void Camera::pan(float deltaX, float deltaY) {
-	target += (right * deltaX * panSpeed);
-	target += (localUp * deltaY * panSpeed);
+	target += (right * deltaX * panSpeed * (distance + 5.0f));
+	target += (localUp * deltaY * panSpeed * (distance + 5.0f));
 
-	position += (right * deltaX * panSpeed);
-	position += (localUp * deltaY * panSpeed);
+	position += (right * deltaX * panSpeed * (distance + 5.0f));
+	position += (localUp * deltaY * panSpeed * (distance + 5.0f));
 }
 
 void Camera::zoom(float deltaY) {

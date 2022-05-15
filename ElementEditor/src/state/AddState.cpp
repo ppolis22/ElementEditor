@@ -60,16 +60,16 @@ void AddState::processMouseMovement(MouseMoveEvent& event) {
 	readyToAdd = false;
 }
 
-static bool inBounds(Point3di location, Project* project) {
+static bool inBounds(Point3di location, ProjectBounds* projectBounds) {
 	return location.x >= 0 && location.y >= 0 && location.z >= 0
-		&& location.x < project->getXDim() && location.y < project->getYDim() && location.z < project->getZDim();
+		&& location.x < projectBounds->getXDim() && location.y < projectBounds->getYDim() && location.z < projectBounds->getZDim();
 }
 
 bool AddState::locationIsEmpty(Point3di location) {
-	Project* project = context->getProject();
-	if (project->isBounded()) {
+	ProjectBounds* projectBounds = context->getProjectBounds();
+	if (projectBounds->isBounded()) {
 		if (context->getModelChunkManager()->getBlockColor(location).isEmpty()) {
-			if (inBounds(location, project)) {
+			if (inBounds(location, projectBounds)) {
 				lastBlockWasInBoundsAndEmpty = true;
 				return true;
 			}
@@ -81,6 +81,7 @@ bool AddState::locationIsEmpty(Point3di location) {
 }
 
 void AddState::render() {
+	renderProjectBoundaryLines();
 	renderModelChunks();
 	renderPreviewChunks();
 	renderLightIcons();

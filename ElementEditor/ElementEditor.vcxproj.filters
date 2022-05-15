@@ -144,7 +144,10 @@
     <ClCompile Include="src\engine\ui\CheckBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Project.cpp">
+    <ClCompile Include="src\engine\LineMeshBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectBounds.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1157,7 +1160,10 @@
     <ClInclude Include="src\engine\ui\CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Project.h">
+    <ClInclude Include="src\engine\LineMeshBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectBounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1580,6 +1586,8 @@
     <None Include="shaders\uiTexturedFragment.shader" />
     <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\shadowMapFragment.shader" />
+    <None Include="shaders\lineFragment.shader" />
+    <None Include="shaders\lineVertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">

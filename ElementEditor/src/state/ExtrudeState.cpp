@@ -33,13 +33,13 @@ glm::vec3 ExtrudeState::getHandlePositionForSelection() {
 }
 
 bool ExtrudeState::movementIsValid(Point3di attemptedVector) {
-	Project* project = context->getProject();
-	if (!project->isBounded())
+	ProjectBounds* projectBounds = context->getProjectBounds();
+	if (!projectBounds->isBounded())
 		return true;
 
-	return selectionLimits.minX + attemptedVector.x >= 0 && selectionLimits.maxX + attemptedVector.x < project->getXDim() &&
-		selectionLimits.minY + attemptedVector.y >= 0 && selectionLimits.maxY + attemptedVector.y < project->getYDim() &&
-		selectionLimits.minZ + attemptedVector.z >= 0 && selectionLimits.maxZ + attemptedVector.z < project->getZDim();
+	return selectionLimits.minX + attemptedVector.x >= 0 && selectionLimits.maxX + attemptedVector.x < projectBounds->getXDim() &&
+		selectionLimits.minY + attemptedVector.y >= 0 && selectionLimits.maxY + attemptedVector.y < projectBounds->getYDim() &&
+		selectionLimits.minZ + attemptedVector.z >= 0 && selectionLimits.maxZ + attemptedVector.z < projectBounds->getZDim();
 }
 
 void ExtrudeState::onMovement() {

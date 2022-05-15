@@ -33,11 +33,14 @@ void ElementEditor::run() {
 	MeshBuilder2d meshBuilder2d;
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
-	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
 	LightManager* lightManager = new LightManager();
+	
+	Camera* camera = new Camera();
+	camera->setPosition(glm::vec3(5.0f, 5.0f, 5.0f));
+	camera->setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	// TODO replace with some sort of Loader class
 	BlockColor defaultColor{ 255, 255, 255 };
@@ -57,7 +60,7 @@ void ElementEditor::run() {
 	Point3di blueLightPos{ -3, -4, -6 };
 	lightManager->addLight(glm::vec3(0.1f, 0.3f, 1.0f), blueLightPos, 10.0f);
 
-	Project* project = new Project(10, 10, 10);
+	ProjectBounds* project = new ProjectBounds(10, 20, 10);
 
 	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, project);
 	window->setApplicationEventListener(&appController);

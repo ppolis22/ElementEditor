@@ -6,6 +6,7 @@
 #include "../engine/ModelRenderer.h"
 #include "../ChunkManager.h"
 #include "../AppController.h"
+#include "../ProjectBounds.h"
 
 BaseEditorState::BaseEditorState(AppController* context)
 	: context(context) ,
@@ -61,7 +62,23 @@ void BaseEditorState::renderLightIcons() {
 	}
 }
 
+void BaseEditorState::renderProjectBoundaryLines() {
+	ProjectBounds* bounds = context->getProjectBounds();
+	if (!bounds->isBounded()) {
+		return;
+	}
+
+	ModelRenderer* modelRenderer = context->getModelRenderer();
+	Camera* camera = context->getCamera();
+
+	std::vector<Mesh*> visibleBoundaryPlanes = bounds->getVisiblePlanes(camera->getViewVector());
+	for (Mesh* plane : visibleBoundaryPlanes) {
+		modelRenderer->renderLines(*plane, *camera, glm::vec3(1.0f, 1.0f, 1.0f));
+	}
+}
+
 void BaseEditorState::render() {
+	renderProjectBoundaryLines();
 	renderModelChunks();
 	renderLightIcons();
 }

@@ -10,6 +10,7 @@
 
 ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight)
 	: shadowMapShader("shaders/shadowMapVertex.shader", "shaders/shadowMapFragment.shader"),
+	lineShader("shaders/lineVertex.shader", "shaders/lineFragment.shader"),
 	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight)
 {
 	glGenFramebuffers(1, &shadowMapFBO);
@@ -195,4 +196,20 @@ void ModelRenderer::renderWithShadows(
 		renderMesh(mesh);
 	}
 	meshShader.unbind();
+}
+
+void ModelRenderer::renderLines(Mesh& mesh, Camera& camera, glm::vec3 color) {
+	lineShader.bind();
+	lineShader.setUniformVec3f("lineColor", color);
+	lineShader.setUniformMat4f("projectionMatrix", camera.getProjectionMatrix());
+	lineShader.setUniformMat4f("viewMatrix", camera.getViewMatrix());
+	lineShader.setUniformMat4f("modelMatrix", glm::mat4(1.0f));
+
+	glBindVertexArray(mesh.vertexArrayId);
+	glEnableVertexAttribArray(0);
+	glDrawArrays(GL_LINE_LOOP, 0, mesh.indexBufferCount);
+	glDisableVertexAttribArray(0);
+	glBindVertexArray(0);
+
+	lineShader.unbind();
 }

@@ -38,6 +38,12 @@ public:
 		float alpha
 	);
 
+	void renderLines(
+		Mesh& mesh,
+		Camera& camera,
+		glm::vec3 color
+	);
+
 private:
 	unsigned int SHADOWMAP_WIDTH = 1024;
 	unsigned int SHADOWMAP_HEIGHT = 1024;	// TODO move to class/project constants
@@ -45,5 +51,7 @@ private:
 	unsigned int renderRegionWidth, renderRegionHeight;
 	unsigned int shadowMapFBO;
 	unsigned int depthMapTextureId;
+
 	Shader shadowMapShader;
+	Shader lineShader;
 };

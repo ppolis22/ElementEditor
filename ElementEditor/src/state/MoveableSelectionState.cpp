@@ -69,6 +69,7 @@ void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {
 }
 
 void MoveableSelectionState::render() {
+	renderProjectBoundaryLines();
 	renderModelChunks();
 	renderLightIcons();
 
