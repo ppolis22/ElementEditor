@@ -30,14 +30,6 @@ Mesh MeshBuilderBase::commitMesh() {
 	return { vertexArrayId, vertexBufferId, indexBufferId, currentIndices.size() };
 }
 
-void MeshBuilderBase::deleteMesh(Mesh& mesh) {
-	// Probably should be done elsewhere?
-	// Should this set all the ids in the input mesh to 0?
-	glDeleteBuffers(1, &mesh.vertexBufferId);
-	glDeleteBuffers(1, &mesh.indexBufferId);
-	glDeleteVertexArrays(1, &mesh.vertexArrayId);
-}
-
 unsigned int MeshBuilderBase::buildVertexBuffer(unsigned int size, const void* data) {
 	unsigned int id;
 	glGenBuffers(1, &id);

@@ -12,10 +12,21 @@
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
 	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds)
-	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	lightManager(lightManager), uiRenderer(uiRenderer), window(window), projectBounds(projectBounds), activeColor(BlockColor{ 0, 0, 0 }) 
-{
-	this->state = new AddState(this);
+	: camera(camera), 
+	modelRenderer(modelRenderer), 
+	modelChunkManager(modelChunkManager), 
+	previewChunkManager(previewChunkManager),
+	lightManager(lightManager), 
+	uiRenderer(uiRenderer), 
+	window(window), 
+	projectBounds(projectBounds), 
+	activeColor(BlockColor{ 0, 0, 0 }) 
+{}
+
+void AppController::initialize() {
+	changeActiveTool(new AddState(this));
+	setActiveColor(BlockColor{ 255, 255, 255 });
+	modelChunkManager->rebuildChunkMeshes();
 }
 
 void AppController::setState(State stateToSet) {

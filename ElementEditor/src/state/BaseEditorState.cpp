@@ -10,7 +10,7 @@
 
 BaseEditorState::BaseEditorState(AppController* context)
 	: context(context) ,
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) 
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 50.0f) 
 {}
 
 void BaseEditorState::renderModelChunks() {

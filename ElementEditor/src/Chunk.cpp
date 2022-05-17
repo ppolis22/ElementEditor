@@ -18,7 +18,7 @@ Chunk::Chunk(int xPos, int yPos, int zPos, ChunkManager* manager) :
 Chunk::~Chunk() {}
 
 void Chunk::unloadMesh() {
-	meshBuilder.deleteMesh(mesh);
+	mesh.deleteMesh();
 }
 
 void Chunk::setBlockColor(BlockColor color, Point3di location) {
@@ -78,7 +78,7 @@ glm::mat4 Chunk::getTransformation() {
 }
 
 void Chunk::rebuildMesh() {
-	meshBuilder.deleteMesh(mesh);
+	mesh.deleteMesh();
 	meshBuilder.createNewMesh();
 
 	for (int x = 0; x < CHUNK_SIZE; x++) {

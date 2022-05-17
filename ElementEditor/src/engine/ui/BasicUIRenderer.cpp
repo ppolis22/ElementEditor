@@ -25,9 +25,8 @@ BasicUIRenderer::BasicUIRenderer(MeshBuilder2d& meshBuilder, MeshBuilderTextured
 }
 
 BasicUIRenderer::~BasicUIRenderer() {
-	MeshBuilder2d meshBuilder;		// TODO do this differently
-	meshBuilder.deleteMesh(coloredQuad);
-	meshBuilder.deleteMesh(texturedQuad);
+	coloredQuad.deleteMesh();
+	texturedQuad.deleteMesh();
 }
 
 void BasicUIRenderer::renderStaticColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {

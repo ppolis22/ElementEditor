@@ -9,6 +9,7 @@
 #include "engine/event/Event.h"
 #include "ToolbarUI.h"
 #include "LightManager.h"
+#include "ModelLoader.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -30,44 +31,27 @@ void ElementEditor::run() {
 	glEnable(GL_BLEND);
 	glEnable(GL_CULL_FACE);
 
+	ChunkManager* modelChunkManager = new ChunkManager();
+	LightManager* lightManager = new LightManager();
+	ProjectBounds* projectBounds = new ProjectBounds();
+	Camera* camera = new Camera();
+
+	ModelLoader loader(*modelChunkManager, *lightManager, *projectBounds, *camera);
+	loader.load();
+
 	MeshBuilder2d meshBuilder2d;
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
-	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
-	LightManager* lightManager = new LightManager();
-	
-	Camera* camera = new Camera();
-	camera->setPosition(glm::vec3(5.0f, 5.0f, 5.0f));
-	camera->setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	// TODO replace with some sort of Loader class
-	BlockColor defaultColor{ 255, 255, 255 };
-	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
-	modelChunkManager->rebuildChunkMeshes();
-
-	lightManager->setDirectionalLightColor({ 0.5f, 0.5f, 0.5f });
-	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
-	lightManager->setAmbientLightColor({0.5f, 0.5f, 0.5f});
-
-	Point3di yellowLightPos{ 2, 3, 5 };
-	lightManager->addLight(glm::vec3(1.0f, 0.8f, 0.3f), yellowLightPos, 10.0f);
-
-	Point3di blueLightPos{ -3, -4, -6 };
-	lightManager->addLight(glm::vec3(0.1f, 0.3f, 1.0f), blueLightPos, 10.0f);
-
-	ProjectBounds* project = new ProjectBounds(10, 20, 10);
-
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, project);
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, projectBounds);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);
 	window->setRootUIElement(&toolbarUI);
-	appController.setActiveColor(defaultColor);
+
+	appController.initialize();
 
 	while (window->isOpen()) {
 		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);

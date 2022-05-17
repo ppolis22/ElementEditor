@@ -30,8 +30,7 @@ TranslateHandles::TranslateHandles()
 }
 
 TranslateHandles::~TranslateHandles() {
-	MeshBuilder3d meshBuilder;
-	meshBuilder.deleteMesh(mesh);
+	mesh.deleteMesh();
 }
 
 Mesh& TranslateHandles::getMesh() {

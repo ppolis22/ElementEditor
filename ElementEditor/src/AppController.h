@@ -20,6 +20,8 @@ public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
 		LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds);
 
+	void initialize();
+
 	void setState(State stateToSet);
 	State getState();
 

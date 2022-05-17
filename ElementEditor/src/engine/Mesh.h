@@ -5,4 +5,6 @@ struct Mesh {
 	unsigned int vertexBufferId;
 	unsigned int indexBufferId;
 	unsigned int indexBufferCount;
+
+	void deleteMesh();
 };

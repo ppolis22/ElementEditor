@@ -17,9 +17,13 @@ public:
 	int getZDim();
 	bool isBounded();
 
+	void setProjectBounds(int xDim, int yDim, int zDim);
 	std::vector<Mesh*> getVisiblePlanes(glm::vec3 cameraDir);
 
 private:
+	void deletePlaneMeshes();
+	void rebuildPlaneMeshes(float xDim, float yDim, float zDim);
+
 	bool bounded = false;
 	float xDim = 0, yDim = 0, zDim = 0;
 	LineMeshBuilder meshBuilder;

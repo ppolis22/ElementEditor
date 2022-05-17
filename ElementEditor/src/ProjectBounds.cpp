@@ -14,27 +14,49 @@ ProjectBounds::ProjectBounds() {}
 ProjectBounds::ProjectBounds(int xDim, int yDim, int zDim)
 	: xDim(xDim), yDim(yDim), zDim(zDim), bounded(true)
 {
-	float xDimF = (float)xDim;
-	float yDimF = (float)yDim;
-	float zDimF = (float)zDim;
+	rebuildPlaneMeshes((float)xDim, (float)yDim, (float)zDim);
+}
 
+void ProjectBounds::setProjectBounds(int xDim, int yDim, int zDim) {
+	deletePlaneMeshes();
+	if (xDim <= 0 || yDim <= 0 || zDim <= 0) {
+		this->bounded = false;
+	} else {
+		this->bounded = true;
+		this->xDim = xDim;
+		this->yDim = yDim;
+		this->zDim = zDim;
+		rebuildPlaneMeshes((float)xDim, (float)yDim, (float)zDim);
+	}
+}
+
+void ProjectBounds::deletePlaneMeshes() {
+	xMinPlane.deleteMesh();
+	xMaxPlane.deleteMesh();
+	yMinPlane.deleteMesh();
+	yMaxPlane.deleteMesh();
+	zMinPlane.deleteMesh();
+	zMaxPlane.deleteMesh();
+}
+
+void ProjectBounds::rebuildPlaneMeshes(float xDim, float yDim, float zDim) {
 	xMinPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ 0.0f, yDimF, 0.0f }, Point3df{ 0.0f, yDimF, zDimF }, Point3df{ 0.0f, 0.0f, zDimF });
+		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ 0.0f, yDim, 0.0f }, Point3df{ 0.0f, yDim, zDim }, Point3df{ 0.0f, 0.0f, zDim });
 
 	xMaxPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ xDimF, 0.0f, 0.0f }, Point3df{ xDimF, yDimF, 0.0f }, Point3df{ xDimF, yDimF, zDimF }, Point3df{ xDimF, 0.0f, zDimF });
+		Point3df{ xDim, 0.0f, 0.0f }, Point3df{ xDim, yDim, 0.0f }, Point3df{ xDim, yDim, zDim }, Point3df{ xDim, 0.0f, zDim });
 
 	yMinPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ xDimF, 0.0f, 0.0f }, Point3df{ xDimF, 0.0f, zDimF }, Point3df{ 0.0f, 0.0f, zDimF });
+		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ xDim, 0.0f, 0.0f }, Point3df{ xDim, 0.0f, zDim }, Point3df{ 0.0f, 0.0f, zDim });
 
 	yMaxPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ 0.0f, yDimF, 0.0f }, Point3df{ xDimF, yDimF, 0.0f }, Point3df{ xDimF, yDimF, zDimF }, Point3df{ 0.0f, yDimF, zDimF });
+		Point3df{ 0.0f, yDim, 0.0f }, Point3df{ xDim, yDim, 0.0f }, Point3df{ xDim, yDim, zDim }, Point3df{ 0.0f, yDim, zDim });
 
 	zMinPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ xDimF, 0.0f, 0.0f }, Point3df{ xDimF, yDimF, 0.0f }, Point3df{ 0.0f, yDimF, 0.0f });
+		Point3df{ 0.0f, 0.0f, 0.0f }, Point3df{ xDim, 0.0f, 0.0f }, Point3df{ xDim, yDim, 0.0f }, Point3df{ 0.0f, yDim, 0.0f });
 
 	zMaxPlane = meshBuilder.buildPlaneLineMesh(
-		Point3df{ 0.0f, 0.0f, zDimF }, Point3df{ xDimF, 0.0f, zDimF }, Point3df{ xDimF, yDimF, zDimF }, Point3df{ 0.0f, yDimF, zDimF });
+		Point3df{ 0.0f, 0.0f, zDim }, Point3df{ xDim, 0.0f, zDim }, Point3df{ xDim, yDim, zDim }, Point3df{ 0.0f, yDim, zDim });
 }
 
 int ProjectBounds::getXDim() {
