@@ -11,7 +11,7 @@
 #include "state/RemoveLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
-	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds)
+	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds, ModelFileWriter* fileWriter)
 	: camera(camera), 
 	modelRenderer(modelRenderer), 
 	modelChunkManager(modelChunkManager), 
@@ -20,6 +20,7 @@ AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, Chunk
 	uiRenderer(uiRenderer), 
 	window(window), 
 	projectBounds(projectBounds), 
+	fileWriter(fileWriter),
 	activeColor(BlockColor{ 0, 0, 0 }) 
 {}
 
@@ -78,6 +79,10 @@ void AppController::setCanEditLights(bool canEdit) {
 
 bool AppController::getCanEditLights() {
 	return canEditLights;
+}
+
+void AppController::saveProject() {
+	fileWriter->write();
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {

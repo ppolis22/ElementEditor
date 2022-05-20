@@ -150,10 +150,19 @@
     <ClCompile Include="src\ProjectBounds.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelLoader.cpp">
+    <ClCompile Include="src\engine\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\Mesh.cpp">
+    <ClCompile Include="src\ModelFileLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelFileWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelFileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectEditUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1172,7 +1181,16 @@
     <ClInclude Include="src\ProjectBounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelLoader.h">
+    <ClInclude Include="src\ModelFileLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelFileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelFileHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectEditUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1598,6 +1616,7 @@
     <None Include="shaders\lineFragment.shader" />
     <None Include="shaders\lineVertex.shader" />
     <None Include="projects\sample-project.elem" />
+    <None Include="projects\project.elem" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">

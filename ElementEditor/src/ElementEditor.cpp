@@ -9,7 +9,7 @@
 #include "engine/event/Event.h"
 #include "ToolbarUI.h"
 #include "LightManager.h"
-#include "ModelLoader.h"
+#include "ModelFileLoader.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -36,7 +36,7 @@ void ElementEditor::run() {
 	ProjectBounds* projectBounds = new ProjectBounds();
 	Camera* camera = new Camera();
 
-	ModelLoader loader(*modelChunkManager, *lightManager, *projectBounds, *camera);
+	ModelFileLoader loader(*modelChunkManager, *lightManager, *projectBounds, *camera);
 	loader.load();
 
 	MeshBuilder2d meshBuilder2d;
@@ -44,8 +44,9 @@ void ElementEditor::run() {
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
 	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* previewChunkManager = new ChunkManager();
+	ModelFileWriter* fileWriter = new ModelFileWriter(*modelChunkManager, *lightManager, *projectBounds, *camera);
 
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, projectBounds);
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, projectBounds, fileWriter);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);
@@ -54,7 +55,7 @@ void ElementEditor::run() {
 	appController.initialize();
 
 	while (window->isOpen()) {
-		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
+		glClearColor(0.85f, 0.90f, 0.95f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		appController.render();

@@ -6,6 +6,7 @@
 #include "engine/event/ActionListener.h"
 #include "BlockEditUI.h"
 #include "LightEditUI.h"
+#include "ProjectEditUI.h"
 
 #include <map>
 
@@ -25,6 +26,7 @@ private:
 	TabbedUIElement* controlGroups;
 	BlockEditUI* blockEditControls;
 	LightEditUI* lightEditControls;
+	ProjectEditUI* projectEditControls;
 
 	UISlider* rSlider;
 	UISlider* gSlider;

@@ -1,24 +1,12 @@
-#include "ModelLoader.h"
+#include "ModelFileLoader.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-ModelLoader::ModelLoader(ChunkManager& chunkManager, LightManager& lightManager, ProjectBounds& projectBounds, Camera& camera)
+ModelFileLoader::ModelFileLoader(ChunkManager& chunkManager, LightManager& lightManager, ProjectBounds& projectBounds, Camera& camera)
 	: chunkManager(chunkManager), lightManager(lightManager), projectBounds(projectBounds), camera(camera)
-{
-	sections[Section::COLORS] = ("COLORS");
-	sections[Section::BLOCKS] = ("BLOCKS");
-	sections[Section::LIGHTS] = ("LIGHTS");
-	sections[Section::BOUNDS] = ("BOUNDS");
-	sections[Section::CAMERA] = ("CAMERA");
-
-	subSections[SubSection::LIGHT_AMBIENT_COLOR] = ("LIGHT_AMBIENT_COLOR");
-	subSections[SubSection::LIGHT_DIRECTIONAL_COLOR] = ("LIGHT_DIRECTIONAL_COLOR");
-	subSections[SubSection::LIGHT_DIRECTIONAL_POSITION] = ("LIGHT_DIRECTIONAL_POSITION");
-	subSections[SubSection::CAMERA_POSITION] = ("CAMERA_POSITION");
-	subSections[SubSection::CAMERA_TARGET] = ("CAMERA_TARGET");
-}
+{}
 
 static std::vector<std::string> parseLine(std::string& inputString) {
 	std::vector<std::string> tokens;
@@ -32,29 +20,20 @@ static std::vector<std::string> parseLine(std::string& inputString) {
 	return tokens;
 }
 
-void ModelLoader::load() {
-	std::ifstream inputFile("projects/sample-project.elem");
+void ModelFileLoader::load() {
+	std::ifstream inputFile(FILE_PATH);
 
 	if (inputFile.is_open()) { 
 		processFile(inputFile);
 	}
 	else {
-		std::ofstream("projects/sample-project.elem");
+		std::ofstream(FILE_PATH);
 	}
 }
 
-ModelLoader::Section ModelLoader::tryParseSection(std::string& str) {
-	for (auto& section : sections) {
-		if (str == section.second) {
-			return section.first;
-		}
-	}
-	return Section::NONE;
-}
-
-void ModelLoader::processFile(std::ifstream& inputFile) {
+void ModelFileLoader::processFile(std::ifstream& inputFile) {
 	std::string line;
-	currentSection = Section::NONE;
+	currentSection = FileSection::NONE;
 
 	while (inputFile) {
 		std::getline(inputFile, line);
@@ -63,33 +42,42 @@ void ModelLoader::processFile(std::ifstream& inputFile) {
 		if (contents.empty())
 			continue;
 
-		Section newSection = tryParseSection(contents[0]);
-		if (newSection != Section::NONE) {
+		FileSection newSection = tryParseSection(contents[0]);
+		if (newSection != FileSection::NONE) {
 			currentSection = newSection;
 			continue;
 		}
 		
 		switch (currentSection) {
-			case Section::COLORS:
+			case FileSection::COLORS:
 				parseColor(contents);
 				break;
-			case Section::BLOCKS:
+			case FileSection::BLOCKS:
 				parseBlock(contents);
 				break;
-			case Section::LIGHTS:
+			case FileSection::LIGHTS:
 				parseLight(contents);
 				break;
-			case Section::BOUNDS:
+			case FileSection::BOUNDS:
 				parseBounds(contents);
 				break;
-			case Section::CAMERA:
+			case FileSection::CAMERA:
 				parseCameraData(contents);
 				break;
 		}
 	}
 }
 
-void ModelLoader::parseColor(std::vector<std::string>& contents) {
+ModelFileHandler::FileSection ModelFileLoader::tryParseSection(std::string& str) {
+	for (auto& section : sectionTitles) {
+		if (str == section.second) {
+			return section.first;
+		}
+	}
+	return FileSection::NONE;
+}
+
+void ModelFileLoader::parseColor(std::vector<std::string>& contents) {
 	if (contents.size() != 4)
 		return;
 
@@ -97,7 +85,7 @@ void ModelLoader::parseColor(std::vector<std::string>& contents) {
 	colors[index] = BlockColor{ (unsigned char)stoi(contents[1]), (unsigned char)stoi(contents[2]), (unsigned char)stoi(contents[3]) };
 }
 
-void ModelLoader::parseBlock(std::vector<std::string>& contents) {
+void ModelFileLoader::parseBlock(std::vector<std::string>& contents) {
 	if (contents.size() != 4)
 		return;
 
@@ -107,14 +95,14 @@ void ModelLoader::parseBlock(std::vector<std::string>& contents) {
 	);
 }
 
-void ModelLoader::parseLight(std::vector<std::string>& contents) {
+void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
 	if (contents.size() == 4) {
 		// read in ambient/directional light data
-		if (contents[0] == subSections[SubSection::LIGHT_AMBIENT_COLOR]) {
+		if (contents[0] == subSectionTitles[FileSubSection::LIGHT_AMBIENT_COLOR]) {
 			lightManager.setAmbientLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		} else if (contents[0] == subSections[SubSection::LIGHT_DIRECTIONAL_COLOR]) {
+		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_COLOR]) {
 			lightManager.setDirectionalLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		} else if (contents[0] == subSections[SubSection::LIGHT_DIRECTIONAL_POSITION]) {
+		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION]) {
 			lightManager.setDirectionalLightPosition(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 		}
 	} else if (contents.size() == 5) {
@@ -129,20 +117,20 @@ void ModelLoader::parseLight(std::vector<std::string>& contents) {
 	}
 }
 
-void ModelLoader::parseBounds(std::vector<std::string>& contents) {
+void ModelFileLoader::parseBounds(std::vector<std::string>& contents) {
 	if (contents.size() != 3)
 		return;
 
 	projectBounds.setProjectBounds(std::stoi(contents[0]), std::stoi(contents[1]), std::stoi(contents[2]));
 }
 
-void ModelLoader::parseCameraData(std::vector<std::string>& contents) {
+void ModelFileLoader::parseCameraData(std::vector<std::string>& contents) {
 	if (contents.size() != 4)
 		return;
 
-	if (contents[0] == subSections[SubSection::CAMERA_POSITION]) {
+	if (contents[0] == subSectionTitles[FileSubSection::CAMERA_POSITION]) {
 		camera.setPosition(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-	} else if (contents[0] == subSections[SubSection::CAMERA_TARGET]) {
+	} else if (contents[0] == subSectionTitles[FileSubSection::CAMERA_TARGET]) {
 		camera.setTarget(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 	}
 }
