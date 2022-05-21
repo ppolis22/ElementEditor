@@ -48,7 +48,7 @@ ToolbarUI::~ToolbarUI() {
 
 void ToolbarUI::actionPerformed(const ActionEvent& e) {
 	if (e.source == rSlider || e.source == gSlider || e.source == bSlider) {
-		BlockColor newColor(rSlider->getValue(), gSlider->getValue(), bSlider->getValue());
+		BlockColor newColor((unsigned char)rSlider->getValue(), (unsigned char)gSlider->getValue(), (unsigned char)bSlider->getValue());
 		controller->setActiveColor(newColor);
 	}
 }

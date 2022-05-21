@@ -10,14 +10,14 @@
 class ProjectBounds {
 public:
 	ProjectBounds();
-	ProjectBounds(int xDim, int yDim, int zDim);
+	ProjectBounds(unsigned int xDim, unsigned int yDim, unsigned int zDim);
 
 	int getXDim();
 	int getYDim();
 	int getZDim();
 	bool isBounded();
 
-	void setProjectBounds(int xDim, int yDim, int zDim);
+	void setProjectBounds(unsigned int xDim, unsigned int yDim, unsigned int zDim);
 	std::vector<Mesh*> getVisiblePlanes(glm::vec3 cameraDir);
 
 private:
@@ -25,7 +25,7 @@ private:
 	void rebuildPlaneMeshes(float xDim, float yDim, float zDim);
 
 	bool bounded = false;
-	float xDim = 0, yDim = 0, zDim = 0;
+	unsigned int xDim = 0, yDim = 0, zDim = 0;
 	LineMeshBuilder meshBuilder;
 	Mesh xMinPlane, xMaxPlane, yMinPlane, yMaxPlane, zMinPlane, zMaxPlane;
 

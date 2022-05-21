@@ -49,6 +49,7 @@ Light* LightManager::getLight(const Point3di& position) {
 			return *it;
 		}
 	}
+	return nullptr;
 }
 
 std::vector<Light*> LightManager::getLights() {

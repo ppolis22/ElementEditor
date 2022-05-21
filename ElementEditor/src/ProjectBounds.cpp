@@ -11,15 +11,15 @@ glm::vec3 ProjectBounds::Z_MAX_PLANE_NORMAL = glm::vec3(0.0f, 0.0f, 1.0f);
 
 ProjectBounds::ProjectBounds() {}
 
-ProjectBounds::ProjectBounds(int xDim, int yDim, int zDim)
+ProjectBounds::ProjectBounds(unsigned int xDim, unsigned int yDim, unsigned int zDim)
 	: xDim(xDim), yDim(yDim), zDim(zDim), bounded(true)
 {
 	rebuildPlaneMeshes((float)xDim, (float)yDim, (float)zDim);
 }
 
-void ProjectBounds::setProjectBounds(int xDim, int yDim, int zDim) {
+void ProjectBounds::setProjectBounds(unsigned int xDim, unsigned int yDim, unsigned int zDim) {
 	deletePlaneMeshes();
-	if (xDim <= 0 || yDim <= 0 || zDim <= 0) {
+	if (xDim == 0 || yDim == 0 || zDim == 0) {
 		this->bounded = false;
 	} else {
 		this->bounded = true;
