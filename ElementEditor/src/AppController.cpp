@@ -74,6 +74,10 @@ bool AppController::canSetAddLightTool() {
 
 void AppController::setCanEditLights(bool canEdit) {
 	this->canEditLights = canEdit;
+	State currentState = getState();
+	if (currentState == State::EDIT_LIGHT || currentState == State::ADD_LIGHT || currentState == State::REMOVE_LIGHT) {
+		changeActiveTool(new SelectState(this));
+	}
 	window->updateUI();
 }
 

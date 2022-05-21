@@ -44,6 +44,7 @@ void CheckBox::processMouseMovement(MouseMoveEvent& event) {
 void CheckBox::processMouseDown(MouseButtonDownEvent& event) {
 	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && enabled && withinBounds(event.posX, event.posY)) {
 		isClicked = true;
+		event.isHandled = true;
 	}
 }
 

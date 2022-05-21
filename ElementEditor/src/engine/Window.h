@@ -33,8 +33,9 @@ private:
 	struct WindowData {
 		float lastCursorXPos;
 		float lastCursorYPos;
-		UIElement* rootUIElement;
-		EventListener* applicationListener;
+		UIElement* rootUIElement = nullptr;
+		EventListener* applicationListener = nullptr;
+		UIElement* preClickedUIElement = nullptr;
 	};
 
 	WindowData data;
@@ -44,4 +45,5 @@ private:
 	static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
+	static void handleMouseDownEvent(UIElement* element, MouseButtonDownEvent& event, WindowData& data);
 };

@@ -142,37 +142,34 @@ void Window::scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 		data.applicationListener->processScroll(event);
 }
 
-static void handleMouseDownEvent(UIElement* element, MouseButtonDownEvent& event) {
+void Window::handleMouseDownEvent(UIElement* element, MouseButtonDownEvent& event, WindowData& data) {
 	if (!element->isEnabled() || event.isHandled)
 		return;
 
 	for (UIElement* child : element->getChildren())
-		handleMouseDownEvent(child, event);
+		handleMouseDownEvent(child, event, data);
 
-	if (!event.isHandled)
+	if (!event.isHandled) {
 		element->processMouseDown(event);
-}
-
-static void handleMouseUpEvent(UIElement* element, MouseButtonUpEvent& event) {
-	if (!element->isEnabled() || event.isHandled)
-		return;
-
-	for (UIElement* child : element->getChildren())
-		handleMouseUpEvent(child, event);
-
-	if (!event.isHandled)
-		element->processMouseUp(event);
+		if (event.isHandled)
+			data.preClickedUIElement = element;
+	}
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 	if (action == GLFW_PRESS) {
 		MouseButtonDownEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
-		handleMouseDownEvent(data.rootUIElement, event);
-		data.applicationListener->processMouseDown(event);
+		handleMouseDownEvent(data.rootUIElement, event, data);
+		if (!event.isHandled)
+			data.applicationListener->processMouseDown(event);
 	} else {
 		MouseButtonUpEvent event(button, data.lastCursorXPos, data.lastCursorYPos);
-		handleMouseUpEvent(data.rootUIElement, event);
-		data.applicationListener->processMouseUp(event);
+		if (data.preClickedUIElement != nullptr) {
+			data.preClickedUIElement->processMouseUp(event);
+			data.preClickedUIElement = nullptr;
+		} else {
+			data.applicationListener->processMouseUp(event);
+		}
 	}
 }
