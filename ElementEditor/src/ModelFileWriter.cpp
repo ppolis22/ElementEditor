@@ -56,6 +56,10 @@ void ModelFileWriter::writeLights(std::ofstream& outputFile) {
 	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION] << " " <<
 		dirLightPos.r << " " << dirLightPos.g << " " << dirLightPos.b << std::endl;
 
+	glm::vec3 dirLightTarget = lightManager.getDirectionalLightTarget();
+	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_TARGET] << " " <<
+		dirLightTarget.r << " " << dirLightTarget.g << " " << dirLightTarget.b << std::endl;
+
 	for (Light* light : lightManager.getLights()) {
 		glm::vec3 lightColor = light->getColor();
 		Point3di position = light->getBlockPosition();

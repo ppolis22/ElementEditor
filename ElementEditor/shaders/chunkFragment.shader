@@ -9,7 +9,6 @@ in VS_OUT {
 	vec3 vertexNormal;
 	vec3 vertexColor;
 	vec4 worldPositionDirectionalLightSpace;
-	vec3 toDirectionalLightVector;
 	vec3 pointLightContrib[MAX_POINT_LIGHTS];
 	float occlusion;
 } fs_in;
@@ -17,6 +16,7 @@ in VS_OUT {
 uniform sampler2D shadowMap;
 uniform int numPointLights;
 uniform vec3 directionalLightColor;
+uniform vec3 toDirectionalLightVector;
 uniform vec3 ambientLightColor;
 uniform float alpha;
 
@@ -27,14 +27,14 @@ float calculateShadowPercent(vec4 worldPositionLightSpace)
 	projCoords = projCoords * 0.5 + 0.5;	// from NDC to range [0,1] to sample texture
 	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
-	float bias = max(0.01 * (1.0 - dot(fs_in.vertexNormal, fs_in.toDirectionalLightVector)), 0.001);	// to reduce shadow banding
+	float bias = max(0.01 * (1.0 - dot(fs_in.vertexNormal, toDirectionalLightVector)), 0.001);	// to reduce shadow banding
 	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 	return shadow;
 }
 
 void main() {
 	vec3 ambientLight = (1.0 - fs_in.occlusion) * ambientLightColor;
-	float directionalDiffusePercent = max(dot(fs_in.vertexNormal, fs_in.toDirectionalLightVector), 0.0);
+	float directionalDiffusePercent = max(dot(fs_in.vertexNormal, toDirectionalLightVector), 0.0);
 	vec3 directionalDiffuseLight = directionalDiffusePercent * directionalLightColor;
 
 	float shadow = calculateShadowPercent(fs_in.worldPositionDirectionalLightSpace);

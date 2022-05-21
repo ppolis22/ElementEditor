@@ -33,10 +33,14 @@ public:
 	// than everything wished to cast/receive shadows.
 	glm::vec3 getDirectionalLightPosition();
 	void setDirectionalLightPosition(glm::vec3 position);
+	glm::vec3 getDirectionalLightTarget();
+	void setDirectionalLightTarget(glm::vec3 target);
 	glm::vec3 getDirectionalLightColor();
 	void setDirectionalLightColor(glm::vec3 color);
 	bool directionalLightIsEnabled();
 	void setDirectionalLightIsEnabled(bool enabled);
+	glm::mat4 getDirectionalLightViewMatrix();
+	glm::vec3 getDirectionalLightVector();
 
 	// The ambient light for the entire scene, to be added to directional and point light
 	// contributions. Seems like a good rule of thumb may be to have ambient and
@@ -54,10 +58,15 @@ public:
 	const static int MAX_NUM_LIGHTS = 16;
 
 private:
+	void rebuildDirectionalLightProperties();
+
 	std::vector<Light*> lights;
 	glm::vec3 directionalLightPosition;
+	glm::vec3 directionalLightTarget;
 	glm::vec3 directionalLightColor;
 	bool directionalLightEnabled = true;
+	glm::mat4 directionalLightViewMatrix;
+	glm::vec3 directionalLightVector;
 	glm::vec3 ambientLightColor;
 	glm::vec3 renderPositionOffset;
 	Light* selectedLight;

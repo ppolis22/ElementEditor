@@ -26,8 +26,8 @@ void BaseEditorState::renderModelChunks() {
 		chunksToRender.push_back(chunk);
 	}
 
-	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
+	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(), lightManager->getDirectionalLightVector(), 
+		lightManager->getDirectionalLightViewMatrix(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
 }
 
 void BaseEditorState::renderPreviewChunks() {
@@ -43,7 +43,7 @@ void BaseEditorState::renderPreviewChunks() {
 	}
 	Shader& previewChunkShader = previewChunkManager->getChunkShader();
 	modelRenderer->renderNoShadows(previewChunksToRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
+		lightManager->getDirectionalLightVector(), lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
 }
 
 void BaseEditorState::renderLightIcons() {

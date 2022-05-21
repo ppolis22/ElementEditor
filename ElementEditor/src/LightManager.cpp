@@ -4,12 +4,14 @@
 
 LightManager::LightManager()
 	: directionalLightPosition(1.0f, 1.0f, 1.0f),
+	directionalLightTarget(0.0f, 0.0f, 0.0f),
 	directionalLightColor(0.5f, 0.5f, 0.5f),
 	ambientLightColor(0.5f, 0.5f, 0.5f),
 	renderPositionOffset(Chunk::HALF_BLOCK_WIDTH),
 	previewLightEnabled(false)
 {
 	previewLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), Point3di{ 0, 0, 0 }, renderPositionOffset, 1.0f);
+	rebuildDirectionalLightProperties();
 }
 
 LightManager::~LightManager() {
@@ -67,6 +69,16 @@ glm::vec3 LightManager::getDirectionalLightPosition() {
 
 void LightManager::setDirectionalLightPosition(glm::vec3 position) {
 	directionalLightPosition = position;
+	rebuildDirectionalLightProperties();
+}
+
+glm::vec3 LightManager::getDirectionalLightTarget() {
+	return directionalLightTarget;
+}
+
+void LightManager::setDirectionalLightTarget(glm::vec3 target) {
+	directionalLightTarget = target;
+	rebuildDirectionalLightProperties();
 }
 
 glm::vec3 LightManager::getDirectionalLightColor() {
@@ -83,6 +95,14 @@ bool LightManager::directionalLightIsEnabled() {
 
 void LightManager::setDirectionalLightIsEnabled(bool enabled) {
 	directionalLightEnabled = enabled;
+}
+
+glm::mat4 LightManager::getDirectionalLightViewMatrix() {
+	return directionalLightViewMatrix;
+}
+
+glm::vec3 LightManager::getDirectionalLightVector() {
+	return directionalLightVector;
 }
 
 glm::vec3 LightManager::getAmbientLightColor() {
@@ -114,4 +134,13 @@ void LightManager::updatePreviewLight(const glm::vec3& color, Point3di& position
 
 void LightManager::setPreviewLightEnabled(bool enabled) {
 	previewLightEnabled = enabled;
+}
+
+void LightManager::rebuildDirectionalLightProperties() {
+	directionalLightViewMatrix = glm::lookAt(
+		directionalLightPosition,
+		directionalLightTarget,
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	directionalLightVector = glm::normalize(directionalLightTarget - directionalLightPosition);
 }

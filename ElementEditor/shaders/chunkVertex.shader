@@ -12,7 +12,6 @@ out VS_OUT {
 	vec3 vertexNormal;
 	vec3 vertexColor;
 	vec4 worldPositionDirectionalLightSpace;
-	vec3 toDirectionalLightVector;
 	vec3 pointLightContrib[MAX_POINT_LIGHTS];
 	float occlusion;
 } vs_out;
@@ -30,7 +29,6 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 directionalLightSpaceMatrix;
-uniform vec3 directionalLightPosition;
 
 void main() {
 	vs_out.worldPosition = vec3(modelMatrix * vec4(position, 1.0));
@@ -39,7 +37,6 @@ void main() {
 	//vs_out.vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
 	vs_out.worldPositionDirectionalLightSpace = directionalLightSpaceMatrix * vec4(vs_out.worldPosition, 1.0);
 	vs_out.vertexColor = inputColor;
-	vs_out.toDirectionalLightVector = normalize(directionalLightPosition - vs_out.worldPosition);
 	vs_out.occlusion = occlusion;
 
 	for (int i = 0; i < MAX_POINT_LIGHTS; i++) {

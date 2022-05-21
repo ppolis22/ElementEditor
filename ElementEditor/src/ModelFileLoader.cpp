@@ -104,6 +104,8 @@ void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
 			lightManager.setDirectionalLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION]) {
 			lightManager.setDirectionalLightPosition(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
+		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_TARGET]) {
+			lightManager.setDirectionalLightTarget(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 		}
 	} else if (contents.size() == 7) {
 		// read in point light data
