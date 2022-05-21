@@ -19,6 +19,9 @@ private:
 	void writeToFile(std::ofstream& outputFile);
 	void writeColors(std::ofstream& outputFile);
 	void writeBlocks(std::ofstream& outputFile);
+	void writeLights(std::ofstream& outputFile);
+	void writeBounds(std::ofstream& outputFile);
+	void writeCameraData(std::ofstream& outputFile);
 
 	ChunkManager& chunkManager;
 	LightManager& lightManager;

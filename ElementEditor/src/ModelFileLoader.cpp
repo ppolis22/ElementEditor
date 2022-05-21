@@ -90,7 +90,7 @@ void ModelFileLoader::parseBlock(std::vector<std::string>& contents) {
 		return;
 
 	int colorIndex = std::stoi(contents[0]);
-	BlockColor color = colors.count(colorIndex) ? colors[colorIndex] : BlockColor();
+	BlockColor color = colors.count(colorIndex) ? colors[colorIndex] : BlockColor::EMPTY();
 	chunkManager.setBlockColor(color, Point3di{ std::stoi(contents[1]), std::stoi(contents[2]), std::stoi(contents[3]) }
 	);
 }
@@ -105,15 +105,11 @@ void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
 		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION]) {
 			lightManager.setDirectionalLightPosition(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 		}
-	} else if (contents.size() == 5) {
+	} else if (contents.size() == 7) {
 		// read in point light data
-		int colorIndex = std::stoi(contents[0]);
-		BlockColor color = colors.count(colorIndex) ? colors[colorIndex] : BlockColor();
-		Point3di position{ std::stoi(contents[1]), std::stoi(contents[2]), std::stoi(contents[3]) };
-		lightManager.addLight(
-			glm::vec3(color.getNormalizedR(), color.getNormalizedG(), color.getNormalizedB()),
-			position,
-			std::stof(contents[4]));
+		glm::vec3 color(std::stof(contents[0]), std::stof(contents[1]), std::stof(contents[2]));
+		Point3di position{ std::stoi(contents[3]), std::stoi(contents[4]), std::stoi(contents[5]) };
+		lightManager.addLight(color, position, std::stof(contents[6]));
 	}
 }
 

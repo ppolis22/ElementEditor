@@ -15,6 +15,7 @@ public:
 	glm::mat4 getViewMatrix();
 	glm::vec3 getPosition();
 	glm::vec3 getViewVector();
+	glm::vec3 getTarget();
 
 	void setPosition(glm::vec3 position);
 	void setTarget(glm::vec3 target);

@@ -39,6 +39,10 @@ glm::vec3 Camera::getViewVector() {
 	return glm::normalize(target - position);
 }
 
+glm::vec3 Camera::getTarget() {
+	return target;
+}
+
 void Camera::updateVectors(glm::vec3 position, glm::vec3 target) {
 	distance = glm::length(position - target);
 	front = glm::normalize(position - target);

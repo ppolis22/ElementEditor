@@ -69,6 +69,10 @@ BlockColor Chunk::getBlockColor(Point3di location) {
 	return data[location.x][location.y][location.z];
 }
 
+Point3di Chunk::getPosition() {
+	return Point3di{ xPosition, yPosition, zPosition };
+}
+
 Mesh& Chunk::getMesh() {
 	return mesh;
 }

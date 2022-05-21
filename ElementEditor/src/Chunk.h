@@ -15,6 +15,10 @@ class ChunkManager;
 
 class Chunk : public Renderable {
 public:
+	static const int CHUNK_SIZE = 4;
+	static const float BLOCK_RENDER_SIZE;
+	static const float HALF_BLOCK_WIDTH;
+
 	struct Iterator {
 		using iterator_category = std::forward_iterator_tag;
 		using difference_type = std::ptrdiff_t;
@@ -45,10 +49,6 @@ public:
 		std::vector<std::vector<std::vector<BlockColor>>>* data;
 	};
 
-	static const int CHUNK_SIZE = 4;
-	static const float BLOCK_RENDER_SIZE;
-	static const float HALF_BLOCK_WIDTH;
-
 	Chunk() = delete;
 	Chunk(int xPos, int yPos, int zPos, ChunkManager* manager);
 	~Chunk();
@@ -66,6 +66,8 @@ public:
 	void deselectAll();
 	std::vector<Point3di> getSelection();
 	BlockColor getBlockColor(Point3di location);
+	Point3di getPosition();
+
 	Mesh& getMesh() override;
 	glm::mat4 getTransformation() override;
 
