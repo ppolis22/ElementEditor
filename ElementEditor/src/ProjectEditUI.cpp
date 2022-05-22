@@ -5,7 +5,7 @@
 ProjectEditUI::ProjectEditUI(AppController* controller, float x, float y)
 	: UIElement(x, y, 120.0f, 300.0f), controller(controller)
 {
-	saveButton = new Button(0.0f, 0.0f, 45.0f, 45.0f, "textures/add-button-white.png");
+	saveButton = new Button(0.0f, 0.0f, 45.0f, 45.0f, "textures/save-button-white.png");
 	saveButton->addListener(this);
 	addChild(saveButton);
 }

@@ -31,5 +31,7 @@ private:
 
 	UISlider* strengthSlider;
 
+	UITexturedElement* strengthIcon;
+
 	std::map<Button*, State> buttonMap;
 };

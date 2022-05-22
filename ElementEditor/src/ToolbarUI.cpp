@@ -12,7 +12,7 @@ ToolbarUI::ToolbarUI(AppController* controller)
 	controlGroups = new TabbedUIElement(10.0f, 0.0f, 120.0f, 500.0f);
 	controlGroups->addTab(blockEditControls, "textures/move-button-white.png");
 	controlGroups->addTab(lightEditControls, "textures/light-icon-white.png");
-	controlGroups->addTab(projectEditControls, "textures/light-icon-white.png");
+	controlGroups->addTab(projectEditControls, "textures/project-edit-button-white.png");
 	controlGroups->setActiveTab(0);
 	addChild(controlGroups);
 

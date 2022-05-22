@@ -96,7 +96,7 @@ void ModelRenderer::renderNoShadows(
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
-	glm::vec3 toDirectionalLightVector = glm::normalize(glm::vec3(-directionalLightVector.x, -directionalLightVector.y, -directionalLightVector.z));
+	glm::vec3 toDirectionalLightVector = glm::normalize(-directionalLightVector);
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
@@ -166,7 +166,7 @@ void ModelRenderer::renderWithShadows(
 
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
-	glm::vec3 toDirectionalLightVector = glm::normalize(glm::vec3(-directionalLightVector.x, -directionalLightVector.y, -directionalLightVector.z));
+	glm::vec3 toDirectionalLightVector = glm::normalize(-directionalLightVector);
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);

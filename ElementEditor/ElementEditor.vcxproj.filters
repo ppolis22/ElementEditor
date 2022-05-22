@@ -1673,5 +1673,14 @@
     <Image Include="textures\visible-icon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\save-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\project-edit-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\strength-icon-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
