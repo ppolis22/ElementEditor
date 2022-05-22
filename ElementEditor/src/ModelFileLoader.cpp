@@ -96,17 +96,18 @@ void ModelFileLoader::parseBlock(std::vector<std::string>& contents) {
 }
 
 void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
-	if (contents.size() == 4) {
-		// read in ambient/directional light data
-		if (contents[0] == subSectionTitles[FileSubSection::LIGHT_AMBIENT_COLOR]) {
-			lightManager.setAmbientLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_COLOR]) {
-			lightManager.setDirectionalLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION]) {
-			lightManager.setDirectionalLightPosition(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_TARGET]) {
-			lightManager.setDirectionalLightTarget(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-		}
+	if (contents.empty())
+		return;
+
+	// read in ambient/directional light data
+	if (contents[0] == subSectionTitles[FileSubSection::LIGHT_AMBIENT_COLOR]) {
+		lightManager.setAmbientLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
+	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_COLOR]) {
+		lightManager.setDirectionalLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
+	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_X]) {
+		lightManager.setDirectionalLightAngleX(std::stof(contents[1]));
+	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_Y]) {
+		lightManager.setDirectionalLightAngleY(std::stof(contents[1]));
 	} else if (contents.size() == 7) {
 		// read in point light data
 		glm::vec3 color(std::stof(contents[0]), std::stof(contents[1]), std::stof(contents[2]));

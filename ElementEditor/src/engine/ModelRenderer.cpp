@@ -17,8 +17,7 @@ ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int render
 
 	glGenTextures(1, &depthMapTextureId);
 	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -126,8 +125,8 @@ void ModelRenderer::renderWithShadows(
 	std::vector<Renderable*> renderables, 
 	std::vector<Light*> pointLights,
 	glm::vec3 directionalLightColor, 
-	glm::vec3 directionalLightVector,
-	glm::mat4 directionalLightViewMatrix,
+	//glm::vec3 directionalLightVector,
+	//glm::mat4 directionalLightViewMatrix,
 	glm::vec3 ambientLightColor, 
 	Shader& meshShader, 
 	Camera& camera, 
@@ -143,8 +142,7 @@ void ModelRenderer::renderWithShadows(
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	float near_plane = 1.0f, far_plane = 25.0f;
-	glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	//glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 25.0f);	// left, right, down, up, near, far
 
 	shadowMapShader.bind();
 	glm::mat4 directionalLightSpaceMatrix = lightProjectionMatrix * directionalLightViewMatrix;

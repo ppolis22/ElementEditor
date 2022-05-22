@@ -31,10 +31,10 @@ public:
 	// the light vector to illuminate all blocks, as well as the location of the 
 	// shadow map rendering point. Thus, the position should be further from the origin
 	// than everything wished to cast/receive shadows.
-	glm::vec3 getDirectionalLightPosition();
-	void setDirectionalLightPosition(glm::vec3 position);
-	glm::vec3 getDirectionalLightTarget();
-	void setDirectionalLightTarget(glm::vec3 target);
+	float getDirectionalLightAngleX();
+	void setDirectionalLightAngleX(float angle);
+	float getDirectionalLightAngleY();
+	void setDirectionalLightAngleY(float angle);
 	glm::vec3 getDirectionalLightColor();
 	void setDirectionalLightColor(glm::vec3 color);
 	bool directionalLightIsEnabled();
@@ -61,8 +61,8 @@ private:
 	void rebuildDirectionalLightProperties();
 
 	std::vector<Light*> lights;
-	glm::vec3 directionalLightPosition;
-	glm::vec3 directionalLightTarget;
+	float directionalLightAngleX;
+	float directionalLightAngleY;
 	glm::vec3 directionalLightColor;
 	bool directionalLightEnabled = true;
 	glm::mat4 directionalLightViewMatrix;

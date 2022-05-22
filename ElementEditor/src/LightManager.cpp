@@ -3,8 +3,8 @@
 #include "../Chunk.h"
 
 LightManager::LightManager()
-	: directionalLightPosition(1.0f, 1.0f, 1.0f),
-	directionalLightTarget(0.0f, 0.0f, 0.0f),
+	: directionalLightAngleX(0.0f),
+	directionalLightAngleY(0.0f),
 	directionalLightColor(0.5f, 0.5f, 0.5f),
 	ambientLightColor(0.5f, 0.5f, 0.5f),
 	renderPositionOffset(Chunk::HALF_BLOCK_WIDTH),
@@ -63,21 +63,21 @@ std::vector<Light*> LightManager::getLights() {
 	return lights;
 }
 
-glm::vec3 LightManager::getDirectionalLightPosition() {
-	return directionalLightPosition;
+float LightManager::getDirectionalLightAngleX() {
+	return directionalLightAngleX;
 }
 
-void LightManager::setDirectionalLightPosition(glm::vec3 position) {
-	directionalLightPosition = position;
+void LightManager::setDirectionalLightAngleX(float angle) {
+	directionalLightAngleX = angle;
 	rebuildDirectionalLightProperties();
 }
 
-glm::vec3 LightManager::getDirectionalLightTarget() {
-	return directionalLightTarget;
+float LightManager::getDirectionalLightAngleY() {
+	return directionalLightAngleY;
 }
 
-void LightManager::setDirectionalLightTarget(glm::vec3 target) {
-	directionalLightTarget = target;
+void LightManager::setDirectionalLightAngleY(float angle) {
+	directionalLightAngleY = angle;
 	rebuildDirectionalLightProperties();
 }
 
@@ -137,10 +137,11 @@ void LightManager::setPreviewLightEnabled(bool enabled) {
 }
 
 void LightManager::rebuildDirectionalLightProperties() {
-	directionalLightViewMatrix = glm::lookAt(
+	// TODO
+	/*directionalLightViewMatrix = glm::lookAt(
 		directionalLightPosition,
 		directionalLightTarget,
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
-	directionalLightVector = glm::normalize(directionalLightTarget - directionalLightPosition);
+	directionalLightVector = glm::normalize(directionalLightTarget - directionalLightPosition);*/
 }

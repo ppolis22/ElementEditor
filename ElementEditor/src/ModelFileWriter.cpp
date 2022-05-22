@@ -52,13 +52,11 @@ void ModelFileWriter::writeLights(std::ofstream& outputFile) {
 	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_COLOR] << " " <<
 		dirLightColor.r << " " << dirLightColor.g << " " << dirLightColor.b << std::endl;
 
-	glm::vec3 dirLightPos = lightManager.getDirectionalLightPosition();
-	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_POSITION] << " " <<
-		dirLightPos.r << " " << dirLightPos.g << " " << dirLightPos.b << std::endl;
+	float dirLightAngleX = lightManager.getDirectionalLightAngleX();
+	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_X] << " " << dirLightAngleX << std::endl;
 
-	glm::vec3 dirLightTarget = lightManager.getDirectionalLightTarget();
-	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_TARGET] << " " <<
-		dirLightTarget.r << " " << dirLightTarget.g << " " << dirLightTarget.b << std::endl;
+	float dirLightAngleY = lightManager.getDirectionalLightAngleY();
+	outputFile << subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_Y] << " " << dirLightAngleY << std::endl;
 
 	for (Light* light : lightManager.getLights()) {
 		glm::vec3 lightColor = light->getColor();
