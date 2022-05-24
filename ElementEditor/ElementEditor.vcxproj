@@ -132,7 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockEditUI.cpp" />
+    <ClCompile Include="src\engine\DirectionalLight.cpp" />
     <ClCompile Include="src\engine\Light.cpp" />
+    <ClCompile Include="src\engine\LineMeshBuilder.cpp" />
+    <ClCompile Include="src\engine\Mesh.cpp" />
     <ClCompile Include="src\engine\MeshBuilderTextured2d.cpp" />
     <ClCompile Include="src\engine\Texture.cpp" />
     <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
@@ -142,6 +145,11 @@
     <ClCompile Include="src\engine\ui\UITexturedElement.cpp" />
     <ClCompile Include="src\LightEditUI.cpp" />
     <ClCompile Include="src\LightManager.cpp" />
+    <ClCompile Include="src\ModelFileHandler.cpp" />
+    <ClCompile Include="src\ModelFileLoader.cpp" />
+    <ClCompile Include="src\ModelFileWriter.cpp" />
+    <ClCompile Include="src\ProjectBounds.cpp" />
+    <ClCompile Include="src\ProjectEditUI.cpp" />
     <ClCompile Include="src\state\AddLightState.cpp" />
     <ClCompile Include="src\state\AddState.cpp" />
     <ClCompile Include="src\AppController.cpp" />
@@ -177,9 +185,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BlockEditUI.h" />
+    <ClInclude Include="src\engine\DirectionalLight.h" />
     <ClInclude Include="src\engine\event\ActionEvent.h" />
     <ClInclude Include="src\engine\event\ActionListener.h" />
     <ClInclude Include="src\engine\Light.h" />
+    <ClInclude Include="src\engine\LineMeshBuilder.h" />
     <ClInclude Include="src\engine\MeshBuilderTextured2d.h" />
     <ClInclude Include="src\engine\Texture.h" />
     <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
@@ -190,6 +200,11 @@
     <ClInclude Include="src\engine\ui\UITexturedElement.h" />
     <ClInclude Include="src\LightEditUI.h" />
     <ClInclude Include="src\LightManager.h" />
+    <ClInclude Include="src\ModelFileHandler.h" />
+    <ClInclude Include="src\ModelFileLoader.h" />
+    <ClInclude Include="src\ModelFileWriter.h" />
+    <ClInclude Include="src\ProjectBounds.h" />
+    <ClInclude Include="src\ProjectEditUI.h" />
     <ClInclude Include="src\state\AddLightState.h" />
     <ClInclude Include="src\state\AddState.h" />
     <ClInclude Include="src\AppController.h" />
@@ -514,10 +529,14 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="projects\project.elem" />
+    <None Include="projects\sample-project.elem" />
     <None Include="shaders\chunkFragment.shader" />
     <None Include="shaders\chunkVertex.shader" />
     <None Include="shaders\handleFragment.shader" />
     <None Include="shaders\handleVertex.shader" />
+    <None Include="shaders\lineFragment.shader" />
+    <None Include="shaders\lineVertex.shader" />
     <None Include="shaders\shadowMapFragment.shader" />
     <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\uiFragment.shader" />
@@ -674,9 +693,12 @@
     <Image Include="textures\move-button-white.png" />
     <Image Include="textures\picker-button-black.png" />
     <Image Include="textures\picker-button-white.png" />
+    <Image Include="textures\project-edit-button-white.png" />
     <Image Include="textures\remove-light-button-white.png" />
+    <Image Include="textures\save-button-white.png" />
     <Image Include="textures\select-button-black.png" />
     <Image Include="textures\select-button-white.png" />
+    <Image Include="textures\strength-icon-white.png" />
     <Image Include="textures\subtract-button-black.png" />
     <Image Include="textures\subtract-button-white.png" />
     <Image Include="textures\visible-icon.png" />

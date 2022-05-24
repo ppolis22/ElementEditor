@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Light.h"
+#include "DirectionalLight.h"
 
 class ModelRenderer {
 public:
@@ -12,8 +13,7 @@ public:
 	void renderWithShadows(
 		std::vector<Renderable*> renderables,
 		std::vector<Light*> pointLights,
-		glm::vec3 directionalLightColor,
-		glm::vec3 directionalLightPosition,
+		DirectionalLight* directionalLight,
 		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 
@@ -23,8 +23,7 @@ public:
 	void renderNoShadows(
 		std::vector<Renderable*> renderables, 
 		std::vector<Light*> pointLights,
-		glm::vec3 directionalLightColor, 
-		glm::vec3 directionalLightPosition,
+		DirectionalLight* directionalLight,
 		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 
@@ -38,6 +37,12 @@ public:
 		float alpha
 	);
 
+	void renderLines(
+		Mesh& mesh,
+		Camera& camera,
+		glm::vec3 color
+	);
+
 private:
 	unsigned int SHADOWMAP_WIDTH = 1024;
 	unsigned int SHADOWMAP_HEIGHT = 1024;	// TODO move to class/project constants
@@ -45,5 +50,7 @@ private:
 	unsigned int renderRegionWidth, renderRegionHeight;
 	unsigned int shadowMapFBO;
 	unsigned int depthMapTextureId;
+
 	Shader shadowMapShader;
+	Shader lineShader;
 };

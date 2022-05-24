@@ -20,10 +20,13 @@ LightEditUI::LightEditUI(AppController* controller, float x, float y)
 	addChild(removeLightButton);
 	buttonMap[removeLightButton] = State::REMOVE_LIGHT;
 
-	strengthSlider = new UISlider(0.0f, 220.0f, 100.0f, 25.0f, 0.0f, 255.0f);
+	strengthSlider = new UISlider(0.0f, 220.0f, 65.0f, 25.0f, 0.0f, 255.0f);
 	strengthSlider->addListener(this);
 	//strengthSlider->setMarkerColor(glm::vec3(0.95f, 0.29f, 0.49f));
 	addChild(strengthSlider);
+
+	strengthIcon = new UITexturedElement(80.0f, 220.0f, 30.0f, 30.0f, "textures/strength-icon-white.png", glm::vec3(0.0f, 0.0f, 0.0f));
+	addChild(strengthIcon);
 
 	enableEditCheckBox = new CheckBox(0.0f, 110.0f, "textures/visible-icon.png", glm::vec3(0.25, 0.75, 0.75));
 	enableEditCheckBox->setValue(controller->getCanEditLights());

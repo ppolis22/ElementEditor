@@ -14,6 +14,13 @@ ExtrudeState::ExtrudeState(AppController* context, std::unordered_map<Point3di, 
 	for (const auto& entry : selection) {
 		coveredModelCopy.emplace(entry.first, BlockColor::EMPTY());
 		extrusion.emplace(entry.first, entry.second);
+
+		selectionLimits.minX = (entry.first.x < selectionLimits.minX) ? entry.first.x : selectionLimits.minX;
+		selectionLimits.minY = (entry.first.y < selectionLimits.minY) ? entry.first.y : selectionLimits.minY;
+		selectionLimits.minZ = (entry.first.z < selectionLimits.minZ) ? entry.first.z : selectionLimits.minZ;
+		selectionLimits.maxX = (entry.first.x > selectionLimits.maxX) ? entry.first.x : selectionLimits.maxX;
+		selectionLimits.maxY = (entry.first.y > selectionLimits.maxY) ? entry.first.y : selectionLimits.maxY;
+		selectionLimits.maxZ = (entry.first.z > selectionLimits.maxZ) ? entry.first.z : selectionLimits.maxZ;
 	}
 }
 
@@ -23,6 +30,16 @@ State ExtrudeState::getType() {
 
 glm::vec3 ExtrudeState::getHandlePositionForSelection() {
 	return averageSelectionPoint + glm::vec3(moveVector.x, moveVector.y, moveVector.z) + Chunk::HALF_BLOCK_WIDTH;
+}
+
+bool ExtrudeState::movementIsValid(Point3di attemptedVector) {
+	ProjectBounds* projectBounds = context->getProjectBounds();
+	if (!projectBounds->isBounded())
+		return true;
+
+	return selectionLimits.minX + attemptedVector.x >= 0 && selectionLimits.maxX + attemptedVector.x < projectBounds->getXDim() &&
+		selectionLimits.minY + attemptedVector.y >= 0 && selectionLimits.maxY + attemptedVector.y < projectBounds->getYDim() &&
+		selectionLimits.minZ + attemptedVector.z >= 0 && selectionLimits.maxZ + attemptedVector.z < projectBounds->getZDim();
 }
 
 void ExtrudeState::onMovement() {

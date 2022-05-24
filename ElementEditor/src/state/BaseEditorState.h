@@ -39,6 +39,7 @@ public:
 	void renderModelChunks();
 	void renderPreviewChunks();
 	void renderLightIcons();
+	void renderProjectBoundaryLines();
 
 protected:
 	AppController* context;

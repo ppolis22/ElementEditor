@@ -11,10 +11,23 @@
 #include "state/RemoveLightState.h"
 
 AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
-	LightManager* lightManager, UIRenderer* uiRenderer, Window* window)
-	: camera(camera), modelRenderer(modelRenderer), modelChunkManager(modelChunkManager), previewChunkManager(previewChunkManager),
-	lightManager(lightManager), uiRenderer(uiRenderer), window(window), activeColor(BlockColor{ 0, 0, 0 }) {
-	this->state = new AddState(this);
+	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds, ModelFileWriter* fileWriter)
+	: camera(camera), 
+	modelRenderer(modelRenderer), 
+	modelChunkManager(modelChunkManager), 
+	previewChunkManager(previewChunkManager),
+	lightManager(lightManager), 
+	uiRenderer(uiRenderer), 
+	window(window), 
+	projectBounds(projectBounds), 
+	fileWriter(fileWriter),
+	activeColor(BlockColor{ 0, 0, 0 }) 
+{}
+
+void AppController::initialize() {
+	changeActiveTool(new AddState(this));
+	setActiveColor(BlockColor{ 255, 255, 255 });
+	modelChunkManager->rebuildChunkMeshes();
 }
 
 void AppController::setState(State stateToSet) {
@@ -61,11 +74,19 @@ bool AppController::canSetAddLightTool() {
 
 void AppController::setCanEditLights(bool canEdit) {
 	this->canEditLights = canEdit;
+	State currentState = getState();
+	if (currentState == State::EDIT_LIGHT || currentState == State::ADD_LIGHT || currentState == State::REMOVE_LIGHT) {
+		changeActiveTool(new SelectState(this));
+	}
 	window->updateUI();
 }
 
 bool AppController::getCanEditLights() {
 	return canEditLights;
+}
+
+void AppController::saveProject() {
+	fileWriter->write();
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {
@@ -133,6 +154,10 @@ UIRenderer* AppController::getUIRenderer() {
 
 Window* AppController::getWindow() {
 	return window;
+}
+
+ProjectBounds* AppController::getProjectBounds() {
+	return projectBounds;
 }
 
 void AppController::changeActiveTool(BaseEditorState* newState) {

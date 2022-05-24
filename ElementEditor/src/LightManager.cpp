@@ -3,9 +3,7 @@
 #include "../Chunk.h"
 
 LightManager::LightManager()
-	: directionalLightPosition(1.0f, 1.0f, 1.0f),
-	directionalLightColor(0.5f, 0.5f, 0.5f),
-	ambientLightColor(0.5f, 0.5f, 0.5f),
+	: ambientLightColor(0.5f, 0.5f, 0.5f),
 	renderPositionOffset(Chunk::HALF_BLOCK_WIDTH),
 	previewLightEnabled(false)
 {
@@ -13,13 +11,11 @@ LightManager::LightManager()
 }
 
 LightManager::~LightManager() {
-	for (Light* light : lights) {
-		if (light != nullptr)
-			delete light;
-	}
+	for (Light* light : lights)
+		delete light;
 
-	if (previewLight != nullptr)
-		delete previewLight;
+	delete previewLight;
+	delete directionalLight;
 }
 
 void LightManager::addLight(const glm::vec3& color, Point3di& position, float strength) {
@@ -49,6 +45,7 @@ Light* LightManager::getLight(const Point3di& position) {
 			return *it;
 		}
 	}
+	return nullptr;
 }
 
 std::vector<Light*> LightManager::getLights() {
@@ -60,28 +57,13 @@ std::vector<Light*> LightManager::getLights() {
 	return lights;
 }
 
-glm::vec3 LightManager::getDirectionalLightPosition() {
-	return directionalLightPosition;
+void LightManager::setDirectionalLight(int xBound, int yBound, int zBound, float yAngle, float xAngle, glm::vec3 color) {
+	delete directionalLight;
+	directionalLight = new DirectionalLight(xBound, yBound, zBound, yAngle, xAngle, color);
 }
 
-void LightManager::setDirectionalLightPosition(glm::vec3 position) {
-	directionalLightPosition = position;
-}
-
-glm::vec3 LightManager::getDirectionalLightColor() {
-	return directionalLightColor;
-}
-
-void LightManager::setDirectionalLightColor(glm::vec3 color) {
-	directionalLightColor = color;
-}
-
-bool LightManager::directionalLightIsEnabled() {
-	return directionalLightEnabled;
-}
-
-void LightManager::setDirectionalLightIsEnabled(bool enabled) {
-	directionalLightEnabled = enabled;
+DirectionalLight* LightManager::getDirectionalLight() {
+	return directionalLight;
 }
 
 glm::vec3 LightManager::getAmbientLightColor() {

@@ -7,10 +7,12 @@ ToolbarUI::ToolbarUI(AppController* controller)
 {
 	blockEditControls = new BlockEditUI(controller, 0.0f, 20.0f);
 	lightEditControls = new LightEditUI(controller, 0.0f, 20.0f);
+	projectEditControls = new ProjectEditUI(controller, 0.0f, 20.0f);
 
 	controlGroups = new TabbedUIElement(10.0f, 0.0f, 120.0f, 500.0f);
 	controlGroups->addTab(blockEditControls, "textures/move-button-white.png");
 	controlGroups->addTab(lightEditControls, "textures/light-icon-white.png");
+	controlGroups->addTab(projectEditControls, "textures/project-edit-button-white.png");
 	controlGroups->setActiveTab(0);
 	addChild(controlGroups);
 
@@ -38,11 +40,15 @@ ToolbarUI::~ToolbarUI() {
 	delete rSlider;
 	delete gSlider;
 	delete bSlider;
+
+	delete blockEditControls;
+	delete lightEditControls;
+	delete projectEditControls;
 }
 
 void ToolbarUI::actionPerformed(const ActionEvent& e) {
 	if (e.source == rSlider || e.source == gSlider || e.source == bSlider) {
-		BlockColor newColor{ rSlider->getValue(), gSlider->getValue(), bSlider->getValue() };
+		BlockColor newColor((unsigned char)rSlider->getValue(), (unsigned char)gSlider->getValue(), (unsigned char)bSlider->getValue());
 		controller->setActiveColor(newColor);
 	}
 }

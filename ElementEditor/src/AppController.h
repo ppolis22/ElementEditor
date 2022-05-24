@@ -11,13 +11,17 @@
 #include "engine/Window.h"
 #include "engine/Point3d.h"
 #include "LightManager.h"
+#include "ProjectBounds.h"
+#include "ModelFileWriter.h"
 
 #include <vector>
 
 class AppController : public EventListener {
 public:
 	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
-		LightManager* lightManager, UIRenderer* uiRenderer, Window* window);
+		LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds, ModelFileWriter* fileWriter);
+
+	void initialize();
 
 	void setState(State stateToSet);
 	State getState();
@@ -27,6 +31,8 @@ public:
 	bool canSetAddLightTool();
 	void setCanEditLights(bool canEdit);
 	bool getCanEditLights();
+
+	void saveProject();
 
 	void processMouseMovement(MouseMoveEvent& event) override;
 	void processScroll(MouseScrollEvent& event) override;
@@ -46,6 +52,7 @@ public:
 	UIRenderer* getUIRenderer();
 	LightManager* getLightManager();
 	Window* getWindow();
+	ProjectBounds* getProjectBounds();
 
 private:
 	BaseEditorState* state;
@@ -55,7 +62,10 @@ private:
 	ChunkManager* previewChunkManager;
 	LightManager* lightManager;
 	Window* window;
+	ProjectBounds* projectBounds;
 	UIRenderer* uiRenderer;
+	ModelFileWriter* fileWriter;
+
 	BlockColor activeColor;
 	bool canEditLights = true;
 

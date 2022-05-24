@@ -25,9 +25,8 @@ BasicUIRenderer::BasicUIRenderer(MeshBuilder2d& meshBuilder, MeshBuilderTextured
 }
 
 BasicUIRenderer::~BasicUIRenderer() {
-	MeshBuilder2d meshBuilder;		// TODO do this differently
-	meshBuilder.deleteMesh(coloredQuad);
-	meshBuilder.deleteMesh(texturedQuad);
+	coloredQuad.deleteMesh();
+	texturedQuad.deleteMesh();
 }
 
 void BasicUIRenderer::renderStaticColoredQuad(float x, float y, float width, float height, glm::vec3 color, float alpha) {
@@ -104,7 +103,7 @@ glm::mat4 BasicUIRenderer::buildTransformationMatrix(float x, float y, float wid
 }
 
 int BasicUIRenderer::getTextureSlot(const std::string& texturePath) {
-	for (int slot = 0; slot < textures.size(); slot++) {
+	for (unsigned int slot = 0; slot < textures.size(); slot++) {
 		if (textures[slot]->getPath() == texturePath) {
 			textures[slot]->bind(slot);		// TODO investigate why this call is necessary
 			return slot;

@@ -144,6 +144,30 @@
     <ClCompile Include="src\engine\ui\CheckBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\LineMeshBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectBounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelFileLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelFileWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelFileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectEditUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Block.h">
@@ -1154,6 +1178,27 @@
     <ClInclude Include="src\engine\ui\CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\LineMeshBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectBounds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelFileLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelFileWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelFileHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectEditUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1574,6 +1619,10 @@
     <None Include="shaders\uiTexturedFragment.shader" />
     <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\shadowMapFragment.shader" />
+    <None Include="shaders\lineFragment.shader" />
+    <None Include="shaders\lineVertex.shader" />
+    <None Include="projects\sample-project.elem" />
+    <None Include="projects\project.elem" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">
@@ -1628,6 +1677,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="textures\visible-icon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\save-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\project-edit-button-white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\strength-icon-white.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

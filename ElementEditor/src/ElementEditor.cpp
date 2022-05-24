@@ -9,6 +9,8 @@
 #include "engine/event/Event.h"
 #include "ToolbarUI.h"
 #include "LightManager.h"
+#include "ModelFileLoader.h"
+#include "engine/DirectionalLight.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -30,42 +32,31 @@ void ElementEditor::run() {
 	glEnable(GL_BLEND);
 	glEnable(GL_CULL_FACE);
 
+	ChunkManager* modelChunkManager = new ChunkManager();
+	LightManager* lightManager = new LightManager();
+	ProjectBounds* projectBounds = new ProjectBounds();
+	Camera* camera = new Camera();
+
+	ModelFileLoader loader(*modelChunkManager, *lightManager, *projectBounds, *camera);
+	loader.load();
+
 	MeshBuilder2d meshBuilder2d;
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
-	Camera* camera = new Camera();
 	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
-	ChunkManager* modelChunkManager = new ChunkManager();
 	ChunkManager* previewChunkManager = new ChunkManager();
-	LightManager* lightManager = new LightManager();
+	ModelFileWriter* fileWriter = new ModelFileWriter(*modelChunkManager, *lightManager, *projectBounds, *camera);
 
-	// TODO replace with some sort of Loader class
-	BlockColor defaultColor{ 255, 255, 255 };
-	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 1, 0, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 0, 1, 0 });
-	modelChunkManager->setBlockColor(defaultColor, { 0, 0, 1 });
-	modelChunkManager->rebuildChunkMeshes();
-
-	lightManager->setDirectionalLightColor({ 0.5f, 0.5f, 0.5f });
-	lightManager->setDirectionalLightPosition({ -10.0f, 3.5f, 3.5f });
-	lightManager->setAmbientLightColor({0.5f, 0.5f, 0.5f});
-
-	Point3di yellowLightPos{ 2, 3, 5 };
-	lightManager->addLight(glm::vec3(1.0f, 0.8f, 0.3f), yellowLightPos, 10.0f);
-
-	Point3di blueLightPos{ -3, -4, -6 };
-	lightManager->addLight(glm::vec3(0.1f, 0.3f, 1.0f), blueLightPos, 10.0f);
-
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window);
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, projectBounds, fileWriter);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);
 	window->setRootUIElement(&toolbarUI);
-	appController.setActiveColor(defaultColor);
+
+	appController.initialize();
 
 	while (window->isOpen()) {
-		glClearColor(0.1f, 0.4f, 0.5f, 1.0f);
+		glClearColor(0.85f, 0.90f, 0.95f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		appController.render();

@@ -2,6 +2,7 @@
 
 #include "engine/Point3d.h"
 #include "engine/Light.h"
+#include "engine/DirectionalLight.h"
 
 #include <vector>
 
@@ -31,12 +32,8 @@ public:
 	// the light vector to illuminate all blocks, as well as the location of the 
 	// shadow map rendering point. Thus, the position should be further from the origin
 	// than everything wished to cast/receive shadows.
-	glm::vec3 getDirectionalLightPosition();
-	void setDirectionalLightPosition(glm::vec3 position);
-	glm::vec3 getDirectionalLightColor();
-	void setDirectionalLightColor(glm::vec3 color);
-	bool directionalLightIsEnabled();
-	void setDirectionalLightIsEnabled(bool enabled);
+	void setDirectionalLight(int xBound, int yBound, int zBound, float yAngle, float xAngle, glm::vec3 color);
+	DirectionalLight* getDirectionalLight();
 
 	// The ambient light for the entire scene, to be added to directional and point light
 	// contributions. Seems like a good rule of thumb may be to have ambient and
@@ -55,13 +52,11 @@ public:
 
 private:
 	std::vector<Light*> lights;
-	glm::vec3 directionalLightPosition;
-	glm::vec3 directionalLightColor;
-	bool directionalLightEnabled = true;
+
 	glm::vec3 ambientLightColor;
 	glm::vec3 renderPositionOffset;
 	Light* selectedLight;
-
+	DirectionalLight* directionalLight;
 	Light* previewLight;
 	bool previewLightEnabled;
 };

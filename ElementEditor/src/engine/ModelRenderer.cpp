@@ -10,14 +10,14 @@
 
 ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight)
 	: shadowMapShader("shaders/shadowMapVertex.shader", "shaders/shadowMapFragment.shader"),
+	lineShader("shaders/lineVertex.shader", "shaders/lineFragment.shader"),
 	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight)
 {
 	glGenFramebuffers(1, &shadowMapFBO);
 
 	glGenTextures(1, &depthMapTextureId);
 	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -82,8 +82,7 @@ void ModelRenderer::renderNoLighting(
 void ModelRenderer::renderNoShadows(
 	std::vector<Renderable*> renderables, 
 	std::vector<Light*> pointLights, 
-	glm::vec3 directionalLightColor, 
-	glm::vec3 directionalLightPosition,
+	DirectionalLight* directionalLight,
 	glm::vec3 ambientLightColor,
 	Shader& meshShader, 
 	Camera& camera, 
@@ -95,12 +94,13 @@ void ModelRenderer::renderNoShadows(
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
+	glm::vec3 toDirectionalLightVector = -(directionalLight->getDirectionVector());
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
 	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
-	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
-	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
+	meshShader.setUniformVec3f("toDirectionalLightVector", toDirectionalLightVector);
+	meshShader.setUniformVec3f("directionalLightColor", directionalLight->getColor());
 	meshShader.setUniformVec3f("ambientLightColor", ambientLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
 
@@ -123,8 +123,7 @@ void ModelRenderer::renderNoShadows(
 void ModelRenderer::renderWithShadows(
 	std::vector<Renderable*> renderables, 
 	std::vector<Light*> pointLights,
-	glm::vec3 directionalLightColor, 
-	glm::vec3 directionalLightPosition, 
+	DirectionalLight* directionalLight,
 	glm::vec3 ambientLightColor, 
 	Shader& meshShader, 
 	Camera& camera, 
@@ -134,21 +133,19 @@ void ModelRenderer::renderWithShadows(
 		return;
 
 	glEnable(GL_DEPTH_TEST);
-	glm::mat4 lightViewMatrix = glm::lookAt(
-		directionalLightPosition,
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	// TODO skip if no DirectionalLight, move to own method/class that's only called on mesh rebuild
 
 	// render shadow map
 	glViewport(0, 0, SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	float near_plane = 1.0f, far_plane = 25.0f;
-	glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	glm::mat4 directionalLightProjectionMatrix = directionalLight->getProjectionMatrix();
+	glm::mat4 directionalLightViewMatrix = directionalLight->getViewMatrix();
 
 	shadowMapShader.bind();
-	glm::mat4 directionalLightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+	glm::mat4 directionalLightSpaceMatrix = directionalLightProjectionMatrix * directionalLightViewMatrix;
 	shadowMapShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
 
 	for (Renderable* renderable : renderables) {
@@ -167,13 +164,14 @@ void ModelRenderer::renderWithShadows(
 
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
+	glm::vec3 toDirectionalLightVector = -(directionalLight->getDirectionVector());
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
 	meshShader.setUniformMat4f("viewMatrix", viewMatrix);
 	meshShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
-	meshShader.setUniformVec3f("directionalLightPosition", directionalLightPosition);
-	meshShader.setUniformVec3f("directionalLightColor", directionalLightColor);
+	meshShader.setUniformVec3f("toDirectionalLightVector", toDirectionalLightVector);
+	meshShader.setUniformVec3f("directionalLightColor", directionalLight->getColor());
 	meshShader.setUniformVec3f("ambientLightColor", ambientLightColor);
 	meshShader.setUniformFloat("alpha", alpha);
 
@@ -195,4 +193,20 @@ void ModelRenderer::renderWithShadows(
 		renderMesh(mesh);
 	}
 	meshShader.unbind();
+}
+
+void ModelRenderer::renderLines(Mesh& mesh, Camera& camera, glm::vec3 color) {
+	lineShader.bind();
+	lineShader.setUniformVec3f("lineColor", color);
+	lineShader.setUniformMat4f("projectionMatrix", camera.getProjectionMatrix());
+	lineShader.setUniformMat4f("viewMatrix", camera.getViewMatrix());
+	lineShader.setUniformMat4f("modelMatrix", glm::mat4(1.0f));
+
+	glBindVertexArray(mesh.vertexArrayId);
+	glEnableVertexAttribArray(0);
+	glDrawArrays(GL_LINE_LOOP, 0, mesh.indexBufferCount);
+	glDisableVertexAttribArray(0);
+	glBindVertexArray(0);
+
+	lineShader.unbind();
 }

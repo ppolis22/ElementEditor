@@ -4,7 +4,7 @@
 
 const float CheckBox::CHECKBOX_SIZE = 20.0f;
 const float CheckBox::CHECKBOX_FRAME_WIDTH = 3.0f;
-const float CheckBox::CHECKBOX_FRAME_OFFSET = 12.0f;
+const float CheckBox::CHECKBOX_FRAME_OFFSET = 5.0f;
 
 CheckBox::CheckBox(float x, float y, const std::string& texturePath, glm::vec3 fillColor)
 	: UIElement(x, y, CHECKBOX_SIZE, CHECKBOX_SIZE), 
@@ -13,7 +13,7 @@ CheckBox::CheckBox(float x, float y, const std::string& texturePath, glm::vec3 f
 	frame = new UITexturedElement(0.0f, CHECKBOX_FRAME_OFFSET, CHECKBOX_SIZE, CHECKBOX_SIZE, "textures/checkbox-frame.png");
 	addChild(frame);
 
-	icon = new UITexturedElement(CHECKBOX_SIZE + 10.0f, 0.0f, 45.0f, 45.0f, texturePath, glm::vec3(0.0f, 0.0f, 0.0f));
+	icon = new UITexturedElement(CHECKBOX_SIZE + 10.0f, 0.0f, 30.0f, 30.0f, texturePath, glm::vec3(0.0f, 0.0f, 0.0f));
 	addChild(icon);
 
 	float fillSize = CHECKBOX_SIZE - (2 * CHECKBOX_FRAME_WIDTH);
@@ -44,6 +44,7 @@ void CheckBox::processMouseMovement(MouseMoveEvent& event) {
 void CheckBox::processMouseDown(MouseButtonDownEvent& event) {
 	if (event.buttonCode == GLFW_MOUSE_BUTTON_LEFT && enabled && withinBounds(event.posX, event.posY)) {
 		isClicked = true;
+		event.isHandled = true;
 	}
 }
 

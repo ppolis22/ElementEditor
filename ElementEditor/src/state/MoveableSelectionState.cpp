@@ -53,7 +53,11 @@ void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {
 		float deltaZ = std::floor(pointOnAxis.z + Chunk::HALF_BLOCK_WIDTH - movementReferencePoint.z);
 
 		if (std::max({ std::abs(deltaX), std::abs(deltaY), std::abs(deltaZ) }) > 0.0f) {
-			moveVector += Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
+			Point3di attemptedVector = moveVector + Point3di{ (int)deltaX, (int)deltaY, (int)deltaZ };
+			if (!movementIsValid(attemptedVector))
+				return;
+
+			moveVector = attemptedVector;
 			movementReferencePoint += glm::vec3(deltaX, deltaY, deltaZ);
 			onMovement();
 		}
@@ -65,6 +69,7 @@ void MoveableSelectionState::processMouseMovement(MouseMoveEvent& event) {
 }
 
 void MoveableSelectionState::render() {
+	renderProjectBoundaryLines();
 	renderModelChunks();
 	renderLightIcons();
 

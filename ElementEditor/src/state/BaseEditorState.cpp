@@ -6,10 +6,11 @@
 #include "../engine/ModelRenderer.h"
 #include "../ChunkManager.h"
 #include "../AppController.h"
+#include "../ProjectBounds.h"
 
 BaseEditorState::BaseEditorState(AppController* context)
 	: context(context) ,
-	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 25.0f) 
+	rayTracer(context->getWindow()->getWidth(), context->getWindow()->getHeight(), context->getCamera()->getProjectionMatrix(), 50.0f) 
 {}
 
 void BaseEditorState::renderModelChunks() {
@@ -25,8 +26,8 @@ void BaseEditorState::renderModelChunks() {
 		chunksToRender.push_back(chunk);
 	}
 
-	modelRenderer->renderWithShadows(chunksToRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
+	modelRenderer->renderWithShadows(
+		chunksToRender, lights, lightManager->getDirectionalLight(), lightManager->getAmbientLightColor(), chunkShader, *camera, 1.0f);
 }
 
 void BaseEditorState::renderPreviewChunks() {
@@ -41,8 +42,8 @@ void BaseEditorState::renderPreviewChunks() {
 		previewChunksToRender.push_back(chunk);
 	}
 	Shader& previewChunkShader = previewChunkManager->getChunkShader();
-	modelRenderer->renderNoShadows(previewChunksToRender, lights, lightManager->getDirectionalLightColor(),
-		lightManager->getDirectionalLightPosition(), lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
+	modelRenderer->renderNoShadows(previewChunksToRender, lights, lightManager->getDirectionalLight(), 
+		lightManager->getAmbientLightColor(), previewChunkShader, *camera, 0.5f);
 }
 
 void BaseEditorState::renderLightIcons() {
@@ -61,7 +62,23 @@ void BaseEditorState::renderLightIcons() {
 	}
 }
 
+void BaseEditorState::renderProjectBoundaryLines() {
+	ProjectBounds* bounds = context->getProjectBounds();
+	if (!bounds->isBounded()) {
+		return;
+	}
+
+	ModelRenderer* modelRenderer = context->getModelRenderer();
+	Camera* camera = context->getCamera();
+
+	std::vector<Mesh*> visibleBoundaryPlanes = bounds->getVisiblePlanes(camera->getViewVector());
+	for (Mesh* plane : visibleBoundaryPlanes) {
+		modelRenderer->renderLines(*plane, *camera, glm::vec3(1.0f, 1.0f, 1.0f));
+	}
+}
+
 void BaseEditorState::render() {
+	renderProjectBoundaryLines();
 	renderModelChunks();
 	renderLightIcons();
 }

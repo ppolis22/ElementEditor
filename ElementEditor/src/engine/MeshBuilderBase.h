@@ -12,7 +12,6 @@ public:
 
 	void createNewMesh();
 	Mesh commitMesh();
-	void deleteMesh(Mesh& mesh);
 
 protected:
 	std::vector<float> currentVertexData;
