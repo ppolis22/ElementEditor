@@ -102,12 +102,11 @@ void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
 	// read in ambient/directional light data
 	if (contents[0] == subSectionTitles[FileSubSection::LIGHT_AMBIENT_COLOR]) {
 		lightManager.setAmbientLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_COLOR]) {
-		lightManager.setDirectionalLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
-	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_X]) {
-		lightManager.setDirectionalLightAngleX(std::stof(contents[1]));
-	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL_ANGLE_Y]) {
-		lightManager.setDirectionalLightAngleY(std::stof(contents[1]));
+	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL]) {
+		lightManager.setDirectionalLight(
+			std::stoi(contents[1]), std::stoi(contents[2]), std::stoi(contents[3]),		// bounds
+			std::stof(contents[4]), std::stof(contents[5]),								// angle
+			glm::vec3(std::stof(contents[6]), std::stof(contents[7]), std::stof(contents[8])));	// color
 	} else if (contents.size() == 7) {
 		// read in point light data
 		glm::vec3 color(std::stof(contents[0]), std::stof(contents[1]), std::stof(contents[2]));

@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Light.h"
+#include "DirectionalLight.h"
 
 class ModelRenderer {
 public:
@@ -12,9 +13,7 @@ public:
 	void renderWithShadows(
 		std::vector<Renderable*> renderables,
 		std::vector<Light*> pointLights,
-		glm::vec3 directionalLightColor,
-		glm::vec3 directionalLightVector,
-		glm::mat4 directionalLightViewMatrix,
+		DirectionalLight* directionalLight,
 		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 
@@ -24,8 +23,7 @@ public:
 	void renderNoShadows(
 		std::vector<Renderable*> renderables, 
 		std::vector<Light*> pointLights,
-		glm::vec3 directionalLightColor, 
-		glm::vec3 directionalLightVector,
+		DirectionalLight* directionalLight,
 		glm::vec3 ambientLightColor,
 		Shader& meshShader, 
 		Camera& camera, 

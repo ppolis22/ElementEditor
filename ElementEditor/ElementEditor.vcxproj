@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockEditUI.cpp" />
+    <ClCompile Include="src\engine\DirectionalLight.cpp" />
     <ClCompile Include="src\engine\Light.cpp" />
     <ClCompile Include="src\engine\LineMeshBuilder.cpp" />
     <ClCompile Include="src\engine\Mesh.cpp" />
@@ -184,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BlockEditUI.h" />
+    <ClInclude Include="src\engine\DirectionalLight.h" />
     <ClInclude Include="src\engine\event\ActionEvent.h" />
     <ClInclude Include="src\engine\event\ActionListener.h" />
     <ClInclude Include="src\engine\Light.h" />

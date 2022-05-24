@@ -10,6 +10,7 @@
 #include "ToolbarUI.h"
 #include "LightManager.h"
 #include "ModelFileLoader.h"
+#include "engine/DirectionalLight.h"
 
 #include "../vendor/glm/glm.hpp"
 

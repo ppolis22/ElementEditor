@@ -3,25 +3,19 @@
 #include "../Chunk.h"
 
 LightManager::LightManager()
-	: directionalLightAngleX(0.0f),
-	directionalLightAngleY(0.0f),
-	directionalLightColor(0.5f, 0.5f, 0.5f),
-	ambientLightColor(0.5f, 0.5f, 0.5f),
+	: ambientLightColor(0.5f, 0.5f, 0.5f),
 	renderPositionOffset(Chunk::HALF_BLOCK_WIDTH),
 	previewLightEnabled(false)
 {
 	previewLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), Point3di{ 0, 0, 0 }, renderPositionOffset, 1.0f);
-	rebuildDirectionalLightProperties();
 }
 
 LightManager::~LightManager() {
-	for (Light* light : lights) {
-		if (light != nullptr)
-			delete light;
-	}
+	for (Light* light : lights)
+		delete light;
 
-	if (previewLight != nullptr)
-		delete previewLight;
+	delete previewLight;
+	delete directionalLight;
 }
 
 void LightManager::addLight(const glm::vec3& color, Point3di& position, float strength) {
@@ -63,46 +57,13 @@ std::vector<Light*> LightManager::getLights() {
 	return lights;
 }
 
-float LightManager::getDirectionalLightAngleX() {
-	return directionalLightAngleX;
+void LightManager::setDirectionalLight(int xBound, int yBound, int zBound, float yAngle, float xAngle, glm::vec3 color) {
+	delete directionalLight;
+	directionalLight = new DirectionalLight(xBound, yBound, zBound, yAngle, xAngle, color);
 }
 
-void LightManager::setDirectionalLightAngleX(float angle) {
-	directionalLightAngleX = angle;
-	rebuildDirectionalLightProperties();
-}
-
-float LightManager::getDirectionalLightAngleY() {
-	return directionalLightAngleY;
-}
-
-void LightManager::setDirectionalLightAngleY(float angle) {
-	directionalLightAngleY = angle;
-	rebuildDirectionalLightProperties();
-}
-
-glm::vec3 LightManager::getDirectionalLightColor() {
-	return directionalLightColor;
-}
-
-void LightManager::setDirectionalLightColor(glm::vec3 color) {
-	directionalLightColor = color;
-}
-
-bool LightManager::directionalLightIsEnabled() {
-	return directionalLightEnabled;
-}
-
-void LightManager::setDirectionalLightIsEnabled(bool enabled) {
-	directionalLightEnabled = enabled;
-}
-
-glm::mat4 LightManager::getDirectionalLightViewMatrix() {
-	return directionalLightViewMatrix;
-}
-
-glm::vec3 LightManager::getDirectionalLightVector() {
-	return directionalLightVector;
+DirectionalLight* LightManager::getDirectionalLight() {
+	return directionalLight;
 }
 
 glm::vec3 LightManager::getAmbientLightColor() {
@@ -134,14 +95,4 @@ void LightManager::updatePreviewLight(const glm::vec3& color, Point3di& position
 
 void LightManager::setPreviewLightEnabled(bool enabled) {
 	previewLightEnabled = enabled;
-}
-
-void LightManager::rebuildDirectionalLightProperties() {
-	// TODO
-	/*directionalLightViewMatrix = glm::lookAt(
-		directionalLightPosition,
-		directionalLightTarget,
-		glm::vec3(0.0f, 1.0f, 0.0f));
-
-	directionalLightVector = glm::normalize(directionalLightTarget - directionalLightPosition);*/
 }
