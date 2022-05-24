@@ -25,6 +25,7 @@ void AddState::processMouseUp(MouseButtonUpEvent& event) {
 	if (readyToAdd) {
 		modelChunkManager->setBlockColor(context->getActiveColor(), toAddCoords);
 		modelChunkManager->rebuildChunkMeshes();
+		context->rebuildShadowMap();
 	}
 }
 

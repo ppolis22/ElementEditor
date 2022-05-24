@@ -66,6 +66,7 @@ void ExtrudeState::setExtrusion() {
 		chunkManager->setSelected(true, extrusionPoint);
 	}
 	chunkManager->rebuildChunkMeshes();
+	context->rebuildShadowMap();
 }
 
 // utilizing Bresenham's algorithm in 3D to draw the extrusion

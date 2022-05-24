@@ -137,6 +137,7 @@
     <ClCompile Include="src\engine\LineMeshBuilder.cpp" />
     <ClCompile Include="src\engine\Mesh.cpp" />
     <ClCompile Include="src\engine\MeshBuilderTextured2d.cpp" />
+    <ClCompile Include="src\engine\ShadowMapBuilder.cpp" />
     <ClCompile Include="src\engine\Texture.cpp" />
     <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
     <ClCompile Include="src\engine\ui\CheckBox.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="src\engine\Light.h" />
     <ClInclude Include="src\engine\LineMeshBuilder.h" />
     <ClInclude Include="src\engine\MeshBuilderTextured2d.h" />
+    <ClInclude Include="src\engine\ShadowMapBuilder.h" />
     <ClInclude Include="src\engine\Texture.h" />
     <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
     <ClInclude Include="src\engine\ui\CheckBox.h" />

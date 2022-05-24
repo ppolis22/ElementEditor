@@ -65,6 +65,7 @@ void MoveState::moveSelection() {
 		chunkManager->setSelected(true, offsetPoint);
 	}
 	chunkManager->rebuildChunkMeshes();
+	context->rebuildShadowMap();
 }
 
 glm::vec3 MoveState::averagePoints(const std::unordered_map<Point3di, BlockColor, Point3di::HashFunction>& points) {

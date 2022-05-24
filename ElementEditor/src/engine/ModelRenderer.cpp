@@ -8,27 +8,10 @@
 
 #include <sstream>
 
-ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight)
-	: shadowMapShader("shaders/shadowMapVertex.shader", "shaders/shadowMapFragment.shader"),
-	lineShader("shaders/lineVertex.shader", "shaders/lineFragment.shader"),
-	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight)
-{
-	glGenFramebuffers(1, &shadowMapFBO);
-
-	glGenTextures(1, &depthMapTextureId);
-	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMapTextureId, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
+ModelRenderer::ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight, unsigned int shadowMapTextureId)
+	: lineShader("shaders/lineVertex.shader", "shaders/lineFragment.shader"),
+	renderRegionWidth(renderRegionWidth), renderRegionHeight(renderRegionHeight),
+	shadowMapTextureId(shadowMapTextureId) {}
 
 static void renderMesh(Mesh& mesh) {
 	glBindVertexArray(mesh.vertexArrayId);
@@ -132,39 +115,16 @@ void ModelRenderer::renderWithShadows(
 	if (renderables.empty())
 		return;
 
-	glEnable(GL_DEPTH_TEST);
-
-	// TODO skip if no DirectionalLight, move to own method/class that's only called on mesh rebuild
-
-	// render shadow map
-	glViewport(0, 0, SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT);
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	glm::mat4 directionalLightProjectionMatrix = directionalLight->getProjectionMatrix();
-	glm::mat4 directionalLightViewMatrix = directionalLight->getViewMatrix();
-
-	shadowMapShader.bind();
-	glm::mat4 directionalLightSpaceMatrix = directionalLightProjectionMatrix * directionalLightViewMatrix;
-	shadowMapShader.setUniformMat4f("directionalLightSpaceMatrix", directionalLightSpaceMatrix);
-
-	for (Renderable* renderable : renderables) {
-		Mesh& mesh = renderable->getMesh();
-		glm::mat4 modelMatrix = renderable->getTransformation();
-		shadowMapShader.setUniformMat4f("modelMatrix", modelMatrix);
-
-		renderMesh(mesh);
-	}
-
-	shadowMapShader.unbind();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// render geometry
+	// reset viewport after potential shadowmap render
 	glViewport(0, 0, renderRegionWidth, renderRegionHeight);
 
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
 	glm::vec3 toDirectionalLightVector = -(directionalLight->getDirectionVector());
+
+	glm::mat4 directionalLightProjectionMatrix = directionalLight->getProjectionMatrix();
+	glm::mat4 directionalLightViewMatrix = directionalLight->getViewMatrix();
+	glm::mat4 directionalLightSpaceMatrix = directionalLightProjectionMatrix * directionalLightViewMatrix;
 
 	meshShader.bind();
 	meshShader.setUniformMat4f("projectionMatrix", projectionMatrix);
@@ -183,9 +143,10 @@ void ModelRenderer::renderWithShadows(
 	}
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, depthMapTextureId);
+	glBindTexture(GL_TEXTURE_2D, shadowMapTextureId);
 	meshShader.setUniform1i("shadowMap", 0);
 
+	glEnable(GL_DEPTH_TEST);
 	for (Renderable* renderable : renderables) {
 		Mesh& mesh = renderable->getMesh();
 		glm::mat4 modelMatrix = renderable->getTransformation();

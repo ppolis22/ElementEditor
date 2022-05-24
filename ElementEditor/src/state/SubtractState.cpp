@@ -28,6 +28,7 @@ void SubtractState::processMouseUp(MouseButtonUpEvent& event) {
 			modelChunkManager->setSelected(false, blockLocation);
 			modelChunkManager->setBlockColor(BlockColor::EMPTY(), blockLocation);
 			modelChunkManager->rebuildChunkMeshes();
+			context->rebuildShadowMap();
 			break;
 		}
 	}

@@ -8,7 +8,7 @@
 
 class ModelRenderer {
 public:
-	ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight);
+	ModelRenderer(unsigned int renderRegionWidth, unsigned int renderRegionHeight, unsigned int shadowMapTextureId);
 
 	void renderWithShadows(
 		std::vector<Renderable*> renderables,
@@ -44,13 +44,7 @@ public:
 	);
 
 private:
-	unsigned int SHADOWMAP_WIDTH = 1024;
-	unsigned int SHADOWMAP_HEIGHT = 1024;	// TODO move to class/project constants
-
 	unsigned int renderRegionWidth, renderRegionHeight;
-	unsigned int shadowMapFBO;
-	unsigned int depthMapTextureId;
-
-	Shader shadowMapShader;
+	unsigned int shadowMapTextureId = 0;
 	Shader lineShader;
 };

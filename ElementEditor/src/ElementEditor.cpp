@@ -11,6 +11,7 @@
 #include "LightManager.h"
 #include "ModelFileLoader.h"
 #include "engine/DirectionalLight.h"
+#include "engine/ShadowMapBuilder.h"
 
 #include "../vendor/glm/glm.hpp"
 
@@ -43,11 +44,13 @@ void ElementEditor::run() {
 	MeshBuilder2d meshBuilder2d;
 	MeshBuilderTextured2d meshBuilderTextured2d;
 	UIRenderer* uiRenderer = new BasicUIRenderer(meshBuilder2d, meshBuilderTextured2d, window->getWidth(), window->getHeight());
-	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight());
 	ChunkManager* previewChunkManager = new ChunkManager();
 	ModelFileWriter* fileWriter = new ModelFileWriter(*modelChunkManager, *lightManager, *projectBounds, *camera);
+	ShadowMapBuilder* shadowMapBuilder = new ShadowMapBuilder(lightManager->getDirectionalLight());
+	ModelRenderer* modelRenderer = new ModelRenderer(window->getWidth(), window->getHeight(), shadowMapBuilder->getShadowMapTextureId());
 
-	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, lightManager, uiRenderer, window, projectBounds, fileWriter);
+	AppController appController(camera, modelRenderer, modelChunkManager, previewChunkManager, 
+		lightManager, uiRenderer, window, projectBounds, fileWriter, shadowMapBuilder);
 	window->setApplicationEventListener(&appController);
 
 	ToolbarUI toolbarUI(&appController);

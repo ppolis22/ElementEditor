@@ -10,8 +10,9 @@
 #include "state/AddLightState.h"
 #include "state/RemoveLightState.h"
 
-AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, ChunkManager* previewChunkManager,
-	LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds, ModelFileWriter* fileWriter)
+AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelChunkManager, 
+	ChunkManager* previewChunkManager, LightManager* lightManager, UIRenderer* uiRenderer, Window* window, 
+	ProjectBounds* projectBounds, ModelFileWriter* fileWriter, ShadowMapBuilder* shadowMapBuilder)
 	: camera(camera), 
 	modelRenderer(modelRenderer), 
 	modelChunkManager(modelChunkManager), 
@@ -21,6 +22,7 @@ AppController::AppController(Camera* camera, ModelRenderer* modelRenderer, Chunk
 	window(window), 
 	projectBounds(projectBounds), 
 	fileWriter(fileWriter),
+	shadowMapBuilder(shadowMapBuilder),
 	activeColor(BlockColor{ 0, 0, 0 }) 
 {}
 
@@ -28,6 +30,7 @@ void AppController::initialize() {
 	changeActiveTool(new AddState(this));
 	setActiveColor(BlockColor{ 255, 255, 255 });
 	modelChunkManager->rebuildChunkMeshes();
+	rebuildShadowMap();
 }
 
 void AppController::setState(State stateToSet) {
@@ -87,6 +90,14 @@ bool AppController::getCanEditLights() {
 
 void AppController::saveProject() {
 	fileWriter->write();
+}
+
+void AppController::rebuildShadowMap() {
+	std::vector<Renderable*> chunksToCastShadows;
+	for (Chunk* chunk : modelChunkManager->getAllChunks()) {
+		chunksToCastShadows.push_back(chunk);
+	}
+	shadowMapBuilder->buildShadowMap(chunksToCastShadows);
 }
 
 void AppController::processMouseMovement(MouseMoveEvent& event) {

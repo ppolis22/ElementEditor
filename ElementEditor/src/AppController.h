@@ -13,13 +13,15 @@
 #include "LightManager.h"
 #include "ProjectBounds.h"
 #include "ModelFileWriter.h"
+#include "engine/ShadowMapBuilder.h"
 
 #include <vector>
 
 class AppController : public EventListener {
 public:
-	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, ChunkManager* previewChunkManager,
-		LightManager* lightManager, UIRenderer* uiRenderer, Window* window, ProjectBounds* projectBounds, ModelFileWriter* fileWriter);
+	AppController(Camera* camera, ModelRenderer* modelRenderer, ChunkManager* modelhunkManager, 
+		ChunkManager* previewChunkManager, LightManager* lightManager, UIRenderer* uiRenderer, Window* window, 
+		ProjectBounds* projectBounds, ModelFileWriter* fileWriter, ShadowMapBuilder* shadowMapBuilder);
 
 	void initialize();
 
@@ -44,6 +46,7 @@ public:
 	BlockColor getActiveColor();
 	void setActiveColor(BlockColor newColor);
 	void addLight(Point3di position);
+	void rebuildShadowMap();
 
 	Camera* getCamera();
 	ModelRenderer* getModelRenderer();
@@ -65,6 +68,7 @@ private:
 	ProjectBounds* projectBounds;
 	UIRenderer* uiRenderer;
 	ModelFileWriter* fileWriter;
+	ShadowMapBuilder* shadowMapBuilder;
 
 	BlockColor activeColor;
 	bool canEditLights = true;
