@@ -1,36 +1,57 @@
 #version 330 core
 
+#define MAX_POINT_LIGHTS 16
+
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
-layout(location = 2) in float type;
+layout(location = 2) in vec3 inputColor;
+layout(location = 3) in float occlusion;
 
-out vec3 vertexColor;
-out vec3 vertexNormal;
-out vec3 toLightVector;
+out VS_OUT {
+	vec3 worldPosition;
+	vec3 vertexNormal;
+	vec3 vertexColor;
+	vec4 worldPositionDirectionalLightSpace;
+	vec3 pointLightContrib[MAX_POINT_LIGHTS];
+	float occlusion;
+} vs_out;
+
+struct PointLight {
+	vec3 color;
+	vec3 position;
+	float strength;
+};
+
+uniform PointLight lights[MAX_POINT_LIGHTS];
+uniform int numPointLights;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
-uniform vec3 lightPosition;
+uniform mat4 directionalLightSpaceMatrix;
 
 void main() {
-	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-	gl_Position = projectionMatrix * viewMatrix * worldPosition;
-
-	vertexNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-
+	vs_out.worldPosition = vec3(modelMatrix * vec4(position, 1.0));
+	vs_out.vertexNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
 	// use this instead if scaling needs to be supported, though it's expensive and should be passed in as a uniform
-	//vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
+	//vs_out.vertexNormal = normalize( mat3(transpose(inverse(modelMatrix))) * normal );
+	vs_out.worldPositionDirectionalLightSpace = directionalLightSpaceMatrix * vec4(vs_out.worldPosition, 1.0);
+	vs_out.vertexColor = inputColor;
+	vs_out.occlusion = occlusion;
 
-	toLightVector = normalize(lightPosition - worldPosition.xyz);
+	for (int i = 0; i < MAX_POINT_LIGHTS; i++) {
+		if (i == numPointLights) {
+			break;	// workaround for GLSL looping constraint
+		}
 
-	if (type == 0) {
-		vertexColor = vec3(1.0, 0.0, 0.0);
-	} else if (type == 1) {
-		vertexColor = vec3(0.0, 1.0, 0.0);
-	} else if (type == 2) {
-		vertexColor = vec3(0.0, 0.0, 1.0);
-	} else {
-		vertexColor = vec3(0.5, 0.5, 0.5);
+		// doing this calculation in the vertex shader is faster but less accurate than in the fragment
+		// shader, possibly switch if getting strange results
+		vec3 toLightVector = normalize(lights[i].position - vs_out.worldPosition);
+		float diffusePercent = max(dot(vs_out.vertexNormal, toLightVector), 0.0);
+		float distance = length(lights[i].position - vs_out.worldPosition);
+		float attenuation = 1.0 / ( 1.0 + (distance / lights[i].strength));
+		vs_out.pointLightContrib[i] = (diffusePercent * attenuation) * lights[i].color;
 	}
+
+	gl_Position = projectionMatrix * viewMatrix * vec4(vs_out.worldPosition, 1.0);
 };

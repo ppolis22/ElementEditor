@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src\vendor;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\vendor;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -104,7 +104,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>src\vendor;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\vendor;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -131,55 +131,121 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AddState.cpp" />
-    <ClCompile Include="src\Block.cpp" />
-    <ClCompile Include="src\Chunk.cpp" />
-    <ClCompile Include="src\ChunkManager.cpp" />
-    <ClCompile Include="src\EditorState.cpp" />
-    <ClCompile Include="src\ElementEditor.cpp" />
-    <ClCompile Include="src\engine\Camera.cpp" />
-    <ClCompile Include="src\engine\ElementEngineException.cpp" />
-    <ClCompile Include="src\engine\MeshBuilderBase.cpp" />
-    <ClCompile Include="src\engine\MeshBuilder2d.cpp" />
-    <ClCompile Include="src\engine\MeshBuilder3d.cpp" />
-    <ClCompile Include="src\engine\RayTracer.cpp" />
-    <ClCompile Include="src\engine\RenderedApplication.cpp" />
-    <ClCompile Include="src\engine\ModelRenderer.cpp" />
-    <ClCompile Include="src\engine\Shader.cpp" />
+    <ClCompile Include="src\editor\ui\BlockEditUI.cpp" />
+    <ClCompile Include="src\engine\light\DirectionalLight.cpp" />
+    <ClCompile Include="src\engine\light\Light.cpp" />
+    <ClCompile Include="src\engine\mesh\LineMeshBuilder.cpp" />
+    <ClCompile Include="src\engine\mesh\Mesh.cpp" />
+    <ClCompile Include="src\engine\mesh\MeshBuilderTextured2d.cpp" />
+    <ClCompile Include="src\engine\light\ShadowMapBuilder.cpp" />
+    <ClCompile Include="src\engine\render\Texture.cpp" />
+    <ClCompile Include="src\engine\ui\BasicUIRenderer.cpp" />
+    <ClCompile Include="src\engine\ui\CheckBox.cpp" />
+    <ClCompile Include="src\engine\ui\TabbedUIElement.cpp" />
+    <ClCompile Include="src\engine\ui\UISlider.cpp" />
+    <ClCompile Include="src\engine\ui\UITexturedElement.cpp" />
+    <ClCompile Include="src\editor\ui\LightEditUI.cpp" />
+    <ClCompile Include="src\editor\controller\LightManager.cpp" />
+    <ClCompile Include="src\editor\file\ModelFileHandler.cpp" />
+    <ClCompile Include="src\editor\file\ModelFileLoader.cpp" />
+    <ClCompile Include="src\editor\file\ModelFileWriter.cpp" />
+    <ClCompile Include="src\editor\model\ProjectBounds.cpp" />
+    <ClCompile Include="src\editor\ui\ProjectEditUI.cpp" />
+    <ClCompile Include="src\editor\state\AddLightState.cpp" />
+    <ClCompile Include="src\editor\state\AddState.cpp" />
+    <ClCompile Include="src\editor\controller\AppController.cpp" />
+    <ClCompile Include="src\editor\model\Block.cpp" />
+    <ClCompile Include="src\editor\model\Chunk.cpp" />
+    <ClCompile Include="src\editor\controller\ChunkManager.cpp" />
+    <ClCompile Include="src\editor\state\BaseEditorState.cpp" />
+    <ClCompile Include="src\editor\ElementEditor.cpp" />
+    <ClCompile Include="src\engine\render\Camera.cpp" />
+    <ClCompile Include="src\engine\app\ElementEngineException.cpp" />
+    <ClCompile Include="src\engine\mesh\MeshBuilderBase.cpp" />
+    <ClCompile Include="src\engine\mesh\MeshBuilder2d.cpp" />
+    <ClCompile Include="src\engine\mesh\MeshBuilder3d.cpp" />
+    <ClCompile Include="src\engine\geom\RayTracer.cpp" />
+    <ClCompile Include="src\engine\app\RenderedApplication.cpp" />
+    <ClCompile Include="src\engine\render\ModelRenderer.cpp" />
+    <ClCompile Include="src\engine\render\Shader.cpp" />
+    <ClCompile Include="src\engine\app\TranslateHandles.cpp" />
     <ClCompile Include="src\engine\ui\Button.cpp" />
-    <ClCompile Include="src\engine\ui\Command.cpp" />
+    <ClCompile Include="src\editor\state\ColorPickState.cpp" />
+    <ClCompile Include="src\editor\state\LightEditState.cpp" />
+    <ClCompile Include="src\editor\state\RemoveLightState.cpp" />
+    <ClCompile Include="src\editor\ui\ToolbarUI.cpp" />
     <ClCompile Include="src\engine\ui\UIElement.cpp" />
-    <ClCompile Include="src\engine\ui\UIRenderer.cpp" />
-    <ClCompile Include="src\engine\Window.cpp" />
-    <ClCompile Include="src\SubtractState.cpp" />
+    <ClCompile Include="src\engine\app\Window.cpp" />
+    <ClCompile Include="src\editor\state\ExtrudeState.cpp" />
+    <ClCompile Include="src\editor\state\MoveableSelectionState.cpp" />
+    <ClCompile Include="src\editor\state\MoveState.cpp" />
+    <ClCompile Include="src\editor\state\SelectState.cpp" />
+    <ClCompile Include="src\editor\state\SubtractState.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
+    <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AddState.h" />
-    <ClInclude Include="src\Block.h" />
-    <ClInclude Include="src\Chunk.h" />
-    <ClInclude Include="src\ChunkManager.h" />
-    <ClInclude Include="src\EditorState.h" />
-    <ClInclude Include="src\ElementEditor.h" />
-    <ClInclude Include="src\engine\Camera.h" />
-    <ClInclude Include="src\engine\ElementEngineException.h" />
-    <ClInclude Include="src\engine\Mesh.h" />
-    <ClInclude Include="src\engine\MeshBuilderBase.h" />
-    <ClInclude Include="src\engine\InputListener.h" />
-    <ClInclude Include="src\engine\MeshBuilder2d.h" />
-    <ClInclude Include="src\engine\MeshBuilder3d.h" />
-    <ClInclude Include="src\engine\RayTracer.h" />
-    <ClInclude Include="src\engine\Renderable.h" />
-    <ClInclude Include="src\engine\RenderedApplication.h" />
-    <ClInclude Include="src\engine\ModelRenderer.h" />
-    <ClInclude Include="src\engine\Point3d.h" />
-    <ClInclude Include="src\engine\Shader.h" />
+    <ClInclude Include="src\editor\ui\BlockEditUI.h" />
+    <ClInclude Include="src\engine\light\DirectionalLight.h" />
+    <ClInclude Include="src\engine\event\ActionEvent.h" />
+    <ClInclude Include="src\engine\event\ActionListener.h" />
+    <ClInclude Include="src\engine\light\Light.h" />
+    <ClInclude Include="src\engine\mesh\LineMeshBuilder.h" />
+    <ClInclude Include="src\engine\mesh\MeshBuilderTextured2d.h" />
+    <ClInclude Include="src\engine\light\ShadowMapBuilder.h" />
+    <ClInclude Include="src\engine\render\Texture.h" />
+    <ClInclude Include="src\engine\ui\BasicUIRenderer.h" />
+    <ClInclude Include="src\engine\ui\CheckBox.h" />
+    <ClInclude Include="src\engine\ui\Slider.h" />
+    <ClInclude Include="src\engine\ui\TabbedUIElement.h" />
+    <ClInclude Include="src\engine\ui\UISlider.h" />
+    <ClInclude Include="src\engine\ui\UITexturedElement.h" />
+    <ClInclude Include="src\editor\ui\LightEditUI.h" />
+    <ClInclude Include="src\editor\controller\LightManager.h" />
+    <ClInclude Include="src\editor\file\ModelFileHandler.h" />
+    <ClInclude Include="src\editor\file\ModelFileLoader.h" />
+    <ClInclude Include="src\editor\file\ModelFileWriter.h" />
+    <ClInclude Include="src\editor\model\ProjectBounds.h" />
+    <ClInclude Include="src\editor\ui\ProjectEditUI.h" />
+    <ClInclude Include="src\editor\state\AddLightState.h" />
+    <ClInclude Include="src\editor\state\AddState.h" />
+    <ClInclude Include="src\editor\controller\AppController.h" />
+    <ClInclude Include="src\editor\model\Block.h" />
+    <ClInclude Include="src\editor\model\Chunk.h" />
+    <ClInclude Include="src\editor\controller\ChunkManager.h" />
+    <ClInclude Include="src\editor\state\BaseEditorState.h" />
+    <ClInclude Include="src\editor\ElementEditor.h" />
+    <ClInclude Include="src\engine\geom\AABB.h" />
+    <ClInclude Include="src\engine\render\Camera.h" />
+    <ClInclude Include="src\engine\app\ElementEngineException.h" />
+    <ClInclude Include="src\engine\event\Event.h" />
+    <ClInclude Include="src\engine\event\KeyEvent.h" />
+    <ClInclude Include="src\engine\event\MouseEvent.h" />
+    <ClInclude Include="src\engine\mesh\Mesh.h" />
+    <ClInclude Include="src\engine\mesh\MeshBuilderBase.h" />
+    <ClInclude Include="src\engine\event\EventListener.h" />
+    <ClInclude Include="src\engine\mesh\MeshBuilder2d.h" />
+    <ClInclude Include="src\engine\mesh\MeshBuilder3d.h" />
+    <ClInclude Include="src\engine\geom\RayTracer.h" />
+    <ClInclude Include="src\engine\render\Renderable.h" />
+    <ClInclude Include="src\engine\app\RenderedApplication.h" />
+    <ClInclude Include="src\engine\render\ModelRenderer.h" />
+    <ClInclude Include="src\engine\geom\Point3d.h" />
+    <ClInclude Include="src\engine\render\Shader.h" />
+    <ClInclude Include="src\engine\app\TranslateHandles.h" />
     <ClInclude Include="src\engine\ui\Button.h" />
-    <ClInclude Include="src\engine\ui\Command.h" />
     <ClInclude Include="src\engine\ui\UIElement.h" />
+    <ClInclude Include="src\editor\state\ColorPickState.h" />
+    <ClInclude Include="src\editor\state\LightEditState.h" />
+    <ClInclude Include="src\editor\state\RemoveLightState.h" />
+    <ClInclude Include="src\editor\ui\ToolbarUI.h" />
     <ClInclude Include="src\engine\ui\UIRenderer.h" />
-    <ClInclude Include="src\engine\Window.h" />
-    <ClInclude Include="src\SubtractState.h" />
+    <ClInclude Include="src\engine\app\Window.h" />
+    <ClInclude Include="src\editor\state\ExtrudeState.h" />
+    <ClInclude Include="src\editor\state\MoveableSelectionState.h" />
+    <ClInclude Include="src\editor\state\MoveState.h" />
+    <ClInclude Include="src\editor\state\SelectState.h" />
+    <ClInclude Include="src\editor\state\SubtractState.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />
@@ -462,11 +528,22 @@
     <ClInclude Include="src\vendor\glm\vec3.hpp" />
     <ClInclude Include="src\vendor\glm\vec4.hpp" />
     <ClInclude Include="src\vendor\glm\vector_relational.hpp" />
+    <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="projects\project.elem" />
+    <None Include="projects\sample-project.elem" />
     <None Include="shaders\chunkFragment.shader" />
     <None Include="shaders\chunkVertex.shader" />
+    <None Include="shaders\handleFragment.shader" />
+    <None Include="shaders\handleVertex.shader" />
+    <None Include="shaders\lineFragment.shader" />
+    <None Include="shaders\lineVertex.shader" />
+    <None Include="shaders\shadowMapFragment.shader" />
+    <None Include="shaders\shadowMapVertex.shader" />
     <None Include="shaders\uiFragment.shader" />
+    <None Include="shaders\uiTexturedFragment.shader" />
+    <None Include="shaders\uiTexturedVertex.shader" />
     <None Include="shaders\uiVertex.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
@@ -604,6 +681,29 @@
     <None Include="src\vendor\glm\gtx\vector_angle.inl" />
     <None Include="src\vendor\glm\gtx\vector_query.inl" />
     <None Include="src\vendor\glm\gtx\wrap.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\add-button-black.png" />
+    <Image Include="textures\add-button-white.png" />
+    <Image Include="textures\add-light-button-white.png" />
+    <Image Include="textures\checkbox-frame.png" />
+    <Image Include="textures\edit-light-button-white.png" />
+    <Image Include="textures\extrude-button-black.png" />
+    <Image Include="textures\extrude-button-white.png" />
+    <Image Include="textures\light-icon-white.png" />
+    <Image Include="textures\move-button-black.png" />
+    <Image Include="textures\move-button-white.png" />
+    <Image Include="textures\picker-button-black.png" />
+    <Image Include="textures\picker-button-white.png" />
+    <Image Include="textures\project-edit-button-white.png" />
+    <Image Include="textures\remove-light-button-white.png" />
+    <Image Include="textures\save-button-white.png" />
+    <Image Include="textures\select-button-black.png" />
+    <Image Include="textures\select-button-white.png" />
+    <Image Include="textures\strength-icon-white.png" />
+    <Image Include="textures\subtract-button-black.png" />
+    <Image Include="textures\subtract-button-white.png" />
+    <Image Include="textures\visible-icon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
