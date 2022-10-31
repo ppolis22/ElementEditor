@@ -1,8 +1,7 @@
 #pragma once
 
 #include "UIElement.h"
-
-#include "../Texture.h"
+#include "engine/render/Texture.h"
 
 class UITexturedElement : public UIElement {
 

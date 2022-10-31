@@ -3,9 +3,10 @@
 
 #include "BasicUIRenderer.h"
 
-#include "../vendor/glm/glm.hpp"
-#include "../vendor/glm/gtc/matrix_transform.hpp"
-#include "../Texture.h"
+#include "engine/render/Texture.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 BasicUIRenderer::BasicUIRenderer(MeshBuilder2d& meshBuilder, MeshBuilderTextured2d& texturedMeshBuidler, int windowWidth, int windowHeight)
 	: coloredShader("shaders/uiVertex.shader", "shaders/uiFragment.shader"), 

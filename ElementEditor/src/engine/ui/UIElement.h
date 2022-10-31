@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../EventListener.h"
-#include "../event/ActionListener.h"
 #include "UIRenderer.h"
-#include "../Texture.h"
+#include "engine/event/EventListener.h"
+#include "engine/event/ActionListener.h"
+#include "engine/render/Texture.h"
 #include <vector>
 
 class UIElement : public EventListener {

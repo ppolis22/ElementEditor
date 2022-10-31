@@ -1,12 +1,12 @@
 #pragma once
 
 #include "UIRenderer.h"
-#include "../Mesh.h"
-#include "../MeshBuilder2d.h"
-#include "../MeshBuilderTextured2d.h"
-#include "../Shader.h"
-#include "../Texture.h"
-#include "../Camera.h"
+#include "engine/mesh/Mesh.h"
+#include "engine/mesh/MeshBuilder2d.h"
+#include "engine/mesh/MeshBuilderTextured2d.h"
+#include "engine/render/Shader.h"
+#include "engine/render/Texture.h"
+#include "engine/render/Camera.h"
 
 class BasicUIRenderer : public UIRenderer {
 public:

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../Camera.h"
-#include "../vendor/glm/glm.hpp"
+#include "engine/render/Camera.h"
+#include "glm/glm.hpp"
+
 #include <string>
 
 class UIRenderer {
