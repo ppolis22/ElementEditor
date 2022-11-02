@@ -104,8 +104,10 @@ void ChunkManager::selectAll() {
 
 void ChunkManager::deselectAll() {
 	for (auto& entry : allChunks) {
-		entry.second->deselectAll();
-		chunksToRebuild.insert(entry.second);
+		if (entry.second->hasSelection()) {
+			entry.second->deselectAll();
+			chunksToRebuild.insert(entry.second);
+		}
 	}
 	this->rebuildChunkMeshes();
 }

@@ -65,6 +65,7 @@ public:
 	void removeSelection(Point3di location);
 	void selectAll();
 	void deselectAll();
+	bool hasSelection();
 	std::vector<Point3di> getSelection();
 	BlockColor getBlockColor(Point3di location);
 	Point3di getPosition();
