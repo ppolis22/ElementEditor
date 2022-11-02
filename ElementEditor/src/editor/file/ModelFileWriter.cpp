@@ -18,12 +18,17 @@ void ModelFileWriter::writeToFile(std::ofstream& outputFile) {
 }
 
 void ModelFileWriter::writeColors(std::ofstream& outputFile) {
+	numSeenColors = 0;
+	seenColors.clear();
+
 	outputFile << sectionTitles[FileSection::COLORS] << std::endl;
 	for (Chunk* chunk : chunkManager.getAllChunks()) {
 		for (auto block : *chunk) {
 			if (!block.isEmpty() && seenColors.count(block) == 0) {
-				outputFile << numSeenColors << " " << (int)block.r << " " << (int)block.g << " " << (int)block.b << std::endl;
-				seenColors[block] = numSeenColors++;
+				if (seenColors.count(block) == 0) {
+					seenColors[block] = numSeenColors++;
+				}
+				outputFile << seenColors[block] << " " << (int)block.r << " " << (int)block.g << " " << (int)block.b << std::endl;
 			}
 		}
 	}

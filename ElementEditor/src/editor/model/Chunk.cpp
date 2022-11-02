@@ -56,6 +56,10 @@ void Chunk::deselectAll() {
 	selectedBlocks.clear();
 }
 
+bool Chunk::hasSelection() {
+	return !selectedBlocks.empty();
+}
+
 std::vector<Point3di> Chunk::getSelection() {
 	std::vector<Point3di> worldCoordsSelection;
 	for (Point3di& selection : selectedBlocks) {

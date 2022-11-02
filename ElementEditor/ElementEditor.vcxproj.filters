@@ -1629,6 +1629,7 @@
     <None Include="shaders\lineVertex.shader" />
     <None Include="projects\sample-project.elem" />
     <None Include="projects\project.elem" />
+    <None Include="projects\pagoda-demo.elem" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\add-button-black.png">
