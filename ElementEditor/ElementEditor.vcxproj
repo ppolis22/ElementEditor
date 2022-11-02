@@ -531,6 +531,7 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="projects\pagoda-demo.elem" />
     <None Include="projects\project.elem" />
     <None Include="projects\sample-project.elem" />
     <None Include="shaders\chunkFragment.shader" />

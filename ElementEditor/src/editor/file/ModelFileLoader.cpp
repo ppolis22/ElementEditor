@@ -104,7 +104,7 @@ void ModelFileLoader::parseLight(std::vector<std::string>& contents) {
 		lightManager.setAmbientLightColor(glm::vec3(std::stof(contents[1]), std::stof(contents[2]), std::stof(contents[3])));
 	} else if (contents[0] == subSectionTitles[FileSubSection::LIGHT_DIRECTIONAL]) {
 		lightManager.setDirectionalLight(
-			std::stoi(contents[1]), std::stoi(contents[2]), std::stoi(contents[3]),		// bounds
+			std::stoi(contents[1]), std::stoi(contents[2]), std::stoi(contents[3]),		// bounds TODO take this from project bounds?
 			std::stof(contents[4]), std::stof(contents[5]),								// angle
 			glm::vec3(std::stof(contents[6]), std::stof(contents[7]), std::stof(contents[8])));	// color
 	} else if (contents.size() == 7) {
