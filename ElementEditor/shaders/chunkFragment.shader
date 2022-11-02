@@ -25,10 +25,23 @@ float calculateShadowPercent(vec4 worldPositionLightSpace)
 	// perform perspective divide to arrive in NDC (technically not needed in ortho projections)
 	vec3 projCoords = worldPositionLightSpace.xyz / worldPositionLightSpace.w;
 	projCoords = projCoords * 0.5 + 0.5;	// from NDC to range [0,1] to sample texture
-	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
 	float bias = max(0.01 * (1.0 - dot(fs_in.vertexNormal, toDirectionalLightVector)), 0.001);	// to reduce shadow banding
-	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+
+	// implement percentage-closer filtering, to average the surrounding shadow map texels and
+	// produce a less jagged shadow on larger models
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	for (int x = -1; x <= 1; ++x)
+	{
+		for (int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	shadow /= 9.0;
+
 	return shadow;
 }
 
