@@ -83,3 +83,13 @@ void BaseEditorState::render() {
 	renderModelChunks();
 	renderLightIcons();
 }
+
+void BaseEditorState::processKeyPress(KeyPressEvent& event) {
+	if (event.keyCode == GLFW_KEY_A) {
+		context->getModelChunkManager()->selectAll();
+		context->setState(State::SELECT);
+	} else if (event.keyCode == GLFW_KEY_D) {
+		context->getModelChunkManager()->deselectAll();
+		context->setState(State::SELECT);
+	}
+}

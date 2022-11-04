@@ -25,8 +25,8 @@ public:
 	BaseEditorState(AppController* context);
 	virtual ~BaseEditorState() {};
 
+	virtual void processKeyPress(KeyPressEvent& event);
 	virtual void processMouseMovement(MouseMoveEvent& event) {};
-	virtual void processKeyPress(KeyPressEvent& event) {};
 	virtual void processScroll(MouseScrollEvent& event) {};
 	virtual void processMouseDown(MouseButtonDownEvent& event) {};
 	virtual void processMouseUp(MouseButtonUpEvent& event) {};
