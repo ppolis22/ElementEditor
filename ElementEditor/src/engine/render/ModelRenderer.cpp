@@ -44,6 +44,9 @@ void ModelRenderer::renderNoLighting(
 	if (renderables.empty())
 		return;
 
+	// reset viewport after potential shadowmap render
+	glViewport(0, 0, renderRegionWidth, renderRegionHeight);
+
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
 	glm::mat4 viewMatrix = camera.getViewMatrix();
@@ -73,6 +76,9 @@ void ModelRenderer::renderNoShadows(
 ) {
 	if (renderables.empty())
 		return;
+
+	// reset viewport after potential shadowmap render
+	glViewport(0, 0, renderRegionWidth, renderRegionHeight);
 
 	glEnable(GL_DEPTH_TEST);
 	glm::mat4 projectionMatrix = camera.getProjectionMatrix();
@@ -157,6 +163,9 @@ void ModelRenderer::renderWithShadows(
 }
 
 void ModelRenderer::renderLines(Mesh& mesh, Camera& camera, glm::vec3 color) {
+	// reset viewport after potential shadowmap render
+	glViewport(0, 0, renderRegionWidth, renderRegionHeight);
+
 	lineShader.bind();
 	lineShader.setUniformVec3f("lineColor", color);
 	lineShader.setUniformMat4f("projectionMatrix", camera.getProjectionMatrix());
