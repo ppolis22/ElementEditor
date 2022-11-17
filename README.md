@@ -5,9 +5,9 @@ to add features, with more anticipated in the future.
 Currently, Element allows users to:
 - Intuitively click to place, remove, and edit voxels
 - Place and configure lights, with shading consiting of shadow mapping and ambient occlusion
-- Export and import scenes as .element files
+- Export and import scenes as .elem files
 
-The design philosphy so far as been to always favor simplicity - there's not even support for text rendering as a symbol should work just as well. As the saying goes:
+The design philosphy so far as been to favor simplicity - the toolset is minimal, the window is intentionally small, and symbols are used in place of text.
 > Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away
 
 <!--![pagoda2](https://user-images.githubusercontent.com/30415201/199419451-edc70adb-6b1f-42f3-970b-58ebe381b598.png)-->
@@ -32,6 +32,8 @@ Select the Add Light tool, and place lights just like blocks, setting the color 
 Move Light tool, and remove them with the Remove Light tool.
 
 ![edit-lights](https://user-images.githubusercontent.com/30415201/199908798-3b34e738-2814-4dd2-9a1b-9c5f0482b6f9.gif)
+
+At startup, the file `projects/project.elem` will be loaded, and the Save button will overwrite it with the current project.
 
 ## Under the hood
 This project is separated into two parts: the engine, which knows how to take in geometry and light data and render an image; and the editor, which encompasses the
